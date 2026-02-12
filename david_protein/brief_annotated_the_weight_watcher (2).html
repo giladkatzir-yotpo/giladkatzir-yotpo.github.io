@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1) Article topic / working title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Content Brief</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<h2>1) Article topic / working title</h2>
+<p><strong>Working title:</strong> How David Crafts the Best Tasting, Lowest Calorie Protein Bars to Support Your Weight Loss Goals</p>
+<h2>2) Word count / article type</h2>
+<ul>
+<li>1,500-2,500 words</li>
+<li>Blog Post</li>
+</ul>
+<h2>4) Target audience</h2>
+<ul>
+<li>A calorie-conscious individual focused on sustainable weight loss through portion control, tracking macros, and finding satisfying snacks that fit within their daily points or calorie budget.</li>
+</ul>
+<h2>5) Key points to cover</h2>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000,anno_014">Highlight that David protein bars deliver an exceptional macro profile—28g of protein in just 150 calories with 0g of sugar—creating an unbeatable nutritional foundation that fits perfectly into any calorie deficit plan without sacrificing satisfaction.</span></li>
+<li><span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001,anno_015">Explain that each bar contains 28g of protein from a multi-source blend including milk protein isolate, collagen, whey protein concentrate, and egg white.</span></li>
+<li><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002,anno_016">Note that the bars contain zero grams of sugar, making them an ideal choice for those tracking their daily intake.</span></li>
+<li><span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003,anno_017">Describe the unique texture that combines a satisfying base with crunchy crisps and chocolate chunks, completely avoiding the dry, chalky consistency of most protein bars, with authentic flavors that deliver genuine taste quality.</span></li>
+<li><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">Emphasize that the combination of exceptional macros AND genuine taste quality sets David apart, allowing customers to avoid compromising nutrition for flavor or vice versa.</span></li>
+<li><span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">Recommend keeping bars in your car, purse, or gym bag as convenient protein-rich snacks that provide a healthy option when hunger strikes between meals.</span></li>
+<li><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">Address common questions in FAQ format, recapping the nutritional profile, taste quality, and practical benefits for weight loss goals.</span></li>
+</ul>
+<h2>6) Reviews to be used</h2>
+<h3>Unbeatable Nutritional Profile</h3>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">"The macros are unbeatable, overall this bar is a <em>chef's kiss</em>." - Iulianna T. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">"I have found no other bar that has as much protein (28gr/bar) with great taste and low calories." - Syndi B. (5-star)</span></li>
+</ul>
+<h3>Superior Taste &amp; Texture</h3>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">"The little salt that comes through is well balanced and provides that salty sweet mix. It's also great the amount of protein and no added sugar; double bonus." - Jeremy W. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">"I LOVE the flavor, texture, all of it! Has all the right notes, hits all the good feels, and is GREAT for me too." - David M. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">"The flavor and texture of this bar definitely make you forget you chose it for protein content." - Paul K. (5-star)</span></li>
+</ul>
+<h3>Best Protein Bar on the Market</h3>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">"I've tried just about every protein bar on the market and these are my absolute favorites. They're really delicious." - Debra R. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">"For the protein and low calorie I would never expect them to be so delicious." - Elizabeth R. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">"Best protein bar ever tasted. I'm a 60 y/o who used to be a bodybuilder for more than 25 years. My wife and daughter try them they also love them." - Jose R. (5-star)</span></li>
+</ul>
+<h3>Convenience &amp; Real Results</h3>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">"You can taste the peanut butter and not some sweet version of it. I take them with me skiing or after a work out." - Margaret M. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">"I like that they are similar in macros to a high protein shake but take up much less space in my gym bag." - Jeff P. (5-star)</span></li>
+</ul>
+<h2>7) Sources to backlink</h2>
+<ul>
+<li>https://davidprotein.com/products/chocolate-chip-cookie-dough</li>
+</ul>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 463,
+    "stop_index": 716,
+    "text_snippet": "Highlight that David protein bars deliver an exceptional macro profile\u201428g of protein in just 150 ca...",
+    "description": "Factual claim from specification",
+    "source_url": "https://davidprotein.com/products/chocolate-chip-cookie-dough",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 719,
+    "stop_index": 873,
+    "text_snippet": "Explain that each bar contains 28g of protein from a multi-source blend including milk protein isola...",
+    "description": "Factual claim from specification",
+    "source_url": "https://davidprotein.com/products/chocolate-chip-cookie-dough",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 876,
+    "stop_index": 990,
+    "text_snippet": "Note that the bars contain zero grams of sugar, making them an ideal choice for those tracking their...",
+    "description": "Factual claim from specification",
+    "source_url": "https://davidprotein.com/products/chocolate-chip-cookie-dough",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 993,
+    "stop_index": 1223,
+    "text_snippet": "Describe the unique texture that combines a satisfying base with crunchy crisps and chocolate chunks...",
+    "description": "Factual claim from feature",
+    "source_url": "https://davidprotein.com/products/chocolate-chip-cookie-dough",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "customer_experience",
+    "start_index": 1757,
+    "stop_index": 1845,
+    "text_snippet": "\"The macros are unbeatable, overall this bar is a *chef's kiss*.\" - Iulianna T. (5-star)",
+    "description": "Customer testimonial by Iulianna T.",
+    "source_url": null,
+    "evidence_id": "quote_4",
+    "product_name": "Gold Salted Peanut Butter",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "customer_experience",
+    "start_index": 1848,
+    "stop_index": 1966,
+    "text_snippet": "\"I have found no other bar that has as much protein (28gr/bar) with great taste and low calories.\" -...",
+    "description": "Customer testimonial by Syndi B.",
+    "source_url": null,
+    "evidence_id": "quote_5",
+    "product_name": "Gold Salted Peanut Butter",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "customer_experience",
+    "start_index": 1999,
+    "stop_index": 2180,
+    "text_snippet": "\"The little salt that comes through is well balanced and provides that salty sweet mix. It's also gr...",
+    "description": "Customer testimonial by Jeremy W.",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "Gold Salted Peanut Butter",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "customer_experience",
+    "start_index": 2183,
+    "stop_index": 2318,
+    "text_snippet": "\"I LOVE the flavor, texture, all of it! Has all the right notes, hits all the good feels, and is GRE...",
+    "description": "Customer testimonial by David M.",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "Gold Salted Peanut Butter",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "customer_experience",
+    "start_index": 2321,
+    "stop_index": 2437,
+    "text_snippet": "\"The flavor and texture of this bar definitely make you forget you chose it for protein content.\" - ...",
+    "description": "Customer testimonial by Paul K.",
+    "source_url": null,
+    "evidence_id": "quote_8",
+    "product_name": "Gold Salted Peanut Butter",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "customer_experience",
+    "start_index": 2476,
+    "stop_index": 2614,
+    "text_snippet": "\"I've tried just about every protein bar on the market and these are my absolute favorites. They're ...",
+    "description": "Customer testimonial by Debra R.",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "Gold Salted Peanut Butter",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "customer_experience",
+    "start_index": 2617,
+    "stop_index": 2720,
+    "text_snippet": "\"For the protein and low calorie I would never expect them to be so delicious.\" - Elizabeth R. (5-st...",
+    "description": "Customer testimonial by Elizabeth R.",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "Gold Salted Peanut Butter",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "customer_experience",
+    "start_index": 2723,
+    "stop_index": 2890,
+    "text_snippet": "\"Best protein bar ever tasted. I'm a 60 y/o who used to be a bodybuilder for more than 25 years. My ...",
+    "description": "Customer testimonial by Jose R.",
+    "source_url": null,
+    "evidence_id": "quote_9",
+    "product_name": "Gold Salted Peanut Butter",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "customer_experience",
+    "start_index": 2925,
+    "stop_index": 3063,
+    "text_snippet": "\"You can taste the peanut butter and not some sweet version of it. I take them with me skiing or aft...",
+    "description": "Customer testimonial by Margaret M.",
+    "source_url": null,
+    "evidence_id": "quote_6",
+    "product_name": "Gold Salted Peanut Butter",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "customer_experience",
+    "start_index": 3066,
+    "stop_index": 3192,
+    "text_snippet": "\"I like that they are similar in macros to a high protein shake but take up much less space in my gy...",
+    "description": "Customer testimonial by Jeff P.",
+    "source_url": null,
+    "evidence_id": "quote_7",
+    "product_name": "Gold Salted Peanut Butter",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 463,
+    "stop_index": 716,
+    "text_snippet": "Highlight that David protein bars deliver an exceptional macro profile\u201428g of protein in just 150 ca...",
+    "description": "Audience Specific: Immediately answer the target query by establishing the exceptional macro profile (28g protein, 150 calories, 0g sugar)",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 719,
+    "stop_index": 873,
+    "text_snippet": "Explain that each bar contains 28g of protein from a multi-source blend including milk protein isola...",
+    "description": "Audience Specific: Explain the protein blend composition",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 876,
+    "stop_index": 990,
+    "text_snippet": "Note that the bars contain zero grams of sugar, making them an ideal choice for those tracking their...",
+    "description": "Audience Specific: Address sugar content for calorie-conscious dieters",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 993,
+    "stop_index": 1223,
+    "text_snippet": "Describe the unique texture that combines a satisfying base with crunchy crisps and chocolate chunks...",
+    "description": "Audience Specific: Address the common pain point that most low-calorie protein bars taste terrible",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1226,
+    "stop_index": 1399,
+    "text_snippet": "Emphasize that the combination of exceptional macros AND genuine taste quality sets David apart, all...",
+    "description": "Audience Specific: Establish competitive advantage by showing how customers frequently describe these as best they've tried",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1402,
+    "stop_index": 1554,
+    "text_snippet": "Recommend keeping bars in your car, purse, or gym bag as convenient protein-rich snacks that provide...",
+    "description": "Audience Specific: Provide practical use cases that match the persona's lifestyle needs\u2014meal replacements, emergency snacks",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1557,
+    "stop_index": 1692,
+    "text_snippet": "Address common questions in FAQ format, recapping the nutritional profile, taste quality, and practi...",
+    "description": "Audience Specific: Summarize the article's key points in Q&A format for quick scanning",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
