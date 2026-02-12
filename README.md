@@ -1,1 +1,0 @@
-# giladkatzir-yotpo.github.io
