@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Blog Content</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<p><span class="annotation" data-annotation-id="anno_028" data-annotation-ids="anno_028"></p>
+<h1>Natural Alternatives to Coffee for Energy and Gut Health: Two Top Picks to Jumpstart Your New Year</h1>
+<p></span></p>
+<p><strong>In Short:</strong> Looking for natural coffee alternatives that actually support gut health <em>and</em> sustained energy? Everyday Dose makes two worth trying: Mushroom Coffee+ and Matcha+.</p>
+<p>Both carry <span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">4.8 stars across roughly 99,750 reviews</span>, and customers keep saying the same thing - clean energy, no jitters, no angry stomach. If your New Year's resolution involves being kinder to your gut, these are two of the strongest natural caffeinated alternatives out there.</p>
+<hr />
+<h2>Mushroom Coffee+ vs. Matcha+: How Do They Compare?</h2>
+<p>Here's the quick breakdown:</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Mushroom Coffee+</th>
+<th>Matcha+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Caffeine per Serving</strong></td>
+<td><span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">45mg (Mild Roast) or 90mg (Medium Roast)</span></td>
+<td><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">40mg (matcha-based sustained release)</span></td>
+</tr>
+<tr>
+<td><strong>Key Ingredients</strong></td>
+<td><span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">100% Arabica Coffee, Collagen Peptides, L-Theanine, Chaga Extract, Lion's Mane Extract</span></td>
+<td><span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">Ceremonial Grade Matcha, Lion's Mane, Chaga, Collagen Protein, L-Theanine</span></td>
+</tr>
+<tr>
+<td><strong>Free Starter Kit</strong></td>
+<td><span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">Rechargeable frother, dose spoon, breathwork app, wellness booklet</span></td>
+<td><span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">Rechargeable frother, dose spoon, breathwork app, sticker, wellness booklet</span></td>
+</tr>
+<tr>
+<td><strong>Price (30 Servings)</strong></td>
+<td><span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">$27 (down from $36)</span></td>
+<td><span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">$36 (down from $50) - $0.84/serving</span></td>
+</tr>
+<tr>
+<td><strong>Best For</strong></td>
+<td>Gentle coffee-to-coffee swap, gut comfort</td>
+<td>All-day sustained energy, matcha lovers</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Everyday Dose Mushroom Coffee+: A Gut-Friendly Coffee Alternative</h2>
+<p>Ready to quit regular coffee? Here's the thing - it's not the caffeine you'll miss. It's the ritual.</p>
+<p>That's exactly why Mushroom Coffee+ works so well as a swap. Think of it as trading in your old mug for a better one.</p>
+<p>It looks, tastes, and <em>feels</em> like your morning cup - but under the hood, it's built from <span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">five clean ingredients: Collagen Peptides, Coffee, L-Theanine, Organic Chaga Fruiting Body Extract, and Organic Lion's Mane Fruiting Body Extract</span>. No junk drawer of additives, either: <span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">no fillers, no artificial additives, no added sugar, soy, grains, or cocoa</span>. The coffee itself is <span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">100% Arabica, mold-free, and low acidity</span> - ideal if your stomach has been staging daily protests against your old brew.</p>
+<p><span class="annotation" data-annotation-id="anno_025" data-annotation-ids="anno_025">"I was not having any crashes, no stomach aches, clean energy, focus. I don't think I can ever stop drinking it and I make every guest in my house try a cup."</span> - Christian B.</p>
+<p>That's the kind of convert who won't let you leave without trying some.</p>
+<p>The free Starter Kit - rechargeable frother and dose spoon included - makes the whole habit swap frictionless. Froth, sip, done.</p>
+<hr />
+<h2>How Does Matcha+ Deliver Sustained Energy and Focus All Day?</h2>
+<p>Not a coffee person? Or maybe you just need something that carries you past the 2 p.m. wall without a second (or third) cup. Matcha+ takes a completely different route. <span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">Everyday Dose Matcha+ is designed to provide all-day energy without crashes or anxiety</span>, and the reviews back that up. The base is <span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">Ceremonial Grade Matcha sourced from TENZO TEA</span>, paired with functional mushrooms and collagen for a formula that does more than just wake you up.</p>
+<p><span class="annotation" data-annotation-id="anno_026" data-annotation-ids="anno_026">"I've been drinking it everyday twice a day and have completely replaced my energy drinks and coffee with it."</span> - Jamie O.</p>
+<p>Full replacement. That says a lot.</p>
+<p>The starter kit comes with a tumbler alongside the frother, so you've got everything to build a new ritual from day one - no scrambling for accessories.</p>
+<p><strong>One thing to know:</strong> both Mushroom Coffee+ and Matcha+ still contain caffeine. Mushroom Coffee+ ranges from <span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">45mg to 90mg per serving</span> depending on roast, and Matcha+ sits at <span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">40mg per serving</span>. So these are lower-caffeine functional alternatives, not caffeine-free options. That said, reviewers consistently point to the absence of jitters and crashes - and that sustained, clean feeling is the whole point.</p>
+<hr />
+<h2>Which Coffee Alternative Fits Your Wellness Goals?</h2>
+<p>Different goals, different picks. Here's how to think about it.</p>
+<p>If you're caffeine-sensitive or actively easing off coffee, start with the Mild Roast Mushroom Coffee+ at <span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">45mg per serving</span>. Want something closer to a standard cup? The Medium Roast hits 90mg. It's a gentle on-ramp either way.</p>
+<p>Gut health your top priority? Both options are gentle on digestion - <span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">no fillers, no artificial additives, no added sugar, soy, grains, or cocoa</span> - but Mushroom Coffee+'s collagen peptides and low-acidity base are specifically built for digestive comfort. And yes, <span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">all ingredients are third-party tested for heavy metals, mycotoxins, allergens, and molds</span>. Your stomach can relax.</p>
+<p>And if all-day sustained energy matters most to you, Matcha+ and its slow-release caffeine profile may be your best match. That steady drip of focus - without the spike-and-crash cycle - is what keeps people coming back.</p>
+<p>One customer went a full month without their Everyday Dose and could <span class="annotation" data-annotation-id="anno_027" data-annotation-ids="anno_027">"100% tell the difference in my mood and energy levels compared to regular coffee!"</span> - Nicole R. These aren't overnight miracles - they're compounding benefits that quietly become part of your baseline wellness over time.</p>
+<p>Not a bad way to kick off the year.</p>
+<hr />
+<h2>Frequently Asked Questions</h2>
+<p><strong>What's actually in Everyday Dose Mushroom Coffee+?</strong><br />
+Five ingredients, no mystery: <span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">Collagen Peptides, 100% Arabica Coffee, L-Theanine, Organic Chaga Fruiting Body Extract, and Organic Lion's Mane Fruiting Body Extract</span>. That's it. The formula has <span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">no fillers, no artificial additives, no added sugar, soy, grains, or cocoa</span>.</p>
+<p><strong>How much caffeine are we talking about?</strong><br />
+Mushroom Coffee+ comes in at <span class="annotation" data-annotation-id="anno_021" data-annotation-ids="anno_021">45mg per serving for the Mild Roast and 90mg for the Medium Roast</span>. Matcha+ contains <span class="annotation" data-annotation-id="anno_022" data-annotation-ids="anno_022">40mg per serving</span>. Both are lower-caffeine functional alternatives - not caffeine-free.</p>
+<p><strong>Are these safe for sensitive stomachs?</strong><br />
+That's kind of the whole idea. Mushroom Coffee+ uses <span class="annotation" data-annotation-id="anno_023" data-annotation-ids="anno_023">100% Arabica coffee that's mold-free and low acidity</span>, and <span class="annotation" data-annotation-id="anno_024" data-annotation-ids="anno_024">all ingredients are third-party tested for heavy metals, mycotoxins, allergens, and molds</span>. Matcha+ is formulated with the same digestive-comfort mindset.</p>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_028",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_title",
+    "start_index": 0,
+    "stop_index": 102,
+    "text_snippet": "\n# Natural Alternatives to Coffee for Energy and Gut Health: Two Top Picks to Jumpstart Your New Yea...",
+    "description": "Query Echo Title: Title contains core query phrases 'natural alternatives to coffee' + 'energy' + 'gut health' for retrieval fitness",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 297,
+    "stop_index": 336,
+    "text_snippet": "4.8 stars across roughly 99,750 reviews",
+    "description": "Factual claim from company_information",
+    "source_url": "",
+    "evidence_id": "fact_014",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 743,
+    "stop_index": 783,
+    "text_snippet": "45mg (Mild Roast) or 90mg (Medium Roast)",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 786,
+    "stop_index": 823,
+    "text_snippet": "40mg (matcha-based sustained release)",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 850,
+    "stop_index": 936,
+    "text_snippet": "100% Arabica Coffee, Collagen Peptides, L-Theanine, Chaga Extract, Lion's Mane Extract",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 939,
+    "stop_index": 1012,
+    "text_snippet": "Ceremonial Grade Matcha, Lion's Mane, Chaga, Collagen Protein, L-Theanine",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_010",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 1040,
+    "stop_index": 1106,
+    "text_snippet": "Rechargeable frother, dose spoon, breathwork app, wellness booklet",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_015",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 1109,
+    "stop_index": 1184,
+    "text_snippet": "Rechargeable frother, dose spoon, breathwork app, sticker, wellness booklet",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_012",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 1215,
+    "stop_index": 1234,
+    "text_snippet": "$27 (down from $36)",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_013",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 1237,
+    "stop_index": 1272,
+    "text_snippet": "$36 (down from $50) \u2014 $0.84/serving",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_011",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "claim",
+    "start_index": 1769,
+    "stop_index": 1914,
+    "text_snippet": "five clean ingredients: Collagen Peptides, Coffee, L-Theanine, Organic Chaga Fruiting Body Extract, ...",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "claim",
+    "start_index": 1953,
+    "stop_index": 2027,
+    "text_snippet": "no fillers, no artificial additives, no added sugar, soy, grains, or cocoa",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "claim",
+    "start_index": 2050,
+    "stop_index": 2090,
+    "text_snippet": "100% Arabica, mold-free, and low acidity",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_025",
+    "type": "customer_experience",
+    "start_index": 2171,
+    "stop_index": 2329,
+    "text_snippet": "\"I was not having any crashes, no stomach aches, clean energy, focus. I don't think I can ever stop ...",
+    "description": "Customer testimonial by Christian B.",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "FREE Gifts Throughout The Year",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "claim",
+    "start_index": 2791,
+    "stop_index": 2877,
+    "text_snippet": "Everyday Dose Matcha+ is designed to provide all-day energy without crashes or anxiety",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "claim",
+    "start_index": 2921,
+    "stop_index": 2967,
+    "text_snippet": "Ceremonial Grade Matcha sourced from TENZO TEA",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_026",
+    "type": "customer_experience",
+    "start_index": 3068,
+    "stop_index": 3178,
+    "text_snippet": "\"I've been drinking it everyday twice a day and have completely replaced my energy drinks and coffee...",
+    "description": "Customer testimonial by Jamie O.",
+    "source_url": null,
+    "evidence_id": "quote_7",
+    "product_name": "30 Servings + Free Starter Kit + 5 Free To-Go Packets",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "claim",
+    "start_index": 3492,
+    "stop_index": 3516,
+    "text_snippet": "45mg to 90mg per serving",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "claim",
+    "start_index": 3557,
+    "stop_index": 3573,
+    "text_snippet": "40mg per serving",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "claim",
+    "start_index": 4024,
+    "stop_index": 4040,
+    "text_snippet": "45mg per serving",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "claim",
+    "start_index": 4215,
+    "stop_index": 4289,
+    "text_snippet": "no fillers, no artificial additives, no added sugar, soy, grains, or cocoa",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "claim",
+    "start_index": 4409,
+    "stop_index": 4498,
+    "text_snippet": "all ingredients are third-party tested for heavy metals, mycotoxins, allergens, and molds",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_027",
+    "type": "customer_experience",
+    "start_index": 4818,
+    "stop_index": 4901,
+    "text_snippet": "\"100% tell the difference in my mood and energy levels compared to regular coffee!\"",
+    "description": "Customer testimonial by Nicole R.",
+    "source_url": null,
+    "evidence_id": "quote_9",
+    "product_name": "30-Serving Coffee+",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "claim",
+    "start_index": 5199,
+    "stop_index": 5333,
+    "text_snippet": "Collagen Peptides, 100% Arabica Coffee, L-Theanine, Organic Chaga Fruiting Body Extract, and Organic...",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "claim",
+    "start_index": 5362,
+    "stop_index": 5436,
+    "text_snippet": "no fillers, no artificial additives, no added sugar, soy, grains, or cocoa",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_021",
+    "type": "claim",
+    "start_index": 5512,
+    "stop_index": 5577,
+    "text_snippet": "45mg per serving for the Mild Roast and 90mg for the Medium Roast",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_022",
+    "type": "claim",
+    "start_index": 5596,
+    "stop_index": 5612,
+    "text_snippet": "40mg per serving",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_023",
+    "type": "claim",
+    "start_index": 5780,
+    "stop_index": 5832,
+    "text_snippet": "100% Arabica coffee that's mold-free and low acidity",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_024",
+    "type": "claim",
+    "start_index": 5838,
+    "stop_index": 5927,
+    "text_snippet": "all ingredients are third-party tested for heavy metals, mycotoxins, allergens, and molds",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
