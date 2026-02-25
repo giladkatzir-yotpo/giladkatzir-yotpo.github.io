@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1) Article topic / working title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Content Brief</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<h2>1) Article topic / working title</h2>
+<p><strong>Working title:</strong> Best High Impact Sports Bras for Running: Top Picks for Supportive Workouts</p>
+<h2>2) Word count / article type</h2>
+<ul>
+<li>1,500-2,500 words</li>
+<li>Blog Post</li>
+</ul>
+<h2>3) Primary keyword</h2>
+<ul>
+<li><strong>Target query:</strong> ['best high impact sports bras for running', 'top high impact sports bras for running supportive bras']</li>
+</ul>
+<h2>4) Target audience</h2>
+<ul>
+<li>Active women who run or do high-intensity workouts and are looking to find the right supportive sports bra, likely comparing underwire vs. wirefree options and seeking guidance on fit and features to make a confident purchase decision.</li>
+</ul>
+<h2>5) Key points to cover</h2>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">Highlight that both bras are top-rated — the underwire at 4.9 stars and the wirefree at 4.8 stars. The underwire is designed for super high impact activities like running, HIIT, and jumping, while the wirefree is built for medium to high impact sessions including jogging, weight lifting, and pilates.</span></li>
+<li><span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">Describe the underwire bra's smooth underwire that moulds to the body, delivering what customers describe as a 'locked in' feel without a straight-jacket sensation, ideal for serious runners who want maximum bounce reduction.</span></li>
+<li><span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">Explain how the wirefree option delivers high impact support without wire, suiting runners who find underwire uncomfortable — as one reviewer puts it, 'so supportive even without wire.'</span></li>
+<li><span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">Emphasize that both bras feature MotionTech fabric — moisture wicking, quick drying, and anti-microbial — for comfort through sweaty sessions.</span></li>
+<li><span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">Note the inclusive size ranges: the underwire bra spans 8B to 18H, while the wirefree covers 8D to 18H — both designed with fuller busts in mind. Reviewers praise the separation and shape these bras provide for larger cup sizes.</span></li>
+<li><span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">Address that very large, less firm busts may experience some bounce during sprints — one reviewer (Ashy) found layering a light crop top helpful specifically for running, while noting the racerback conversion provided enough hold for all other exercises.</span></li>
+<li><span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">Illustrate versatility features: the underwire's racerback conversion option for tank tops and the wirefree's fun colour range as a standalone piece.</span></li>
+<li><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">Cover how to choose between options based on workout intensity — underwire for maximum hold during sprints and HIIT, wirefree for jogging, strength training, and medium to high impact sessions.</span></li>
+<li><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">Discuss comfort differentiators: for the underwire, reviewers highlight the comfortable moulded fit with no digging, and one reviewer (Ashy) specifically praises the padded straps for relieving shoulder pressure. For the wirefree, reviewers love the soft feel and freedom from wire, with MotionTech fabric keeping things cool and dry.</span></li>
+</ul>
+<h2>6) Reviews to be used</h2>
+<h3>High Impact Underwire Sports Bra</h3>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">"Absolutely love this sports bra. It's incredibly comfortable while still offering great support. The fit is spot on and true to size." - Jasmine (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">"My boobs don't go anywhere. I've worn it to three hot mat pilates classes and it really aced them in the cardio section at the end, locked in for real!" - Grace B. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">"Such a good value sports bra for my Gs! Great support and gives the girls a nice shape which is so hard to find in a supportive sports bra for large boobs." - Jill (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">"This ticks all the boxes — support, high coverage and a clip to convert for tank tops. Love it." - Kirsten Z. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">"It's probably the best support and comfort I've experienced for my situation. I would recommend to big boobie girlies." - Ashy (4-star)</span></li>
+</ul>
+<h3>High Impact Wirefree Sports Bras</h3>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">"I love these sports bras — they hold up the girls! They are super soft and really good material too." - Caroline L. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">"Thankyou for designing bras for big boobs!" - Caroline L. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">"Defies gravity for my 10H heavy breastfeeding boobs. Support is perfect for medium intensity activity." - Chloe D. (4-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">"I'm over underwire and only want wirefree. This one is so supportive even without wire. Helps reduce the bounce so well. LOVE." - Coco (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">"Love the fit, love the style, and love the support." - Tiffany H. (5-star)</span></li>
+</ul>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_000",
+    "type": "customer_experience",
+    "start_index": 2735,
+    "stop_index": 2889,
+    "text_snippet": "\"Absolutely love this sports bra. It's incredibly comfortable while still offering great support. Th...",
+    "description": "Customer testimonial by Jasmine",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "High Impact Underwire Sports Bra",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "customer_experience",
+    "start_index": 2892,
+    "stop_index": 3065,
+    "text_snippet": "\"My boobs don't go anywhere. I've worn it to three hot mat pilates classes and it really aced them i...",
+    "description": "Customer testimonial by Grace B.",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "High Impact Underwire Sports Bra",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "customer_experience",
+    "start_index": 3068,
+    "stop_index": 3241,
+    "text_snippet": "\"Such a good value sports bra for my Gs! Great support and gives the girls a nice shape which is so ...",
+    "description": "Customer testimonial by Jill",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "High Impact Underwire Sports Bra",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "customer_experience",
+    "start_index": 3244,
+    "stop_index": 3363,
+    "text_snippet": "\"This ticks all the boxes \u2014 support, high coverage and a clip to convert for tank tops. Love it.\" - ...",
+    "description": "Customer testimonial by Kirsten Z.",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "High Impact Underwire Sports Bra",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "customer_experience",
+    "start_index": 3366,
+    "stop_index": 3502,
+    "text_snippet": "\"It's probably the best support and comfort I've experienced for my situation. I would recommend to ...",
+    "description": "Customer testimonial by Ashy",
+    "source_url": null,
+    "evidence_id": "quote_4",
+    "product_name": "High Impact Underwire Sports Bra",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "customer_experience",
+    "start_index": 3543,
+    "stop_index": 3668,
+    "text_snippet": "\"I love these sports bras \u2014 they hold up the girls! They are super soft and really good material too...",
+    "description": "Customer testimonial by Jasmine",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "High Impact Underwire Sports Bra",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "customer_experience",
+    "start_index": 3671,
+    "stop_index": 3738,
+    "text_snippet": "\"Thankyou for designing bras for big boobs!\" - Caroline L. (5-star)",
+    "description": "Customer testimonial by Grace B.",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "High Impact Underwire Sports Bra",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "customer_experience",
+    "start_index": 3741,
+    "stop_index": 3865,
+    "text_snippet": "\"Defies gravity for my 10H heavy breastfeeding boobs. Support is perfect for medium intensity activi...",
+    "description": "Customer testimonial by Jill",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "High Impact Underwire Sports Bra",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "customer_experience",
+    "start_index": 3868,
+    "stop_index": 4012,
+    "text_snippet": "\"I'm over underwire and only want wirefree. This one is so supportive even without wire. Helps reduc...",
+    "description": "Customer testimonial by Kirsten Z.",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "High Impact Underwire Sports Bra",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "customer_experience",
+    "start_index": 4015,
+    "stop_index": 4090,
+    "text_snippet": "\"Love the fit, love the style, and love the support.\" - Tiffany H. (5-star)",
+    "description": "Customer testimonial by Ashy",
+    "source_url": null,
+    "evidence_id": "quote_4",
+    "product_name": "High Impact Underwire Sports Bra",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 633,
+    "stop_index": 934,
+    "text_snippet": "Highlight that both bras are top-rated \u2014 the underwire at 4.9 stars and the wirefree at 4.8 stars. T...",
+    "description": "Audience Specific: product_overview",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 937,
+    "stop_index": 1162,
+    "text_snippet": "Describe the underwire bra's smooth underwire that moulds to the body, delivering what customers des...",
+    "description": "Audience Specific: underwire_support",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1165,
+    "stop_index": 1350,
+    "text_snippet": "Explain how the wirefree option delivers high impact support without wire, suiting runners who find ...",
+    "description": "Audience Specific: wirefree_support",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1353,
+    "stop_index": 1495,
+    "text_snippet": "Emphasize that both bras feature MotionTech fabric \u2014 moisture wicking, quick drying, and anti-microb...",
+    "description": "Audience Specific: fabric_technology",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1498,
+    "stop_index": 1726,
+    "text_snippet": "Note the inclusive size ranges: the underwire bra spans 8B to 18H, while the wirefree covers 8D to 1...",
+    "description": "Audience Specific: size_inclusivity",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1729,
+    "stop_index": 1983,
+    "text_snippet": "Address that very large, less firm busts may experience some bounce during sprints \u2014 one reviewer (A...",
+    "description": "Audience Specific: honest_limitations",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1986,
+    "stop_index": 2135,
+    "text_snippet": "Illustrate versatility features: the underwire's racerback conversion option for tank tops and the w...",
+    "description": "Audience Specific: style_versatility",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 2138,
+    "stop_index": 2331,
+    "text_snippet": "Cover how to choose between options based on workout intensity \u2014 underwire for maximum hold during s...",
+    "description": "Audience Specific: decision_guidance",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 2334,
+    "stop_index": 2668,
+    "text_snippet": "Discuss comfort differentiators: for the underwire, reviewers highlight the comfortable moulded fit ...",
+    "description": "Audience Specific: comfort_comparison",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
