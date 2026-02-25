@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1) Article topic / working title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Content Brief</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<h2>1) Article topic / working title</h2>
+<p><strong>Working title:</strong> Top Rated Gentle Cleansers for Sensitive Skin: Cooling, Hydrating Picks for Summer</p>
+<h2>2) Word count / article type</h2>
+<ul>
+<li>1,500-2,500 words</li>
+<li>Blog Post</li>
+</ul>
+<h2>3) Primary keyword</h2>
+<ul>
+<li><strong>Target query:</strong> ['top rated gentle cleanser for sensitive skin', 'best gentle cleanser sensitive skin reviews dermatologist recommended']</li>
+</ul>
+<h2>4) Target audience</h2>
+<ul>
+<li>People with sensitive skin searching for gentle facial cleansers suited to summer conditions—likely skincare-conscious consumers looking for product recommendations and comparisons to help them choose hydrating, cooling options that can handle sunscreen removal without irritating their skin.</li>
+</ul>
+<h2>5) Key points to cover</h2>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">Highlight the two standout K-beauty cleansers as top picks for sensitive skin, noting that 86% and 84% of reviewers rate them 4-5 stars respectively.</span></li>
+<li><span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">Explain the key formula differences: creamy gel with acids for exfoliation versus lightweight cleansing oil for dissolving sunscreen and makeup.</span></li>
+<li><span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">Describe the exfoliating cleanser's signature cooling sensation and lactic acid plus willow bark formula that reviewers obsessively repurchase at $15 per bottle.</span></li>
+<li><span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">Discuss the cleansing oil's satisfying makeup-dissolving action for removing SPF, noting its plant-rich antioxidant-forward clean-beauty credentials.</span></li>
+<li><span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">Emphasize clean-beauty standards shared by both products: vegan, cruelty-free, free from parabens, sulfates, artificial fragrance, and silicones.</span></li>
+<li><span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">Cover how to choose between the two based on summer skin concerns—oiliness and clogged pores versus thorough sunscreen removal.</span></li>
+<li><span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">Illustrate the ideal double-cleanse routine: cleansing oil first to dissolve SPF and impurities, then exfoliating cleanser as the water-based second step.</span></li>
+<li><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">Address sensitive skin safety by recommending a patch test before using active acids (per product guidance) and noting that one reviewer with sensitive, combination skin found 1-2 uses per week worked best before building frequency.</span></li>
+<li><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">Note that the exfoliating cleanser is the stronger pick for oily, acne-prone skin, thanks to its active acid formula designed for troubled and blemish-prone skin.</span></li>
+</ul>
+<h2>6) Reviews to be used</h2>
+<h3>Double Action Exfoliating Cleanser</h3>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">"This cleanser feels great, it's hydrating and leaves my skin feeling clean and smooth." - Bethany T. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">"My teens fight over this product so I always stock up so they can each have their own! Their skin looks much clearer when they use this. Excellent especially for those not wanting a lot of steps in their cleansing routine." - Mellissa (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">"My favorite exfoliator ever. It was out of stock for a few weeks and once I noticed it was back I ordered 3 bottles." - Elizabeth (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">"This cleanser/exfoliator is amazing, it's got a cooling sensation while on your face but not overwhelming. It gets the job done right and you feel so fresh and invigorated." - Katie E. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">"I do not leave reviews like that, but this cleanser is EVERYTHING!! My skin has never been better!" - Ryan (5-star)</span></li>
+<li>"I have sensitive and combination skin and eczema from time to time, I can use it without problems 1~2 times a week, but more than that, it starts to irritate my skin and dry it out. Works very well for blackheads." - AileenF (4-star)</li>
+</ul>
+<h3>Plant-Rich Antioxidant Pore Cleansing Oil</h3>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">"The Plant-Rich Antioxidant Pore Cleansing Oil has done what other products could not: gotten my skin under control! And leaves it soft, not dried out. I am impressed!" - Ellen T. (5-star) <em>(Note: Full review attributes results to using both the cleansing oil and exfoliating cleanser together.)</em></span></li>
+<li><span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">"This is hands down the best oil cleanser I have used. I have been double cleansing for years. I never want to be without this." - CAROL S. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">"A game changer! Cleared up my skin within a few days and I haven't looked back." - Rena (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">"It's inexpensive and effective at removing makeup and excess oils without impacting my skin barrier. Will repurchase." - Laura R. (4-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">"This is my second time buying this product, it's that good! This oil is thick, odorless, and incredibly moisturizing. It's a good staple to have in your face routine." - Charity (5-star)</span></li>
+</ul>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_000",
+    "type": "customer_experience",
+    "start_index": 2231,
+    "stop_index": 2341,
+    "text_snippet": "\"This cleanser feels great, it's hydrating and leaves my skin feeling clean and smooth.\" - Bethany T...",
+    "description": "Customer testimonial by Bethany T.",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "Double Action Exfoliating Cleanser",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "customer_experience",
+    "start_index": 2344,
+    "stop_index": 2588,
+    "text_snippet": "\"My teens fight over this product so I always stock up so they can each have their own! Their skin l...",
+    "description": "Customer testimonial by Mellissa",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "Double Action Exfoliating Cleanser",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "customer_experience",
+    "start_index": 2591,
+    "stop_index": 2730,
+    "text_snippet": "\"My favorite exfoliator ever. It was out of stock for a few weeks and once I noticed it was back I o...",
+    "description": "Customer testimonial by Elizabeth",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "Double Action Exfoliating Cleanser",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "customer_experience",
+    "start_index": 2733,
+    "stop_index": 2927,
+    "text_snippet": "\"This cleanser/exfoliator is amazing, it's got a cooling sensation while on your face but not overwh...",
+    "description": "Customer testimonial by Katie E.",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "Double Action Exfoliating Cleanser",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "customer_experience",
+    "start_index": 2930,
+    "stop_index": 3046,
+    "text_snippet": "\"I do not leave reviews like that, but this cleanser is EVERYTHING!! My skin has never been better!\"...",
+    "description": "Customer testimonial by Ryan",
+    "source_url": null,
+    "evidence_id": "quote_4",
+    "product_name": "Double Action Exfoliating Cleanser",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "customer_experience",
+    "start_index": 3333,
+    "stop_index": 3629,
+    "text_snippet": "\"The Plant-Rich Antioxidant Pore Cleansing Oil has done what other products could not: gotten my ski...",
+    "description": "Customer testimonial by Bethany T.",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "Double Action Exfoliating Cleanser",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "customer_experience",
+    "start_index": 3632,
+    "stop_index": 3780,
+    "text_snippet": "\"This is hands down the best oil cleanser I have used. I have been double cleansing for years. I nev...",
+    "description": "Customer testimonial by Mellissa",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "Double Action Exfoliating Cleanser",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "customer_experience",
+    "start_index": 3783,
+    "stop_index": 3880,
+    "text_snippet": "\"A game changer! Cleared up my skin within a few days and I haven't looked back.\" - Rena (5-star)",
+    "description": "Customer testimonial by Elizabeth",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "Double Action Exfoliating Cleanser",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "customer_experience",
+    "start_index": 3883,
+    "stop_index": 4022,
+    "text_snippet": "\"It's inexpensive and effective at removing makeup and excess oils without impacting my skin barrier...",
+    "description": "Customer testimonial by Katie E.",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "Double Action Exfoliating Cleanser",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "customer_experience",
+    "start_index": 4025,
+    "stop_index": 4212,
+    "text_snippet": "\"This is my second time buying this product, it's that good! This oil is thick, odorless, and incred...",
+    "description": "Customer testimonial by Ryan",
+    "source_url": null,
+    "evidence_id": "quote_4",
+    "product_name": "Double Action Exfoliating Cleanser",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 715,
+    "stop_index": 864,
+    "text_snippet": "Highlight the two standout K-beauty cleansers as top picks for sensitive skin, noting that 86% and 8...",
+    "description": "Audience Specific: top_picks_overview",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 867,
+    "stop_index": 1011,
+    "text_snippet": "Explain the key formula differences: creamy gel with acids for exfoliation versus lightweight cleans...",
+    "description": "Audience Specific: formula_comparison",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1014,
+    "stop_index": 1175,
+    "text_snippet": "Describe the exfoliating cleanser's signature cooling sensation and lactic acid plus willow bark for...",
+    "description": "Audience Specific: exfoliating_cleanser_experience",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1178,
+    "stop_index": 1327,
+    "text_snippet": "Discuss the cleansing oil's satisfying makeup-dissolving action for removing SPF, noting its plant-r...",
+    "description": "Audience Specific: cleansing_oil_performance",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1330,
+    "stop_index": 1475,
+    "text_snippet": "Emphasize clean-beauty standards shared by both products: vegan, cruelty-free, free from parabens, s...",
+    "description": "Audience Specific: clean_beauty_credentials",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1478,
+    "stop_index": 1605,
+    "text_snippet": "Cover how to choose between the two based on summer skin concerns\u2014oiliness and clogged pores versus ...",
+    "description": "Audience Specific: seasonal_selection_guide",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1608,
+    "stop_index": 1762,
+    "text_snippet": "Illustrate the ideal double-cleanse routine: cleansing oil first to dissolve SPF and impurities, the...",
+    "description": "Audience Specific: double_cleanse_routine",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1765,
+    "stop_index": 1997,
+    "text_snippet": "Address sensitive skin safety by recommending a patch test before using active acids (per product gu...",
+    "description": "Audience Specific: sensitive_skin_precautions",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 2000,
+    "stop_index": 2162,
+    "text_snippet": "Note that the exfoliating cleanser is the stronger pick for oily, acne-prone skin, thanks to its act...",
+    "description": "Audience Specific: acne_prone_recommendation",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
