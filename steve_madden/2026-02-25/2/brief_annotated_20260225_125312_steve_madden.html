@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1) Article topic / working title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Content Brief</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<h2>1) Article topic / working title</h2>
+<p><strong>Working title:</strong> Comfortable Ankle Boots for Walking: Two Everyday Picks That Go the Distance</p>
+<h2>2) Word count / article type</h2>
+<ul>
+<li>1,500-2,500 words</li>
+<li>Blog Post</li>
+</ul>
+<h2>3) Primary keyword</h2>
+<ul>
+<li><strong>Target query:</strong> ['best comfortable ankle boots for walking reviews comfortable ankle boots walking', 'ankle boots for walking comfort what to look for and top models']</li>
+</ul>
+<h2>4) Target audience</h2>
+<ul>
+<li>This content is for everyday consumers—likely women—searching for comfortable, stylish ankle boots they can wear for extended walking, who are in an active buying mindset and want practical guidance comparing specific options to make a confident purchase decision.</li>
+</ul>
+<h2>5) Key points to cover</h2>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">Highlight the HUTCHH20's exceptional durability, citing the owner who bought it in May 2022 and reports perfect condition three years later.</span></li>
+<li><span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">Emphasize all-day walking comfort, noting one HUTCHH20 owner clocks 10+ hours at work and walking the city with no discomfort.</span></li>
+<li><span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">Describe the DUSTY's buttery-soft leather requiring zero break-in, with reviewers reporting immediate out-of-box comfort on first wear.</span></li>
+<li><span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">Address sizing nuances for each style: HUTCHH20 sizing feedback is mixed—some reviewers find them true to size while others recommend sizing up a half size if they feel snug—so trying your usual size first is wise. The DUSTY officially recommends sizing down a half size if you're between sizes.</span></li>
+<li><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">Explain the HUTCHH20's water-resistant textile and vegan leather upper, noting one reviewer has worn them through all weather for several years.</span></li>
+<li><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">Illustrate each boot's ideal use case: HUTCHH20 for rainy-day commutes and city walking (pairs well with casual and dressed-up outfits), DUSTY for polished office-to-dinner transitions (pairs perfectly with wide-leg jeans, straight-leg denim, dress pants, and skirts).</span></li>
+<li><span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">Highlight how each boot can simplify a wardrobe—multiple DUSTY owners say it replaced other boots entirely, and HUTCHH20 owners describe it as a staple that goes with almost everything in their closet.</span></li>
+<li><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">Note the strong review consensus: HUTCHH20 averages 4.6 stars (91% rated 4–5) across 22 reviews; DUSTY averages 4.8 across 291 reviews.</span></li>
+</ul>
+<h2>6) Reviews to be used</h2>
+<h3>HUTCHH20 Black</h3>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">"Bought this boot in May 2022. It's lasted me until now (June 2025) and is in perfect condition. Absolutely love it. Goes with almost everything in my closet — casual or dress up." - Alana (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">"These are a great pair of boots. They're super comfortable and go with most of my outfits! A must have!" - Bindu P. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">"So many compliments. I wear for 10+ hours at work and walking in the city and no issues." - Tanner M. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">"Super cute booties, sleek and stylish and perfect for the Pacific Northwest fall &amp; winter." - Candace (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">"Very true to size. Super cute — you can dress up or dress down. And super comfortable." - Ana J. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">"LOVE THESE SHOES!!!! Had them for years and they hold up so good!!! Definitely a staple shoe." - Hannah S. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">"I've had these now for several years and they've held up great! They are so comfy and easy to wipe off as well. I've worn them in all weather and for hours. Definitely recommend!" - Julia (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">"Excellent quality. Shoes are water-resistant and stylish." - Faith (5-star)</span></li>
+</ul>
+<h3>DUSTY Black Leather</h3>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">"This boot is perfect and just what I was looking for to wear with wide leg jeans. It is sleek and narrow with the perfect low heel." - Katherine B. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">"I have been looking all over for a pair of ankle boots that are fashionable yet functional and can be worn to transition between work events and evening. I love them and my feet are thanking me." - Simone P. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">"Oh, how I love these boots! The leather is buttery soft and the shoes are so stylish and comfortable. I've been looking for awhile because I wanted low heels and also for them to be dressy enough to wear with nice slacks. These fit the bill perfectly." - Laura F. (5-star)</span></li>
+<li><span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">"The most comfortable boot I have ever owned. Nice rich chocolate suede. Love the trendy elongated square toe." - Sandy D. (5-star) <em>[Note: reviewer describes a suede colorway; comfort and style observations apply across variants]</em></span></li>
+<li><span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">"Gorgeous style delivered in a rich, chocolate brown suede and low heel that looks cool but is also comfortable to walk in. These will look equally great with pants, jeans, or skirts." - Janice K. (5-star) <em>[Note: reviewer describes a suede colorway; comfort and versatility observations apply across variants]</em></span></li>
+</ul>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_000",
+    "type": "customer_experience",
+    "start_index": 2225,
+    "stop_index": 2422,
+    "text_snippet": "\"Bought this boot in May 2022. It's lasted me until now (June 2025) and is in perfect condition. Abs...",
+    "description": "Customer testimonial by Alana",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "HUTCHH20 Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "customer_experience",
+    "start_index": 2425,
+    "stop_index": 2550,
+    "text_snippet": "\"These are a great pair of boots. They're super comfortable and go with most of my outfits! A must h...",
+    "description": "Customer testimonial by Bindu P.",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "HUTCHH20 Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "customer_experience",
+    "start_index": 2553,
+    "stop_index": 2664,
+    "text_snippet": "\"So many compliments. I wear for 10+ hours at work and walking in the city and no issues.\" - Tanner ...",
+    "description": "Customer testimonial by Tanner M.",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "HUTCHH20 Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "customer_experience",
+    "start_index": 2667,
+    "stop_index": 2778,
+    "text_snippet": "\"Super cute booties, sleek and stylish and perfect for the Pacific Northwest fall & winter.\" - Canda...",
+    "description": "Customer testimonial by Candace",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "HUTCHH20 Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "customer_experience",
+    "start_index": 2781,
+    "stop_index": 2887,
+    "text_snippet": "\"Very true to size. Super cute \u2014 you can dress up or dress down. And super comfortable.\" - Ana J. (5...",
+    "description": "Customer testimonial by Ana J.",
+    "source_url": null,
+    "evidence_id": "quote_4",
+    "product_name": "HUTCHH20 Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "customer_experience",
+    "start_index": 2890,
+    "stop_index": 3006,
+    "text_snippet": "\"LOVE THESE SHOES!!!! Had them for years and they hold up so good!!! Definitely a staple shoe.\" - Ha...",
+    "description": "Customer testimonial by Hannah S.",
+    "source_url": null,
+    "evidence_id": "quote_5",
+    "product_name": "HUTCHH20 Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "customer_experience",
+    "start_index": 3009,
+    "stop_index": 3206,
+    "text_snippet": "\"I've had these now for several years and they've held up great! They are so comfy and easy to wipe ...",
+    "description": "Customer testimonial by Julia",
+    "source_url": null,
+    "evidence_id": "quote_7",
+    "product_name": "HUTCHH20 Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "customer_experience",
+    "start_index": 3209,
+    "stop_index": 3285,
+    "text_snippet": "\"Excellent quality. Shoes are water-resistant and stylish.\" - Faith (5-star)",
+    "description": "Customer testimonial by Faith",
+    "source_url": null,
+    "evidence_id": "quote_8",
+    "product_name": "HUTCHH20 Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "customer_experience",
+    "start_index": 3313,
+    "stop_index": 3470,
+    "text_snippet": "\"This boot is perfect and just what I was looking for to wear with wide leg jeans. It is sleek and n...",
+    "description": "Customer testimonial by Alana",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "HUTCHH20 Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "customer_experience",
+    "start_index": 3473,
+    "stop_index": 3690,
+    "text_snippet": "\"I have been looking all over for a pair of ankle boots that are fashionable yet functional and can ...",
+    "description": "Customer testimonial by Bindu P.",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "HUTCHH20 Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "customer_experience",
+    "start_index": 3693,
+    "stop_index": 3966,
+    "text_snippet": "\"Oh, how I love these boots! The leather is buttery soft and the shoes are so stylish and comfortabl...",
+    "description": "Customer testimonial by Tanner M.",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "HUTCHH20 Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "customer_experience",
+    "start_index": 3969,
+    "stop_index": 4200,
+    "text_snippet": "\"The most comfortable boot I have ever owned. Nice rich chocolate suede. Love the trendy elongated s...",
+    "description": "Customer testimonial by Candace",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "HUTCHH20 Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "customer_experience",
+    "start_index": 4203,
+    "stop_index": 4514,
+    "text_snippet": "\"Gorgeous style delivered in a rich, chocolate brown suede and low heel that looks cool but is also ...",
+    "description": "Customer testimonial by Ana J.",
+    "source_url": null,
+    "evidence_id": "quote_4",
+    "product_name": "HUTCHH20 Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 711,
+    "stop_index": 851,
+    "text_snippet": "Highlight the HUTCHH20's exceptional durability, citing the owner who bought it in May 2022 and repo...",
+    "description": "Audience Specific: durability",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 854,
+    "stop_index": 980,
+    "text_snippet": "Emphasize all-day walking comfort, noting one HUTCHH20 owner clocks 10+ hours at work and walking th...",
+    "description": "Audience Specific: all_day_comfort",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 983,
+    "stop_index": 1118,
+    "text_snippet": "Describe the DUSTY's buttery-soft leather requiring zero break-in, with reviewers reporting immediat...",
+    "description": "Audience Specific: leather_quality",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1121,
+    "stop_index": 1416,
+    "text_snippet": "Address sizing nuances for each style: HUTCHH20 sizing feedback is mixed\u2014some reviewers find them tr...",
+    "description": "Audience Specific: fit_sizing",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1419,
+    "stop_index": 1563,
+    "text_snippet": "Explain the HUTCHH20's water-resistant textile and vegan leather upper, noting one reviewer has worn...",
+    "description": "Audience Specific: weather_resistance",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1566,
+    "stop_index": 1834,
+    "text_snippet": "Illustrate each boot's ideal use case: HUTCHH20 for rainy-day commutes and city walking (pairs well ...",
+    "description": "Audience Specific: use_case_comparison",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 1837,
+    "stop_index": 2038,
+    "text_snippet": "Highlight how each boot can simplify a wardrobe\u2014multiple DUSTY owners say it replaced other boots en...",
+    "description": "Audience Specific: style_versatility",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 2041,
+    "stop_index": 2176,
+    "text_snippet": "Note the strong review consensus: HUTCHH20 averages 4.6 stars (91% rated 4\u20135) across 22 reviews; DUS...",
+    "description": "Audience Specific: ratings_social_proof",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
