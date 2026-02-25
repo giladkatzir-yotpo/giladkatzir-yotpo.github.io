@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Blog Content</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<p><span class="annotation" data-annotation-id="anno_024" data-annotation-ids="anno_024"></p>
+<h1>Top Rated Gentle Cleansers for Sensitive Skin: A K-Beauty Double Cleanse Routine for Summer</h1>
+<p></span></p>
+<p><strong>In Short:</strong> The two top rated gentle cleansers for sensitive skin this summer? The Klog Double Action Exfoliating Cleanser and The Klog Plant-Rich Antioxidant Pore Cleansing Oil.</p>
+<p>They're both <span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">vegan and cruelty-free</span>, free of common irritants, and built for a K-beauty double cleanse that melts away sunscreen and impurities without wrecking your skin barrier. The move: cleansing oil first to dissolve SPF, exfoliating cleanser second for that polished finish.</p>
+<hr />
+<h2>Why the K-Beauty Double Cleanse Works for Sensitive Skin in Summer</h2>
+<p>Here's the thing - one cleanser in summer rarely cuts it. The K-beauty double cleanse pairs an oil-based cleanser (to dissolve sunscreen and oil-based grime) with a water-based cleanser (to sweep away whatever's left). Two gentle steps instead of one aggressive scrub. You get a thorough clean <span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">without disturbing the skin's protective barrier</span>.</p>
+<p>No tightness. No stripping. Just clean.</p>
+<hr />
+<h2>Best Gentle Cleansers for Sensitive Skin at a Glance</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Double Action Exfoliating Cleanser</strong></th>
+<th><strong>Plant-Rich Antioxidant Pore Cleansing Oil</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Format</strong></td>
+<td>Creamy gel</td>
+<td>Cleansing oil</td>
+</tr>
+<tr>
+<td><strong>Key Actives</strong></td>
+<td><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">Lactic acid + willow bark</span></td>
+<td><span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">12 antioxidant-rich botanical extracts</span></td>
+</tr>
+<tr>
+<td><strong>Best Summer Use</strong></td>
+<td>Morning refresh + exfoliation</td>
+<td>Evening makeup/sunscreen melt</td>
+</tr>
+<tr>
+<td><strong>Rating</strong></td>
+<td>4.5 stars (77 reviews, 86% rated 4–5★)</td>
+<td>4.4 stars (88 reviews, 84% rated 4–5★)</td>
+</tr>
+<tr>
+<td><strong>Price</strong></td>
+<td><span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">$15.00</span></td>
+<td><span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">$17.00</span></td>
+</tr>
+</tbody>
+</table>
+<p>Both are <span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">vegan and cruelty-free</span> and <span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">formulated without artificial fragrance, color, parabens, sulfates, mineral oil, alcohol, and silicones</span>.</p>
+<hr />
+<h2>The Cooling Summer Reset: Double Action Exfoliating Cleanser</h2>
+<p>Picture this: it's 90 degrees, your face feels like it's melting, and you need a reset. Enter The Klog Double Action Exfoliating Cleanser - <span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">a creamy gel formula that produces a rich lather</span> and <span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">delivers an instant cooling sensation to the skin</span>.</p>
+<p><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">"This cleanser/exfoliator is amazing, it's got a cooling sensation while on your face but not overwhelming. It gets the job done right and you feel so fresh and invigorated."</span> - Katie E.</p>
+<p>So, what does that mean for your skin? <strong>The active ingredients make the difference.</strong> <span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">Lactic acid and willow bark exfoliate daily impurities and excess oil</span> while keeping things gentle enough that entire families are fighting over it:</p>
+<p><span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">"My teens fight over this product so I always stock up so they can each have their own! Their skin looks much clearer when they use this."</span> - Mellissa.</p>
+<p>And the kind of cleanser people stockpile? That tells you something. <span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">"My favorite exfoliator ever. It was out of stock for a few weeks and once I noticed it was back I ordered 3 bottles."</span> - Elizabeth.</p>
+<hr />
+<h2>Your Double-Cleanse First Step: Plant-Rich Antioxidant Pore Cleansing Oil</h2>
+<p>Every good double cleanse starts here. The Plant-Rich Antioxidant Pore Cleansing Oil <span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">gently dissolves impurities, leaving skin refreshed and comfortably clean</span>. Think of it as the heavy lifter that somehow feels effortless.</p>
+<p><span class="annotation" data-annotation-id="anno_021" data-annotation-ids="anno_021">"The pore-cleansing oil makes it look like it melts the makeup off of your face as you're washing it. The results are almost identical whether you remove makeup first or not."</span> - Carrie.</p>
+<p>The good news? <span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">The Plant-Rich Antioxidant Pore Cleansing Oil doesn't strip the skin or clog pores</span>. Ellen T. put it best: <span class="annotation" data-annotation-id="anno_022" data-annotation-ids="anno_022">"The Plant-Rich Antioxidant Pore Cleansing Oil has done what other products could not: gotten my skin under control! And leaves it soft, not dried out. I am impressed!"</span></p>
+<p><span class="annotation" data-annotation-id="anno_023" data-annotation-ids="anno_023">"I re-ordered for my double cleanse routine. This works really well for my sensitive acne-prone skin. This is something I look forward to at the end of every day."</span> - Susan L.</p>
+<p>One honest note: if you have very reactive skin, ease in gradually rather than diving into daily use. A patch test is always a smart move with any new product. Your skin will thank you for the patience.</p>
+<hr />
+<h2>How to Choose the Right Gentle Cleanser for Summer</h2>
+<p>Whether you're dealing with clogged pores or just need to get that SPF off at night, here's how to think about it.</p>
+<p>If your skin runs oily and congested in the heat, reach for the exfoliating cleanser - its gentle exfoliating actives tackle dullness and clogged pores. Wearing sunscreen daily (and you should be)? The cleansing oil is a non-negotiable evening first step to dissolve SPF and makeup.</p>
+<p>For the full K-beauty double cleanse experience, use both - oil cleanser first, exfoliating cleanser second. The whole routine takes under three minutes. (Seriously.) And if you're prone to breakouts, the exfoliating cleanser is a great fit: <span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">The exfoliating cleanser is suitable for all skin types, especially those with troubled or blemish-prone skin</span>.</p>
+<hr />
+<h2>Summer Gentle Cleanser FAQs</h2>
+<p><strong>What makes these top rated gentle cleansers good for sensitive skin?</strong><br />
+It comes down to what's <em>not</em> in them. Both The Klog Double Action Exfoliating Cleanser and The Klog Plant-Rich Antioxidant Pore Cleansing Oil are <span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">formulated without artificial fragrance, parabens, sulfates, mineral oil, alcohol, and silicones</span>. They cleanse <span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">without disturbing the skin's protective barrier</span> and are <span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">vegan and cruelty-free</span>. Clean ingredients, clean conscience.</p>
+<p><strong>Can I use the exfoliating cleanser daily with sensitive skin?</strong><br />
+Plenty of reviewers do - and many love it as a daily staple. That said, if your skin runs very reactive, consider starting slowly and building up. One reviewer with sensitive skin and eczema found that one to two times per week worked best for her. <span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">A patch test before first use is advised</span>.</p>
+<p><strong>How do these two cleansers work together in a double cleanse?</strong><br />
+Oil first, gel second. The Plant-Rich Antioxidant Pore Cleansing Oil dissolves sunscreen and makeup in step one, then the Double Action Exfoliating Cleanser follows as a cooling, exfoliating second cleanse. That's the classic K-beauty double-cleanse method - and it's a game-changer once you try it.</p>
+<hr />
+<p>Ready to build your summer double-cleanse ritual? Check out The Klog Double Action Exfoliating Cleanser and The Klog Plant-Rich Antioxidant Pore Cleansing Oil, available now at Soko Glam.</p>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_024",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_title",
+    "start_index": 0,
+    "stop_index": 95,
+    "text_snippet": "\n# Top Rated Gentle Cleansers for Sensitive Skin: A K-Beauty Double Cleanse Routine for Summer\n",
+    "description": "Query Echo Title: H1 contains core query phrase 'top rated gentle cleansers for sensitive skin' plus K-beauty double cleanse for summer context",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 293,
+    "stop_index": 315,
+    "text_snippet": "vegan and cruelty-free",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 933,
+    "stop_index": 981,
+    "text_snippet": "without disturbing the skin's protective barrier",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 1261,
+    "stop_index": 1286,
+    "text_snippet": "Lactic acid + willow bark",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 1289,
+    "stop_index": 1327,
+    "text_snippet": "12 antioxidant-rich botanical extracts",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 1529,
+    "stop_index": 1535,
+    "text_snippet": "$15.00",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 1538,
+    "stop_index": 1544,
+    "text_snippet": "$17.00",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 1558,
+    "stop_index": 1580,
+    "text_snippet": "vegan and cruelty-free",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 1585,
+    "stop_index": 1688,
+    "text_snippet": "formulated without artificial fragrance, color, parabens, sulfates, mineral oil, alcohol, and silico...",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 1902,
+    "stop_index": 1950,
+    "text_snippet": "a creamy gel formula that produces a rich lather",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "claim",
+    "start_index": 1955,
+    "stop_index": 2004,
+    "text_snippet": "delivers an instant cooling sensation to the skin",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "customer_experience",
+    "start_index": 2007,
+    "stop_index": 2181,
+    "text_snippet": "\"This cleanser/exfoliator is amazing, it's got a cooling sensation while on your face but not overwh...",
+    "description": "Customer testimonial by Katie E.",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "Double Action Exfoliating Cleanser",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "claim",
+    "start_index": 2281,
+    "stop_index": 2350,
+    "text_snippet": "Lactic acid and willow bark exfoliate daily impurities and excess oil",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "customer_experience",
+    "start_index": 2430,
+    "stop_index": 2568,
+    "text_snippet": "\"My teens fight over this product so I always stock up so they can each have their own! Their skin l...",
+    "description": "Customer testimonial by Mellissa",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "Double Action Exfoliating Cleanser",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "customer_experience",
+    "start_index": 2651,
+    "stop_index": 2769,
+    "text_snippet": "\"My favorite exfoliator ever. It was out of stock for a few weeks and once I noticed it was back I o...",
+    "description": "Customer testimonial by Elizabeth",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "Double Action Exfoliating Cleanser",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "claim",
+    "start_index": 2954,
+    "stop_index": 3027,
+    "text_snippet": "gently dissolves impurities, leaving skin refreshed and comfortably clean",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_021",
+    "type": "customer_experience",
+    "start_index": 3093,
+    "stop_index": 3268,
+    "text_snippet": "\"The pore-cleansing oil makes it look like it melts the makeup off of your face as you're washing it...",
+    "description": "Customer testimonial by Carrie",
+    "source_url": null,
+    "evidence_id": "quote_34",
+    "product_name": "Plant-Rich Antioxidant Pore Cleansing Oil",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "claim",
+    "start_index": 3295,
+    "stop_index": 3377,
+    "text_snippet": "The Plant-Rich Antioxidant Pore Cleansing Oil doesn't strip the skin or clog pores",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_022",
+    "type": "customer_experience",
+    "start_index": 3401,
+    "stop_index": 3569,
+    "text_snippet": "\"The Plant-Rich Antioxidant Pore Cleansing Oil has done what other products could not: gotten my ski...",
+    "description": "Customer testimonial by Ellen T.",
+    "source_url": null,
+    "evidence_id": "quote_21",
+    "product_name": "Plant-Rich Antioxidant Pore Cleansing Oil",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_023",
+    "type": "customer_experience",
+    "start_index": 3571,
+    "stop_index": 3734,
+    "text_snippet": "\"I re-ordered for my double cleanse routine. This works really well for my sensitive acne-prone skin...",
+    "description": "Customer testimonial by Susan L.",
+    "source_url": null,
+    "evidence_id": "quote_32",
+    "product_name": "Plant-Rich Antioxidant Pore Cleansing Oil",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "claim",
+    "start_index": 4655,
+    "stop_index": 4764,
+    "text_snippet": "The exfoliating cleanser is suitable for all skin types, especially those with troubled or blemish-p...",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "claim",
+    "start_index": 5026,
+    "stop_index": 5122,
+    "text_snippet": "formulated without artificial fragrance, parabens, sulfates, mineral oil, alcohol, and silicones",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "claim",
+    "start_index": 5137,
+    "stop_index": 5185,
+    "text_snippet": "without disturbing the skin's protective barrier",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "claim",
+    "start_index": 5194,
+    "stop_index": 5216,
+    "text_snippet": "vegan and cruelty-free",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "claim",
+    "start_index": 5572,
+    "stop_index": 5612,
+    "text_snippet": "A patch test before first use is advised",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_010",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
