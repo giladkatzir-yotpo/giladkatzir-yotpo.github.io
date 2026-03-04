@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gentle Face Cleanser and Makeup Remover for Sensitive Skin: Beekman 1802 Cleansing Gel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Content Brief</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<h1>Gentle Face Cleanser and Makeup Remover for Sensitive Skin: Beekman 1802 Cleansing Gel</h1>
+<p><strong>Target Query:</strong> gentle face cleanser and makeup remover for sensitive skin<br />
+<strong>Article Type:</strong> product_spotlight<br />
+<strong>Editorial Angle:</strong> Problem / Solution — Starts from a specific reader pain point and positions the product as the definitive answer — the reader's problem is the editorial frame.<br />
+<strong>Word Range:</strong> 1500–2500<br />
+<strong>Audience:</strong> People interested in Gentle Face Cleanser and Makeup Remover for Sensitive Skin: Beekman 1802 Cleansing Gel</p>
+<hr />
+<!-- id:sec_0 -->
+
+<p><em>Immediately answer the target query with a concise summary of what the product is, who it's for, and the core problem it solves.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><!-- kp:0 --><span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000"><strong>In Short:</strong> The Beekman 1802 Cleansing Gel &amp; Makeup Remover is a goat milk-powered, jelly-textured cleanser that removes makeup and cleanses in one step without drying or irritating sensitive skin. Leaping Bunny certified, made in the USA, and rated 4.9 stars across 247 reviews — it's the gentle face cleanser sensitive-skin owners keep repurchasing.</span><!-- /kp --></li>
+</ul>
+<p><strong>Supporting Facts:</strong></p>
+<ul>
+<li><!-- fact_id:fact_001 -->Milk Froth is a 2-in-1 Cleansing Gel &amp; Makeup Remover that double cleanses in one step, removing both makeup and impurities.<!-- /fact --></li>
+<li><!-- fact_id:fact_002 -->The product is clinically proven to remove 100% of impurities without irritation.<!-- /fact --></li>
+</ul>
+<hr />
+<p><span class="annotation" data-annotation-id="anno_022" data-annotation-ids="anno_022">## How the Beekman 1802 Cleansing Gel Actually Solves It <!-- id:sec_1 --></span></p>
+<p><em>Show the specific product attributes — goat milk formula, jelly texture, one-step design — that directly address the clean-vs-comfortable trade-off, grounded only in evidence.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><!-- kp:0 -->OWNS: Formula and texture — the soft jelly/gel consistency foams lightly without stripping, and goat milk provides nourishment so skin feels clean AND soft afterward (32 reviewers specifically noted the clean-and-soft outcome).<!-- /kp --></li>
+<li><!-- kp:1 -->OWNS: One-step simplification — 17 reviewers confirmed effective makeup removal in a single product, eliminating the need for separate eye makeup remover, facial cleanser, and micellar water.<!-- /kp --></li>
+<li><!-- kp:2 -->Inline quote from Kim B. describing the solution moment: 'It melts away makeup so gently but still leaves my skin feeling clean, calm, and soft... No tightness, no redness, just a fresh, nourished feel every time.'<!-- /kp --></li>
+<li><!-- kp:3 -->A little goes a long way — the concentrated formula means a small amount covers the full face, which owners consistently highlight as a practical benefit.<!-- /kp --></li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><!-- quote_id:quote_1 --><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">"It melts away makeup so gently but still leaves my skin feeling clean, calm, and soft. The texture is so light and fluffy, and the goat milk in here makes it perfect for my sensitive, dry skin. No tightness, no redness, just a fresh, nourished feel every time." — Kim B. (5★)</span><!-- /quote --></p>
+</blockquote>
+<hr />
+<h2>Why Most Cleansers Force You to Choose Between Clean and Comfortable <!-- id:sec_2 --> <!-- editorial_angle:personality --></h2>
+<p><em>Name the core pain point — sensitive-skin owners cycle through cleansers that either strip skin dry or leave makeup behind — using real reviewer language to make the reader feel understood.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><!-- kp:0 -->Frame the universal frustration: you find a cleanser that actually removes makeup, but it leaves your skin tight, red, or stinging — especially around the eyes. Or you find something gentle enough, but it barely takes off sunscreen, let alone a full face of makeup.<!-- /kp --></li>
+<li><!-- kp:1 -->Use Elaine D.'s language about trying 'many, many cleansers' that bother her very sensitive eyes to ground the problem in real experience — this is a search that people have been on for years, not a casual purchase.<!-- /kp --></li>
+<li><!-- kp:2 -->Note that at least one reviewer found a previous gentle option was discontinued, leaving them searching again — the cycle of finding and losing a product that works is part of the frustration.<!-- /kp --></li>
+<li><!-- kp:3 -->Conversational aside: If your bathroom cabinet looks like a cleanser graveyard, you already know the problem.<!-- /kp --></li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><!-- quote_id:quote_0 --><span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">"This is the best cleanser EVER! I have tried many, many cleansers and this one is my favorite. I love it because it doesn't bother my very sensitive eyes like most do. It takes off all of my makeup and sunscreen. I love the soft jelly like consistency that doesn't dry out my skin. It's my absolute favorite cleanser!" — Elaine D. (5★)</span><!-- /quote --></p>
+</blockquote>
+<hr />
+<h2>What Owners Who Struggled with Sensitive Skin Say <!-- id:sec_3 --> <!-- editorial_angle:trade_off --></h2>
+<p><em>Let real reviewers who had the exact same problem validate the solution. Weave in review statistics as trust signals and include one honest limitation.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><!-- kp:0 -->Stephanie B. describes going from a 2-3 product nightly routine to one step: 'This one-stop shot is gentle enough and clean enough to handle all three. It makes my skin thankful and glowing, along with my wallet!'<!-- /kp --></li>
+<li><!-- kp:1 -->A reviewer with very sensitive skin calls it 'amazing,' reinforcing the pattern across the product's 4.9-star average and 97% 4-5 star rating from 247 reviews.<!-- /kp --></li>
+<li><!-- kp:2 -->Narrative thread: reviewers consistently describe ending a long search — words like 'best ever,' 'finally found,' and 'forever repurchase' appear repeatedly, suggesting this solves a problem people had given up on.<!-- /kp --></li>
+<li><!-- kp:3 -->Honest limitation woven into prose: a small number of reviewers note the gel may not fully remove heavy or waterproof eye makeup like mascara without extra effort, and one reviewer found it slightly less hydrating than a discontinued alternative — so those with very heavy eye looks may still want a dedicated eye remover as a first step.<!-- /kp --></li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><!-- quote_id:quote_8 --><span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">"I no longer have to go through 2-3 products at night to clean my eye makeup, facial makeup, and cleanse. This one-stop shot is gentle enough and clean enough to handle all three. It makes my skin thankful and glowing, along with my wallet!" — Stephanie B. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_14 --><span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">"I have very sensitive skin, this stuff is amazing. It feels so nice on my face when washing. My skin feels soft after, and helps with dry areas. 10 out of 10 recommended!" — Amber F. (5★)</span><!-- /quote --></p>
+</blockquote>
+<hr />
+<h2>Before You Buy: What to Know About the Cleansing Gel <!-- id:sec_4 --></h2>
+<p><em>Practical advisory details — usage tips, certifications, and what to expect — framed as helpful guidance rather than a product page.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><!-- kp:0 -->Usage tip from reviewers: use a small amount — the concentrated formula means a pea-sized drop foams up to cover the full face. Rushing the application can leave traces of heavier makeup, so massage gently for 30-60 seconds.<!-- /kp --></li>
+<li><!-- kp:1 -->Certifications and sourcing: Leaping Bunny certified (never tested on animals, including raw ingredients), 100% made in the USA, and the packaging is recyclable.<!-- /kp --></li>
+<li><!-- kp:2 -->Beekman 1802 offers personalized 1-on-1 skincare consultations with a licensed Esthetician, which can help if you're unsure whether this cleanser fits your specific skin type or routine.<!-- /kp --></li>
+<li><!-- kp:3 --><span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">Best for: daily cleansing and light-to-moderate makeup removal on sensitive, dry, or reactive skin. If you wear very heavy waterproof eye makeup daily, consider pairing with a targeted eye remover.</span><!-- /kp --></li>
+</ul>
+<p><strong>Supporting Facts:</strong></p>
+<ul>
+<li><!-- fact_id:fact_001 -->Milk Froth is a 2-in-1 Cleansing Gel &amp; Makeup Remover that double cleanses in one step, removing both makeup and impurities.<!-- /fact --></li>
+<li><!-- fact_id:fact_002 -->The product is clinically proven to remove 100% of impurities without irritation.<!-- /fact --></li>
+<li><!-- fact_id:fact_005 -->Contains golden sea moss (Chondrus Crispus) extract that replenishes essential minerals with every wash.<!-- /fact --></li>
+</ul>
+<hr />
+<p><span class="annotation" data-annotation-id="anno_023" data-annotation-ids="anno_023">## Frequently Asked Questions About the Beekman 1802 Cleansing Gel &amp; Makeup Remover <!-- id:sec_5 --></span></p>
+<p><em>Summarize the article's key points in scannable Q&amp;A format, recapping the most important takeaways for quick reference.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><!-- kp:0 -->Q: Is the Beekman 1802 Cleansing Gel a good gentle face cleanser for sensitive skin? A: Yes — it's formulated with goat milk and a soft jelly texture that cleanses without causing tightness, redness, or dryness. It carries a 4.9-star average across 247 reviews, with 97% of reviewers rating it 4 or 5 stars, and sensitive-skin owners consistently describe it as the best cleanser they've found.<!-- /kp --></li>
+<li><!-- kp:1 -->Q: Can it really remove makeup and cleanse in one step? A: For most makeup routines, yes. Customers report it melts away foundation, sunscreen, and everyday eye makeup effectively, replacing multiple products. However, very heavy or waterproof mascara may need a bit of extra effort or a dedicated eye remover first.<!-- /kp --></li>
+<li><!-- kp:2 -->Q: Is the Cleansing Gel cruelty-free and made in the USA? A: Yes on both counts. All Beekman 1802 products are Leaping Bunny certified — never tested on animals, including raw ingredients — and 100% made in the USA.<!-- /kp --></li>
+</ul>
+<p><strong>Supporting Facts:</strong></p>
+<ul>
+<li><!-- fact_id:fact_002 -->The product is clinically proven to remove 100% of impurities without irritation.<!-- /fact --></li>
+</ul>
+<hr />
+<h2>Quote Bank <!-- id:quote_bank --></h2>
+<p><em>Spare quotes available for use in the blog. Remove any you don't want included.</em></p>
+<blockquote>
+<p><!-- quote_id:quote_2 --><span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">"This cleanser can melt off full faces of makeup in seconds while still making my face feel clean and NEVER dry. That is truly some magic! I will forever repurchase!" — Emily R. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_3 --><span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">"A little goes a long way. I love how clean and soft skin is after using this. It froths up beautifully and rinses off so easily. Best of all my skin feels amazingly clean without getting dry or tight." — Melissa B. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_4 --><span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">"I finally found the perfect cleanser, and this is it! This cleanser is a soft gel, and only a tiny amount is needed to go a long way. It creates a nice foam on my face but never dries it out. Wash it off, and your skin is left feeling fresh and clean." — Beth O. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_5 --><span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">"I have multiples of this facial cleanser so I'm never out. I love it for my sensitive skin." — Elizabeth S. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_6 --><span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">"Very concentrated. Only need a little. Leaves skin smooth and clean." — Phyllis P. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_7 --><span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">"After a long day being outside and using this at night, it makes my face feel very clean and smooth. Does a great job of hydrating the skin as well." — David B. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_9 --><span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">"This is the BEST face wash I have ever used. It gets all your makeup off and leaves your skin feeling super hydrated." — Kat (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_10 --><span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">"This is one of the best cleansers I've ever used. It requires a modicum of product that blooms into wonderful suds that keep my skin clean and fresh. It feels great, and is light on my skin." — Dan T. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_11 --><span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">"I have been using this for 3 weeks and my face feels and looks 100% better. My pores have shrunk and my face is so soft and smooth." — Norma (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_12 --><span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">"I have tried many facial cleansers that claim to remove makeup. This one actually does." — Susan G. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_13 --><span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">"The Micellar Milk Froth is the best. It's so silky and calming on my skin. It's been the best during the summer after a workout and it's wonderful at night as well. Highly recommended." — Gwendolyn (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_15 --><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">"This is the best face cleanser that I've ever used. It lathers well and does a good job without stripping or drying out my skin. I'm impressed and will continue to buy." — Diane L. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_16 --><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">"I have tried many cleansers and this is the best hands down. I love the scent and the consistency." — Joyce B. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_18 --><span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">"My skin is mature and very sensitive. Beekman products perform beautifully and are very soothing." — Judith (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:highlight_1 --><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">"It effortlessly removes makeup and daily impurities, leaving my face feeling fresh, soft, and hydrated." — Aiaiai</span><!-- /quote --></p>
+<p><!-- quote_id:highlight_2 --><span class="annotation" data-annotation-id="anno_021" data-annotation-ids="anno_021">"I absolutely love this facial cleaner as it removes makeup nicely." — Jacqueline W.</span><!-- /quote --></p>
+</blockquote>
+<hr />
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 722,
+    "stop_index": 1075,
+    "text_snippet": "**In Short:** The Beekman 1802 Cleansing Gel & Makeup Remover is a goat milk-powered, jelly-textured...",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 7343,
+    "stop_index": 7540,
+    "text_snippet": "Best for: daily cleansing and light-to-moderate makeup removal on sensitive, dry, or reactive skin. ...",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "customer_experience",
+    "start_index": 2627,
+    "stop_index": 2903,
+    "text_snippet": "\"It melts away makeup so gently but still leaves my skin feeling clean, calm, and soft. The texture ...",
+    "description": "Customer testimonial by Kim B.",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "customer_experience",
+    "start_index": 4206,
+    "stop_index": 4542,
+    "text_snippet": "\"This is the best cleanser EVER! I have tried many, many cleansers and this one is my favorite. I lo...",
+    "description": "Customer testimonial by Elaine D.",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "customer_experience",
+    "start_index": 5929,
+    "stop_index": 6190,
+    "text_snippet": "\"I no longer have to go through 2-3 products at night to clean my eye makeup, facial makeup, and cle...",
+    "description": "Customer testimonial by Stephanie B.",
+    "source_url": null,
+    "evidence_id": "quote_8",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "customer_experience",
+    "start_index": 6235,
+    "stop_index": 6423,
+    "text_snippet": "\"I have very sensitive skin, this stuff is amazing. It feels so nice on my face when washing. My ski...",
+    "description": "Customer testimonial by Amber F.",
+    "source_url": null,
+    "evidence_id": "quote_14",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "customer_experience",
+    "start_index": 9571,
+    "stop_index": 9753,
+    "text_snippet": "\"This cleanser can melt off full faces of makeup in seconds while still making my face feel clean an...",
+    "description": "Customer testimonial by Emily R.",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "customer_experience",
+    "start_index": 9797,
+    "stop_index": 10017,
+    "text_snippet": "\"A little goes a long way. I love how clean and soft skin is after using this. It froths up beautifu...",
+    "description": "Customer testimonial by Melissa B.",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "customer_experience",
+    "start_index": 10061,
+    "stop_index": 10329,
+    "text_snippet": "\"I finally found the perfect cleanser, and this is it! This cleanser is a soft gel, and only a tiny ...",
+    "description": "Customer testimonial by Beth O.",
+    "source_url": null,
+    "evidence_id": "quote_4",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "customer_experience",
+    "start_index": 10373,
+    "stop_index": 10486,
+    "text_snippet": "\"I have multiples of this facial cleanser so I'm never out. I love it for my sensitive skin.\" \u2014 Eliz...",
+    "description": "Customer testimonial by Elizabeth S.",
+    "source_url": null,
+    "evidence_id": "quote_5",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "customer_experience",
+    "start_index": 10530,
+    "stop_index": 10618,
+    "text_snippet": "\"Very concentrated. Only need a little. Leaves skin smooth and clean.\" \u2014 Phyllis P. (5\u2605)",
+    "description": "Customer testimonial by Phyllis P.",
+    "source_url": null,
+    "evidence_id": "quote_6",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "customer_experience",
+    "start_index": 10662,
+    "stop_index": 10828,
+    "text_snippet": "\"After a long day being outside and using this at night, it makes my face feel very clean and smooth...",
+    "description": "Customer testimonial by David B.",
+    "source_url": null,
+    "evidence_id": "quote_7",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "customer_experience",
+    "start_index": 10872,
+    "stop_index": 11002,
+    "text_snippet": "\"This is the BEST face wash I have ever used. It gets all your makeup off and leaves your skin feeli...",
+    "description": "Customer testimonial by Kat",
+    "source_url": null,
+    "evidence_id": "quote_9",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "customer_experience",
+    "start_index": 11047,
+    "stop_index": 11253,
+    "text_snippet": "\"This is one of the best cleansers I've ever used. It requires a modicum of product that blooms into...",
+    "description": "Customer testimonial by Dan T.",
+    "source_url": null,
+    "evidence_id": "quote_10",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "customer_experience",
+    "start_index": 11298,
+    "stop_index": 11444,
+    "text_snippet": "\"I have been using this for 3 weeks and my face feels and looks 100% better. My pores have shrunk an...",
+    "description": "Customer testimonial by Norma",
+    "source_url": null,
+    "evidence_id": "quote_11",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "customer_experience",
+    "start_index": 11489,
+    "stop_index": 11594,
+    "text_snippet": "\"I have tried many facial cleansers that claim to remove makeup. This one actually does.\" \u2014 Susan G....",
+    "description": "Customer testimonial by Susan G.",
+    "source_url": null,
+    "evidence_id": "quote_12",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "customer_experience",
+    "start_index": 11639,
+    "stop_index": 11842,
+    "text_snippet": "\"The Micellar Milk Froth is the best. It's so silky and calming on my skin. It's been the best durin...",
+    "description": "Customer testimonial by Gwendolyn",
+    "source_url": null,
+    "evidence_id": "quote_13",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "customer_experience",
+    "start_index": 11887,
+    "stop_index": 12073,
+    "text_snippet": "\"This is the best face cleanser that I've ever used. It lathers well and does a good job without str...",
+    "description": "Customer testimonial by Diane L.",
+    "source_url": null,
+    "evidence_id": "quote_15",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "customer_experience",
+    "start_index": 12118,
+    "stop_index": 12234,
+    "text_snippet": "\"I have tried many cleansers and this is the best hands down. I love the scent and the consistency.\"...",
+    "description": "Customer testimonial by Joyce B.",
+    "source_url": null,
+    "evidence_id": "quote_16",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "customer_experience",
+    "start_index": 12279,
+    "stop_index": 12392,
+    "text_snippet": "\"My skin is mature and very sensitive. Beekman products perform beautifully and are very soothing.\" ...",
+    "description": "Customer testimonial by Judith",
+    "source_url": null,
+    "evidence_id": "quote_18",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "customer_experience",
+    "start_index": 12440,
+    "stop_index": 12554,
+    "text_snippet": "\"It effortlessly removes makeup and daily impurities, leaving my face feeling fresh, soft, and hydra...",
+    "description": "Customer testimonial by Aiaiai",
+    "source_url": null,
+    "evidence_id": "highlight_1",
+    "product_name": null,
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_021",
+    "type": "customer_experience",
+    "start_index": 12602,
+    "stop_index": 12686,
+    "text_snippet": "\"I absolutely love this facial cleaner as it removes makeup nicely.\" \u2014 Jacqueline W.",
+    "description": "Customer testimonial by Jacqueline W.",
+    "source_url": null,
+    "evidence_id": "highlight_2",
+    "product_name": null,
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_022",
+    "type": "editorial",
+    "editorial_subtype": "table_format",
+    "start_index": 1407,
+    "stop_index": 1481,
+    "text_snippet": "## How the Beekman 1802 Cleansing Gel Actually Solves It <!-- id:sec_1 -->",
+    "description": "Table Format: Comparison table early for structured data extraction",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Table Format"
+  },
+  {
+    "annotation_id": "anno_023",
+    "type": "editorial",
+    "editorial_subtype": "faq",
+    "start_index": 8018,
+    "stop_index": 8119,
+    "text_snippet": "## Frequently Asked Questions About the Beekman 1802 Cleansing Gel & Makeup Remover <!-- id:sec_5 --...",
+    "description": "Faq: FAQ section for generative search targeting",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "FAQ"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Blog Content</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<p><span class="annotation" data-annotation-id="anno_028" data-annotation-ids="anno_028"></p>
+<h1>Gentle Face Cleanser and Makeup Remover for Sensitive Skin: Beekman 1802 Cleansing Gel</h1>
+<p></span></p>
+<p><strong>In Short:</strong> The Beekman 1802 Milk Froth Cleansing Gel &amp; Makeup Remover is a goat milk-powered, jelly-textured cleanser that removes makeup and cleanses in one step - no drying, no irritating, no drama for sensitive skin.</p>
+<p><span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">Clinically proven to remove 100% of impurities without irritation</span>, this <span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">2-in-1 Cleansing Gel &amp; Makeup Remover double cleanses in one step, removing both makeup and impurities</span>. <span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">Leaping Bunny certified and never tested on animals, including raw ingredients</span>. <span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">100% made in the USA</span>. Rated 4.9 stars across 247 reviews - the Beekman 1802 Milk Froth is the gentle face cleanser sensitive-skin owners keep repurchasing.</p>
+<hr />
+<p><span class="annotation" data-annotation-id="anno_029" data-annotation-ids="anno_029"></p>
+<h2>Why Most Cleansers Force You to Choose Between Clean and Comfortable</h2>
+<p></span></p>
+<p><span class="annotation" data-annotation-id="anno_030" data-annotation-ids="anno_030"><br />
+Why does every cleanser that actually dissolves a full face of makeup leave your skin feeling tight, red, or stinging - especially around the eyes? And why does every gentle option barely handle sunscreen, let alone foundation and mascara?</span></p>
+<p>(If your bathroom cabinet looks like a cleanser graveyard, you already know.)</p>
+<p>For most people with sensitive skin, this isn't a casual purchase. It's a years-long search - cycling through product after product, hoping to find something that works on both fronts: effective <em>and</em> comfortable. Reviewer after reviewer describes exactly that journey. At least one person found that a previous gentle cleanser they loved was discontinued, sending them right back to square one.</p>
+<p>That's exhausting.</p>
+<p>Elaine D., a Beekman 1802 customer, put it in terms that will sound painfully familiar:</p>
+<p><span class="annotation" data-annotation-id="anno_022" data-annotation-ids="anno_022">"This is the best cleanser EVER! I have tried many, many cleansers and this one is my favorite. I love it because it doesn't bother my very sensitive eyes like most do. It takes off all of my makeup and sunscreen. I love the soft jelly like consistency that doesn't dry out my skin. It's my absolute favorite cleanser!" - Elaine D. (5★)</span></p>
+<p>"Many, many cleansers." That's the language of someone who had nearly given up. Elaine's experience - especially the sensitive-eye detail - gets at why this problem is so stubbornly hard to crack. Traditional surfactants strong enough to dissolve makeup tend to be the very ingredients that leave sensitive skin stripped and irritated.</p>
+<p>So what changes the equation?</p>
+<hr />
+<h2>How the Beekman 1802 Cleansing Gel Actually Solves It</h2>
+<p>Forget the clean-vs-comfortable trade-off. The Beekman 1802 Milk Froth Cleansing Gel starts with a fundamentally different formula. Instead of traditional harsh surfactants, <span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">the cleanser uses a signature blend of goat milk saponins and millions of micelles as gentler alternatives to harsh surfactants</span>. These naturally derived cleansing agents attract and lift away makeup and daily impurities without stripping the skin's moisture barrier.</p>
+<p>Then there's the texture.</p>
+<p>That soft jelly-to-gel consistency foams lightly when you massage it in - enough to feel like it's actually working, without the squeaky, tight aftermath harsh cleansers leave behind. <span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">Golden sea moss (Chondrus Crispus) extract replenishes essential minerals with every wash</span>, and <span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">key ingredients including goat milk, sodium hyaluronate, apricot kernel oil, birch bark extract, and butterfly pea flower extract</span> work together to nourish and hydrate while the cleanser does its job.</p>
+<p><strong>The result?</strong> Skin that feels clean <em>and</em> soft afterward. Not marketing language - 32 reviewers specifically called out that clean-and-soft outcome, and <span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">97% of users saw softer skin after use</span>.</p>
+<p>Kim B. described exactly what that moment feels like:</p>
+<p><span class="annotation" data-annotation-id="anno_023" data-annotation-ids="anno_023">"It melts away makeup so gently but still leaves my skin feeling clean, calm, and soft. The texture is so light and fluffy, and the goat milk in here makes it perfect for my sensitive, dry skin. No tightness, no redness, just a fresh, nourished feel every time." - Kim B. (5★)</span></p>
+<p>Beyond the formula, there's the simplification factor. <strong>Seventeen reviewers confirmed that the Milk Froth effectively removed their makeup in a single product</strong> - no separate eye makeup remover, no facial cleanser, no micellar water. For sensitive skin especially, fewer products means fewer potential irritants and less friction on already reactive skin.</p>
+<p>A little goes a long way, too. The concentrated formula means a pea-sized drop foams up to cover the full face. Owners keep calling this out as a practical win that makes the product last.</p>
+<p><span class="annotation" data-annotation-id="anno_024" data-annotation-ids="anno_024">"A little goes a long way. I love how clean and soft skin is after using this. It froths up beautifully and rinses off so easily. Best of all my skin feels amazingly clean without getting dry or tight." - Melissa B. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">9 out of 10 people prefer Milk Froth over micellar water</span> - which tracks when a single gel replaces the cotton pad, the bottle of micellar water, and the follow-up cleanser.</p>
+<hr />
+<h2>What Owners Who Struggled with Sensitive Skin Say</h2>
+<p>The most telling pattern in the Milk Froth reviews isn't any single rave. It's the language of relief. "Best ever." "Finally found." "Forever repurchase." These phrases appear again and again across the product's 4.9-star average and 97% four-to-five-star rating from 247 reviews. These aren't people mildly pleased with a cleanser. These are people who'd been trying to solve a problem for years.</p>
+<p>Stephanie B. captures the before-and-after perfectly:</p>
+<p><span class="annotation" data-annotation-id="anno_025" data-annotation-ids="anno_025">"I no longer have to go through 2-3 products at night to clean my eye makeup, facial makeup, and cleanse. This one-stop shot is gentle enough and clean enough to handle all three. It makes my skin thankful and glowing, along with my wallet!" - Stephanie B. (5★)</span></p>
+<p>Going from a multi-product nightly routine to a single step isn't just more convenient - for sensitive skin, it means less handling, less rubbing, and fewer chances for irritation. (Stephanie's mention of her wallet? A nice bonus.)</p>
+<p><span class="annotation" data-annotation-id="anno_026" data-annotation-ids="anno_026">"I have very sensitive skin, this stuff is amazing. It feels so nice on my face when washing. My skin feels soft after, and helps with dry areas. 10 out of 10 recommended!" - Amber F. (5★)</span></p>
+<p>The loyalty runs deep. <span class="annotation" data-annotation-id="anno_027" data-annotation-ids="anno_027">"I have multiples of this facial cleanser so I'm never out. I love it for my sensitive skin." - Elizabeth S. (5★)</span> When someone starts <em>stockpiling</em> a cleanser, that's not casual satisfaction - that's the kind of trust that only comes from finally ending a long search.</p>
+<p><strong>One honest note:</strong> No product is perfect for every situation. A small number of reviewers found that the Milk Froth may not fully remove very heavy or waterproof eye makeup - particularly stubborn mascara - without a bit of extra effort.</p>
+<p>One reviewer found it slightly less hydrating than a discontinued alternative they'd loved. If you wear dramatic, waterproof eye looks daily, pairing the Milk Froth with a dedicated eye makeup remover as a first step may be the smartest approach. For everyday makeup and sunscreen? Reviewers overwhelmingly say one step does the job beautifully.</p>
+<hr />
+<h2>Before You Buy: What to Know About the Beekman 1802 Cleansing Gel</h2>
+<p><strong>How to use it for best results:</strong> Start small - a pea-sized drop of the concentrated formula foams up to cover the entire face. The key? Don't rush. Massage gently for 30 to 60 seconds, especially around areas with heavier makeup. Rushing the application can leave traces behind, but giving the <span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">micelles and goat milk saponins</span> time to work makes a noticeable difference.</p>
+<p><strong>Certifications and sourcing:</strong> <span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">All Beekman 1802 products are Leaping Bunny certified - never tested on animals, including raw ingredients</span>. <span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">100% made in the USA</span>. <span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">Packaging for facial products is recyclable</span>.</p>
+<p><strong>Not sure if the Milk Froth fits your routine?</strong> <span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">Beekman 1802 offers personalized 1-on-1 skincare consultations with a licensed Esthetician</span> - a real human who can help determine whether this cleanser works for your specific skin type, concerns, and existing routine. Especially valuable if you've been burned (sometimes literally) by products that weren't right for your skin.</p>
+<p><strong>Best for:</strong> <span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">Formulated for sensitive skin and suitable for all skin types, with non-drying and non-irritating properties</span>, the Milk Froth is ideal for daily cleansing and light-to-moderate makeup removal on sensitive, dry, or reactive skin. Wearing very heavy waterproof eye makeup daily? Consider pairing it with a targeted eye remover for that first step.</p>
+<p>Oh, and one more thing: <span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">the Milk Froth was named Best Makeup Remover in Marie Claire's 2025 Skin &amp; Hair Awards</span> - an independent stamp on what hundreds of reviewers have already been saying.</p>
+<hr />
+<h2>Frequently Asked Questions About the Beekman 1802 Cleansing Gel &amp; Makeup Remover</h2>
+<p><strong>Is the Beekman 1802 Cleansing Gel a good gentle face cleanser for sensitive skin?</strong><br />
+Absolutely. <span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">The Beekman 1802 Cleansing Gel is formulated for sensitive skin and suitable for all skin types, with non-drying and non-irritating properties</span>.</p>
+<p>That soft jelly texture cleanses without causing tightness, redness, or dryness because <span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">the formula uses goat milk saponins and millions of micelles as gentler alternatives to traditional harsh surfactants</span>. With a 4.9-star average across 247 reviews and 97% of reviewers rating it 4 or 5 stars, sensitive-skin owners consistently describe it as the best cleanser they've found after years of searching.</p>
+<p><strong>Can the Milk Froth really remove makeup and cleanse in one step?</strong><br />
+For most makeup routines, yes. <span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">Milk Froth is a 2-in-1 Cleansing Gel &amp; Makeup Remover that double cleanses in one step, removing both makeup and impurities</span>.</p>
+<p>Customers report it melts away foundation, sunscreen, and everyday eye makeup effectively - replacing multiple products in one go. <span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">The product is clinically proven to remove 100% of impurities without irritation</span>.</p>
+<p><strong>Is the Beekman 1802 Cleansing Gel cruelty-free and made in the USA?</strong><br />
+Yes and yes. <span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">All Beekman 1802 products are Leaping Bunny certified - never tested on animals, including raw ingredients</span> - and <span class="annotation" data-annotation-id="anno_021" data-annotation-ids="anno_021">the Beekman 1802 Cleansing Gel is 100% made in the USA</span>.</p>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_028",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_title",
+    "start_index": 0,
+    "stop_index": 90,
+    "text_snippet": "\n# Gentle Face Cleanser and Makeup Remover for Sensitive Skin: Beekman 1802 Cleansing Gel\n",
+    "description": "Query Echo Title: Title echoes target query 'gentle face cleanser and makeup remover for sensitive skin'",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 318,
+    "stop_index": 383,
+    "text_snippet": "Clinically proven to remove 100% of impurities without irritation",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 390,
+    "stop_index": 492,
+    "text_snippet": "2-in-1 Cleansing Gel & Makeup Remover double cleanses in one step, removing both makeup and impuriti...",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 494,
+    "stop_index": 572,
+    "text_snippet": "Leaping Bunny certified and never tested on animals, including raw ingredients",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 574,
+    "stop_index": 594,
+    "text_snippet": "100% made in the USA",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_029",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_heading",
+    "start_index": 736,
+    "stop_index": 809,
+    "text_snippet": "\n## Why Most Cleansers Force You to Choose Between Clean and Comfortable\n",
+    "description": "Query Echo Heading: H2 echoes 'why most cleansers' pain point related to gentle face cleanser search intent",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_030",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 811,
+    "stop_index": 1051,
+    "text_snippet": "\nWhy does every cleanser that actually dissolves a full face of makeup leave your skin feeling tight...",
+    "description": "Audience Specific: Opening with the universal frustration sensitive-skin owners face \u2014 directly addressing reader pain point",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_022",
+    "type": "customer_experience",
+    "start_index": 1641,
+    "stop_index": 1977,
+    "text_snippet": "\"This is the best cleanser EVER! I have tried many, many cleansers and this one is my favorite. I lo...",
+    "description": "Customer testimonial by Elaine D.",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 2585,
+    "stop_index": 2712,
+    "text_snippet": "the cleanser uses a signature blend of goat milk saponins and millions of micelles as gentler altern...",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 3065,
+    "stop_index": 3154,
+    "text_snippet": "Golden sea moss (Chondrus Crispus) extract replenishes essential minerals with every wash",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 3160,
+    "stop_index": 3289,
+    "text_snippet": "key ingredients including goat milk, sodium hyaluronate, apricot kernel oil, birch bark extract, and...",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_010",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 3516,
+    "stop_index": 3554,
+    "text_snippet": "97% of users saw softer skin after use",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_023",
+    "type": "customer_experience",
+    "start_index": 3613,
+    "stop_index": 3889,
+    "text_snippet": "\"It melts away makeup so gently but still leaves my skin feeling clean, calm, and soft. The texture ...",
+    "description": "Customer testimonial by Kim B.",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_024",
+    "type": "customer_experience",
+    "start_index": 4440,
+    "stop_index": 4660,
+    "text_snippet": "\"A little goes a long way. I love how clean and soft skin is after using this. It froths up beautifu...",
+    "description": "Customer testimonial by Melissa B.",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 4662,
+    "stop_index": 4718,
+    "text_snippet": "9 out of 10 people prefer Milk Froth over micellar water",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_025",
+    "type": "customer_experience",
+    "start_index": 5350,
+    "stop_index": 5611,
+    "text_snippet": "\"I no longer have to go through 2-3 products at night to clean my eye makeup, facial makeup, and cle...",
+    "description": "Customer testimonial by Stephanie B.",
+    "source_url": null,
+    "evidence_id": "quote_8",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_026",
+    "type": "customer_experience",
+    "start_index": 5847,
+    "stop_index": 6035,
+    "text_snippet": "\"I have very sensitive skin, this stuff is amazing. It feels so nice on my face when washing. My ski...",
+    "description": "Customer testimonial by Amber F.",
+    "source_url": null,
+    "evidence_id": "quote_14",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_027",
+    "type": "customer_experience",
+    "start_index": 6061,
+    "stop_index": 6174,
+    "text_snippet": "\"I have multiples of this facial cleanser so I'm never out. I love it for my sensitive skin.\" \u2014 Eliz...",
+    "description": "Customer testimonial by Elizabeth S.",
+    "source_url": null,
+    "evidence_id": "quote_5",
+    "product_name": "Cleansing Gel & Makeup Remover",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "claim",
+    "start_index": 7294,
+    "stop_index": 7325,
+    "text_snippet": "micelles and goat milk saponins",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "claim",
+    "start_index": 7404,
+    "stop_index": 7510,
+    "text_snippet": "All Beekman 1802 products are Leaping Bunny certified \u2014 never tested on animals, including raw ingre...",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "claim",
+    "start_index": 7512,
+    "stop_index": 7532,
+    "text_snippet": "100% made in the USA",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "claim",
+    "start_index": 7534,
+    "stop_index": 7577,
+    "text_snippet": "Packaging for facial products is recyclable",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "claim",
+    "start_index": 7630,
+    "stop_index": 7720,
+    "text_snippet": "Beekman 1802 offers personalized 1-on-1 skincare consultations with a licensed Esthetician",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "claim",
+    "start_index": 7973,
+    "stop_index": 8081,
+    "text_snippet": "Formulated for sensitive skin and suitable for all skin types, with non-drying and non-irritating pr...",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "claim",
+    "start_index": 8344,
+    "stop_index": 8430,
+    "text_snippet": "the Milk Froth was named Best Makeup Remover in Marie Claire's 2025 Skin & Hair Awards",
+    "description": "Factual claim from company_information",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "claim",
+    "start_index": 8700,
+    "stop_index": 8842,
+    "text_snippet": "The Beekman 1802 Cleansing Gel is formulated for sensitive skin and suitable for all skin types, wit...",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "claim",
+    "start_index": 8933,
+    "stop_index": 9050,
+    "text_snippet": "the formula uses goat milk saponins and millions of micelles as gentler alternatives to traditional ...",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "claim",
+    "start_index": 9352,
+    "stop_index": 9475,
+    "text_snippet": "Milk Froth is a 2-in-1 Cleansing Gel & Makeup Remover that double cleanses in one step, removing bot...",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "claim",
+    "start_index": 9609,
+    "stop_index": 9689,
+    "text_snippet": "The product is clinically proven to remove 100% of impurities without irritation",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "claim",
+    "start_index": 9777,
+    "stop_index": 9883,
+    "text_snippet": "All Beekman 1802 products are Leaping Bunny certified \u2014 never tested on animals, including raw ingre...",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_021",
+    "type": "claim",
+    "start_index": 9890,
+    "stop_index": 9944,
+    "text_snippet": "the Beekman 1802 Cleansing Gel is 100% made in the USA",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
