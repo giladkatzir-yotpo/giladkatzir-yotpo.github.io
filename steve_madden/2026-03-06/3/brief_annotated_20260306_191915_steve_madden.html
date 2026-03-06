@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dressy Sandals for Summer Parties: 2 Standout Picks to Dance the Night Away</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Content Brief</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<h1>Dressy Sandals for Summer Parties: 2 Standout Picks to Dance the Night Away</h1>
+<p><strong>Target Query:</strong> dressy sandals for summer parties 2026<br />
+<strong>Article Type:</strong> product_spotlight<br />
+<strong>Word Range:</strong> 1500–2500<br />
+<strong>Audience:</strong> People interested in Dressy Sandals for Summer Parties: 2 Standout Picks to Dance the Night Away</p>
+<hr />
+<!-- id:sec_0 -->
+
+<p><em>Immediately answer the query 'dressy sandals for summer parties' with a concise guide summary that communicates scope, occasion, and product count.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><!-- kp:0 --><strong>In Short:</strong> This summer party guide features 2 curated dressy sandal picks for occasion shoppers. From the classy, all-night-comfortable Carrson heel to the head-turning glamour of the Tamara Gold flat, here's everything you need to step into your next warm-weather celebration with confidence.<!-- /kp --></li>
+</ul>
+<hr />
+<p><span class="annotation" data-annotation-id="anno_027" data-annotation-ids="anno_027">## Best Dressy Sandals for Summer Parties at a Glance <!-- id:sec_1 --></span></p>
+<p><em>Quick-reference comparison table for decisive readers to scan both picks side by side, covering style, heel height, comfort profile, and best-for occasion context.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><!-- kp:0 -->Markdown table comparing the Carrson Sandal and Tamara Gold across key dimensions: style vibe (classy block heel vs. glamorous embellished flat), comfort profile (praised for standing and socializing vs. all-day flat comfort), best summer party scenario (cocktail parties and rooftop events vs. garden parties and casual celebrations), and review snapshot (3.9 avg across 220 reviews vs. 5.0 avg across 6 reviews)<!-- /kp --></li>
+<li><!-- kp:1 -->Brief note that both sandals are praised for versatility — pairing with dresses, skirts, and even jeans — so either works across multiple summer events<!-- /kp --></li>
+</ul>
+<hr />
+<h2>The Classy Heel That Lasts All Night: Carrson Sandal <!-- id:sec_2 --> <!-- editorial_angle:personality --></h2>
+<p><em>Deep product entry for the Carrson Sandal, owning the concepts of repeat-purchase loyalty and heel comfort for long events. This is the section that explains why this sandal is a party staple.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><!-- kp:0 -->OWNS CONCEPT: Repeat-purchase devotion — one reviewer is on her 4th pair across multiple colors, calling them 'totally worth every penny,' which speaks to how reliably this sandal delivers for events (quote_5)<!-- /kp --></li>
+<li><!-- kp:1 -->Classy, polished aesthetic that draws compliments — reviewers describe buying a second pair specifically because the Carrson 'helps polish any outfit' and consistently earns compliments at events (quote_4)<!-- /kp --></li>
+<li><!-- kp:2 -->OWNS CONCEPT: Heel comfort for long wear — with 20 customer mentions of comfort during standing and socializing, the Carrson is built for those summer parties where you're on your feet mingling for hours (insight_2)<!-- /kp --></li>
+<li><!-- kp:3 -->Wry editorial aside: When someone is on their 4th, 5th, or 6th pair of the same sandal, that's not shopping — that's a relationship. The Carrson has that kind of hold on people.<!-- /kp --></li>
+<li><!-- kp:4 -->True-to-size fit noted across many reviews, reducing the guesswork for occasion shoppers buying for a specific event (insight_0 referenced briefly)<!-- /kp --></li>
+<li><!-- kp:5 -->Pairs with skirts, dresses, and jeans — a versatile party sandal that works whether the dress code says 'cocktail' or 'cute sundress'<!-- /kp --></li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><!-- quote_id:quote_5 --><span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">"This is my 4th pair of the Carrson heel. I have them in black and silver black and this is my second time buying the nude. So comfortable and they last so long. Totally worth every penny." — Teresa P. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_4 --><span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">"I just purchased my second pair of these shoes! They just look classy and help polish any outfit! I always get compliments when I wear these shoes out!" — Jessica F. (5★)</span><!-- /quote --></p>
+</blockquote>
+<hr />
+<h2>When You Want to Shine: Tamara Gold <!-- id:sec_3 --> <!-- editorial_angle:trade_off --></h2>
+<p><em>Deep product entry for the Tamara Gold, owning the concepts of statement glamour and flat-sandal comfort as a dressy alternative. Includes honest trade-off about durability concerns.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><!-- kp:0 -->OWNS CONCEPT: Head-turning glamour in a flat — gold aesthetic and jewel embellishments make this the statement piece for summer parties where you want to look festive without a heel, with reviewers noting they receive 'so many compliments' (Tamara quote_0 referenced via brand loyalty quote_16 for multi-purchase context)<!-- /kp --></li>
+<li><!-- kp:1 -->Comfort and chicness combined — reviewers describe feeling 'fancy enough to go out in flats' with the Tamara elevating outfits effortlessly, making it ideal for garden parties, beach receptions, or venues with uneven ground<!-- /kp --></li>
+<li><!-- kp:2 -->OWNS CONCEPT: Honest durability trade-off — despite being loved for style and comfort, one reviewer noted the bottom started to peel and a jewel fell off, so this sandal is best treated as a dazzling occasion piece rather than an everyday workhorse (insight from Tamara durability concern)<!-- /kp --></li>
+<li><!-- kp:3 -->With a 0.5-inch heel height and a price point under $60, the Tamara Gold is an accessible way to add sparkle to a summer party lineup<!-- /kp --></li>
+<li><!-- kp:4 -->Perfect for the occasion shopper who wants a memorable, photo-ready sandal for a specific celebration<!-- /kp --></li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><!-- quote_id:quote_16 --><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">"I love this brand, I've bought numerous things over the years. ICON!" — Chasity L. (5★)</span><!-- /quote --></p>
+</blockquote>
+<hr />
+<h2>How to Choose the Right Dressy Sandal for Your Summer Party <!-- id:sec_4 --></h2>
+<p><em>Selection guidance helping readers match the right sandal to their specific party context — occasion formality, outfit coordination, comfort needs, and versatility across summer events.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><!-- kp:0 -->Occasion type matters: a rooftop cocktail party or wedding reception calls for the elevated polish of a block heel like the Carrson, while a garden party, brunch celebration, or beach-adjacent event pairs naturally with the embellished flat comfort of the Tamara Gold<!-- /kp --></li>
+<li><!-- kp:1 -->Outfit coordination tip: both sandals pair with dresses, skirts, and even dressed-up jeans — one reviewer notes the Carrson is 'the perfect heel for a night out or for brunch with the girls' (quote_6), while the Tamara Gold elevates casual summer outfits into party-ready looks<!-- /kp --></li>
+<li><!-- kp:2 -->Comfort and functionality for the event context: if you'll be standing and socializing for hours, the Carrson's widely praised heel comfort is a strong bet; if you prefer a no-heel option or the venue involves walking on grass or sand, the Tamara Gold keeps you comfortable and glamorous<!-- /kp --></li>
+<li><!-- kp:3 -->Versatility across the summer calendar: consider which sandal will pull double duty — the Carrson's neutral leather works across multiple events and dress codes, while the Tamara Gold's metallic finish makes it a standout statement for the parties where you want to be remembered<!-- /kp --></li>
+<li><!-- kp:4 -->Fit confidence: Carrson reviewers consistently note true-to-size fit across 220 reviews (insight_0), reducing the stress of buying for an upcoming event<!-- /kp --></li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><!-- quote_id:quote_6 --><span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">"This is the third time I buy this heel! It is so comfortable and honestly goes with everything. I mainly use it for work but when need be it is the perfect heel for a night out or for brunch with the girls. I cannot find another shoe like it, FOREVER A CUSTOMER." — Alexia g. (5★)</span><!-- /quote --></p>
+</blockquote>
+<hr />
+<p><span class="annotation" data-annotation-id="anno_028" data-annotation-ids="anno_028">## Summer Party Dressy Sandals FAQs <!-- id:sec_5 --></span></p>
+<p><em>Summarize the blog post's key points in Q&amp;A format, recapping comfort, styling, and selection advice for quick scanning by readers and LLM retrieval systems.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><!-- kp:0 -->Q: What are the best dressy sandals for summer parties? A: The Carrson Sandal is a classy block-heel option praised by hundreds of reviewers for all-night comfort and a polished look, while the Tamara Gold is a glamorous embellished flat perfect for more relaxed celebrations — both pair easily with dresses, skirts, and summer outfits.<!-- /kp --></li>
+<li><!-- kp:1 -->Q: Are heeled sandals comfortable enough for a full summer party? A: The Carrson Sandal is specifically praised across 20+ reviews for comfort during long standing and socializing — many customers call it their go-to event heel. For those who prefer zero heel, the Tamara Gold offers a comfortable flat alternative.<!-- /kp --></li>
+<li><!-- kp:2 -->Q: How do I pick between a heel and a flat for a summer party? A: Consider the venue and your comfort preference. A cocktail party or rooftop event suits the Carrson's elevated polish, while garden parties, brunches, or beach-adjacent celebrations pair well with the Tamara Gold's sparkle and ease. Both sandals run true to size for confident ordering.<!-- /kp --></li>
+</ul>
+<hr />
+<!-- id:sec_6 -->
+
+<p><em>CTA: Shop the full Summer Party collection</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><!-- kp:0 -->Shop the full Summer Party collection<!-- /kp --></li>
+</ul>
+<p><strong>Supporting Facts:</strong></p>
+<ul>
+<li><!-- fact_id:fact_001 -->The TAMARA is a square-toe flat sandal<!-- /fact --></li>
+</ul>
+<hr />
+<h2>Quote Bank <!-- id:quote_bank --></h2>
+<p><em>Spare quotes available for use in the blog. Remove any you don't want included.</em></p>
+<blockquote>
+<p><!-- quote_id:quote_0 --><span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">"I'm on my fifth or sixth pair in the last four years because I will walk miles in these bad boys - sand, dirt, gravel, uphill and down." — Alexandra (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_1 --><span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">"Necessary staple in your closet!" — Alejandra A. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_2 --><span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">"Love these heels! They pair well with skirts, dresses and jeans!" — Elvith S. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_3 --><span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">"My GO-TO! Love these shoes, I can wear them with everything!" — Alejandra A. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_7 --><span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">"Perfect, size fit and comfortable! I have a hard time finding my size, so am very happy." — Chloe S. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_8 --><span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">"Awesome fit! Cute and comfy." — Renie V. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_9 --><span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">"A comfortable heel to wear everyday to work. Good fit, true to size." — TezParcelUSA S. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_10 --><span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">"Love this black heel! Fits TTS and is a classic." — Jennifer H. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_11 --><span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">"High fashion and sexy." — Julien J. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_12 --><span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">"I like the simplicity of it and that it's leather, which leather shoes are getting harder to find." — Kimberly R. (4★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_13 --><span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">"I like the block heel because it adds some stability when walking in them." — Stephanie A. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_14 --><span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">"These shoes were just right for our Spring Dance, called Swing, where the girls ask the boys." — Mary R. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_15 --><span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">"Super cute and sexy." — Christine S. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_17 --><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">"I normally wear size 6.5-7 and I ordered a 7 and the fit is great." — Robin J.</span><!-- /quote --></p>
+<p><!-- quote_id:quote_18 --><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">"Sizing is always great, and good for somewhat wider feet." — Alexandra</span><!-- /quote --></p>
+<p><!-- quote_id:quote_19 --><span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">"I've gotten so many compliments on these sandals!" — jacquelyn p. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_20 --><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">"They are so comfortable and so chic, they elevate all the outfits so you feel fancy enough to go out in flats." — jacquelyn p. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_21 --><span class="annotation" data-annotation-id="anno_021" data-annotation-ids="anno_021">"Perfect easy summer wear. I love the flexibility of dressing it up and down — so cute and versatile." — Krystal T. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_22 --><span class="annotation" data-annotation-id="anno_022" data-annotation-ids="anno_022">"They are not only cute, stylish, and sexy, but absolutely comfortable." — Carol H. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_23 --><span class="annotation" data-annotation-id="anno_023" data-annotation-ids="anno_023">"I love both pairs I have." — Carol H. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_24 --><span class="annotation" data-annotation-id="anno_024" data-annotation-ids="anno_024">"Different but appealing. Cushioned sole." — Benevolent T. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_25 --><span class="annotation" data-annotation-id="anno_025" data-annotation-ids="anno_025">"Very comfortable and stylish." — Kimberly N. (5★)</span><!-- /quote --></p>
+<p><!-- quote_id:quote_26 --><span class="annotation" data-annotation-id="anno_026" data-annotation-ids="anno_026">"Absolutely love and worth the purchase." — jacquelyn p. (5★)</span><!-- /quote --></p>
+</blockquote>
+<hr />
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_000",
+    "type": "customer_experience",
+    "start_index": 3345,
+    "stop_index": 3551,
+    "text_snippet": "\"This is my 4th pair of the Carrson heel. I have them in black and silver black and this is my secon...",
+    "description": "Customer testimonial by Teresa P.",
+    "source_url": null,
+    "evidence_id": "quote_5",
+    "product_name": "CARRSON BLUSH LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "customer_experience",
+    "start_index": 3595,
+    "stop_index": 3766,
+    "text_snippet": "\"I just purchased my second pair of these shoes! They just look classy and help polish any outfit! I...",
+    "description": "Customer testimonial by Jessica F.",
+    "source_url": null,
+    "evidence_id": "quote_4",
+    "product_name": "CARRSON BLUSH LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "customer_experience",
+    "start_index": 5342,
+    "stop_index": 5430,
+    "text_snippet": "\"I love this brand, I've bought numerous things over the years. ICON!\" \u2014 Chasity L. (5\u2605)",
+    "description": "Customer testimonial by Chasity L.",
+    "source_url": null,
+    "evidence_id": "quote_16",
+    "product_name": "CARRSON BLUSH LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "customer_experience",
+    "start_index": 7192,
+    "stop_index": 7473,
+    "text_snippet": "\"This is the third time I buy this heel! It is so comfortable and honestly goes with everything. I m...",
+    "description": "Customer testimonial by Alexia g.",
+    "source_url": null,
+    "evidence_id": "quote_6",
+    "product_name": "Carrson Sandal",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "customer_experience",
+    "start_index": 9226,
+    "stop_index": 9380,
+    "text_snippet": "\"I'm on my fifth or sixth pair in the last four years because I will walk miles in these bad boys - ...",
+    "description": "Customer testimonial by Alexandra",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "CARRSON BLUSH LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "customer_experience",
+    "start_index": 9424,
+    "stop_index": 9478,
+    "text_snippet": "\"Necessary staple in your closet!\" \u2014 Alejandra A. (5\u2605)",
+    "description": "Customer testimonial by Alejandra A.",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "CARRSON BLUSH LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "customer_experience",
+    "start_index": 9522,
+    "stop_index": 9605,
+    "text_snippet": "\"Love these heels! They pair well with skirts, dresses and jeans!\" \u2014 Elvith S. (5\u2605)",
+    "description": "Customer testimonial by Elvith S.",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "Carrson Sandal",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "customer_experience",
+    "start_index": 9649,
+    "stop_index": 9731,
+    "text_snippet": "\"My GO-TO! Love these shoes, I can wear them with everything!\" \u2014 Alejandra A. (5\u2605)",
+    "description": "Customer testimonial by Alejandra A.",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "Carrson Sandal",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "customer_experience",
+    "start_index": 9775,
+    "stop_index": 9881,
+    "text_snippet": "\"Perfect, size fit and comfortable! I have a hard time finding my size, so am very happy.\" \u2014 Chloe S...",
+    "description": "Customer testimonial by Chloe S.",
+    "source_url": null,
+    "evidence_id": "quote_7",
+    "product_name": "CARRSON BLUSH LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "customer_experience",
+    "start_index": 9925,
+    "stop_index": 9971,
+    "text_snippet": "\"Awesome fit! Cute and comfy.\" \u2014 Renie V. (5\u2605)",
+    "description": "Customer testimonial by Renie V.",
+    "source_url": null,
+    "evidence_id": "quote_8",
+    "product_name": "CARRSON BLUSH LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "customer_experience",
+    "start_index": 10015,
+    "stop_index": 10108,
+    "text_snippet": "\"A comfortable heel to wear everyday to work. Good fit, true to size.\" \u2014 TezParcelUSA S. (5\u2605)",
+    "description": "Customer testimonial by TezParcelUSA S.",
+    "source_url": null,
+    "evidence_id": "quote_9",
+    "product_name": "Carrson Sandal",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "customer_experience",
+    "start_index": 10153,
+    "stop_index": 10222,
+    "text_snippet": "\"Love this black heel! Fits TTS and is a classic.\" \u2014 Jennifer H. (5\u2605)",
+    "description": "Customer testimonial by Jennifer H.",
+    "source_url": null,
+    "evidence_id": "quote_10",
+    "product_name": "Carrson Sandal",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "customer_experience",
+    "start_index": 10267,
+    "stop_index": 10308,
+    "text_snippet": "\"High fashion and sexy.\" \u2014 Julien J. (5\u2605)",
+    "description": "Customer testimonial by Julien J.",
+    "source_url": null,
+    "evidence_id": "quote_11",
+    "product_name": "CARRSON BLUSH LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "customer_experience",
+    "start_index": 10353,
+    "stop_index": 10472,
+    "text_snippet": "\"I like the simplicity of it and that it's leather, which leather shoes are getting harder to find.\"...",
+    "description": "Customer testimonial by Kimberly R.",
+    "source_url": null,
+    "evidence_id": "quote_12",
+    "product_name": "Carrson Sandal",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "customer_experience",
+    "start_index": 10517,
+    "stop_index": 10613,
+    "text_snippet": "\"I like the block heel because it adds some stability when walking in them.\" \u2014 Stephanie A. (5\u2605)",
+    "description": "Customer testimonial by Stephanie A.",
+    "source_url": null,
+    "evidence_id": "quote_13",
+    "product_name": "Carrson Sandal",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "customer_experience",
+    "start_index": 10658,
+    "stop_index": 10768,
+    "text_snippet": "\"These shoes were just right for our Spring Dance, called Swing, where the girls ask the boys.\" \u2014 Ma...",
+    "description": "Customer testimonial by Mary R.",
+    "source_url": null,
+    "evidence_id": "quote_14",
+    "product_name": "Carrson Sandal",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "customer_experience",
+    "start_index": 10813,
+    "stop_index": 10855,
+    "text_snippet": "\"Super cute and sexy.\" \u2014 Christine S. (5\u2605)",
+    "description": "Customer testimonial by Christine S.",
+    "source_url": null,
+    "evidence_id": "quote_15",
+    "product_name": "CARRSON BLUSH LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "customer_experience",
+    "start_index": 10900,
+    "stop_index": 10979,
+    "text_snippet": "\"I normally wear size 6.5-7 and I ordered a 7 and the fit is great.\" \u2014 Robin J.",
+    "description": "Customer testimonial by Robin J.",
+    "source_url": null,
+    "evidence_id": "quote_17",
+    "product_name": null,
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "customer_experience",
+    "start_index": 11024,
+    "stop_index": 11095,
+    "text_snippet": "\"Sizing is always great, and good for somewhat wider feet.\" \u2014 Alexandra",
+    "description": "Customer testimonial by Alexandra",
+    "source_url": null,
+    "evidence_id": "quote_18",
+    "product_name": null,
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "customer_experience",
+    "start_index": 11140,
+    "stop_index": 11211,
+    "text_snippet": "\"I've gotten so many compliments on these sandals!\" \u2014 jacquelyn p. (5\u2605)",
+    "description": "Customer testimonial by jacquelyn p.",
+    "source_url": null,
+    "evidence_id": "quote_19",
+    "product_name": "TAMARA BROWN",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "customer_experience",
+    "start_index": 11256,
+    "stop_index": 11388,
+    "text_snippet": "\"They are so comfortable and so chic, they elevate all the outfits so you feel fancy enough to go ou...",
+    "description": "Customer testimonial by jacquelyn p.",
+    "source_url": null,
+    "evidence_id": "quote_20",
+    "product_name": "TAMARA BROWN",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_021",
+    "type": "customer_experience",
+    "start_index": 11433,
+    "stop_index": 11553,
+    "text_snippet": "\"Perfect easy summer wear. I love the flexibility of dressing it up and down \u2014 so cute and versatile...",
+    "description": "Customer testimonial by Krystal T.",
+    "source_url": null,
+    "evidence_id": "quote_21",
+    "product_name": "TAMARA BLACK",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_022",
+    "type": "customer_experience",
+    "start_index": 11598,
+    "stop_index": 11686,
+    "text_snippet": "\"They are not only cute, stylish, and sexy, but absolutely comfortable.\" \u2014 Carol H. (5\u2605)",
+    "description": "Customer testimonial by Carol H.",
+    "source_url": null,
+    "evidence_id": "quote_22",
+    "product_name": "TAMARA BROWN",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_023",
+    "type": "customer_experience",
+    "start_index": 11731,
+    "stop_index": 11774,
+    "text_snippet": "\"I love both pairs I have.\" \u2014 Carol H. (5\u2605)",
+    "description": "Customer testimonial by Carol H.",
+    "source_url": null,
+    "evidence_id": "quote_23",
+    "product_name": "TAMARA BROWN",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_024",
+    "type": "customer_experience",
+    "start_index": 11819,
+    "stop_index": 11882,
+    "text_snippet": "\"Different but appealing. Cushioned sole.\" \u2014 Benevolent T. (5\u2605)",
+    "description": "Customer testimonial by Benevolent T.",
+    "source_url": null,
+    "evidence_id": "quote_24",
+    "product_name": "Tamara Gold",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_025",
+    "type": "customer_experience",
+    "start_index": 11927,
+    "stop_index": 11977,
+    "text_snippet": "\"Very comfortable and stylish.\" \u2014 Kimberly N. (5\u2605)",
+    "description": "Customer testimonial by Kimberly N.",
+    "source_url": null,
+    "evidence_id": "quote_25",
+    "product_name": "TAMARA BROWN",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_026",
+    "type": "customer_experience",
+    "start_index": 12022,
+    "stop_index": 12083,
+    "text_snippet": "\"Absolutely love and worth the purchase.\" \u2014 jacquelyn p. (5\u2605)",
+    "description": "Customer testimonial by jacquelyn p.",
+    "source_url": null,
+    "evidence_id": "quote_26",
+    "product_name": "TAMARA BROWN",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_027",
+    "type": "editorial",
+    "editorial_subtype": "table_format",
+    "start_index": 833,
+    "stop_index": 904,
+    "text_snippet": "## Best Dressy Sandals for Summer Parties at a Glance <!-- id:sec_1 -->",
+    "description": "Table Format: Comparison table early for structured data extraction",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Table Format"
+  },
+  {
+    "annotation_id": "anno_028",
+    "type": "editorial",
+    "editorial_subtype": "faq",
+    "start_index": 7495,
+    "stop_index": 7548,
+    "text_snippet": "## Summer Party Dressy Sandals FAQs <!-- id:sec_5 -->",
+    "description": "Faq: FAQ section for generative search targeting",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "FAQ"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
