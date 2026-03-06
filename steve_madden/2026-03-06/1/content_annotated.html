@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Blog Content</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<p><span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016"></p>
+<h1>Stylish Work Heels for Office Outfits: An Expert Guide to the Steve Madden Noir</h1>
+<p></span></p>
+<p><strong>In Short:</strong> <span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">The Steve Madden Noir pump features a </span><span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000,anno_002">sharp pointed-toe design</span> in a massive range of colors and materials - black leather, bold red, chestnut suede, and way more - making it one of the most versatile stylish work heels for office outfits out there.</p>
+<p>A 4.6-star average across 86+ reviews. Owners raving about comfort and quality. The Noir delivers polished elegance that moves from boardroom to after-hours without missing a beat.</p>
+<p><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">Don't just take our word for it.</span> "SM is just an overall comfortable shoe and the quality is amazing. SM never fails." - Alexandria J. (5★)</p>
+<hr />
+<h2>What Actually Makes a Work Heel Worth Wearing All Day</h2>
+<p>You've been here before. Standing in front of your closet, two pumps in hand, wondering which one won't wreck your feet by lunch.</p>
+<p>Here's the thing. A truly stylish work heel has to pull off three things at once: look polished enough for professional settings, feel comfortable enough for a full day, and pair with more than one outfit in your rotation.</p>
+<p>Most office pumps nail one of those and fumble the rest. Gorgeous but punishing by noon. Or comfortable but completely forgettable. The sweet spot? A heel that earns compliments - a significant number of Noir owners call theirs "absolutely stunning" - while still being a shoe you'd voluntarily put on again the next morning.</p>
+<p>Color range matters more than people realize. A heel that comes in neutrals, bold tones, and textured finishes lets you build a capsule work wardrobe around a single silhouette you already trust. One shape. Multiple colors. Every outfit covered.</p>
+<p>And let's be real - the true test of a work heel isn't the first hour. It's whether you're still wearing them at 4 p.m. instead of hiding flats under your desk. That's where padding (or the lack of it) becomes everything.</p>
+<hr />
+<h2>How the Noir Delivers on Style, Versatility, and Color</h2>
+<p>We designed the Noir to check every box. Not just one.</p>
+<p><strong>Versatility as a design principle.</strong> The Noir comes in a wide spectrum of colors and materials - <span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">leather upper</span> options include black, wine, gold, tan, red, and more, plus chestnut suede, green snake, and metallic multi finishes. One proven silhouette covers nearly every office outfit scenario you can imagine.</p>
+<p>That <span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">sharp pointed-toe design</span> reads polished and elevated - without being overly trendy. Tailored trousers, pencil skirts, even smart denim on casual Fridays. The Noir works with all of them. Your Monday look. Your Friday look. Same shoe, different energy.</p>
+<p>Versatility isn't just something we claim - it's the thing owners bring up unprompted. <span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">"These are so comfortable and completely stylish! So much so that a follower of mine bought the same pair. They are so versatile and go with everything and anything!" - Alexa B. (5★)</span></p>
+<p><strong>Color appeal is a standout.</strong> A significant number of customers specifically call out the color options as a reason they come back for multiple pairs. And we're not talking about buying a backup - we're talking about building a collection.</p>
+<p>That collect-them-all instinct? It's real. Irina G. put it best: <span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">"I'm so obsessed with these shoes! I love everything about them - the color, the style, and the height of the heel. I have seven or eight different colors in this same style." - Irina G. (5</span>★)</p>
+<p>Seven or eight pairs of the same pump in different colors. That's not brand loyalty - that's a shoe that genuinely works.</p>
+<p>The quality-to-style ratio consistently impresses owners, with the aesthetic described as elegant and outfit-elevating across every color variant. Diane W. is already eyeing her fourth<span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">: "The quality and the look of this shoe is fantastic. I have purchased three pairs in different colors. I have my eyes on another color!" - Diane W. (5</span>★)</p>
+<hr />
+<h2>What Noir Owners Actually Experience: Comfort, Sizing, and Real-World Wear</h2>
+<p>We could talk about the Noir all day. What matters more is what happens when you're actually in them.</p>
+<p>Owners consistently describe the Noir as elegant and outfit-elevating. 93% of reviewers rate the Noir 4–5 stars across 86+ reviews. That kind of satisfaction is broad - not anecdotal.</p>
+<p>That elegance factor keeps coming up in review after review. As Ivannia A. put it<span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">: "I love these shoes, they are so elegant and elevate any outfit you are wearing." - Ivannia A. (5</span>★)</p>
+<p><strong>The honest sizing note.</strong> Many reviewers report the Noir runs small or narrow, with multiple customers recommending you size up by a half to a full size<span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">. If you're between sizes, it's recommended to size up a half-siz</span>e. Owners with wider feet in particular note a snug fit. Not a dealbreaker. Just a buying detail that saves you a return if you know it going in.</p>
+<p><strong>The comfort trade-off.</strong> Several reviewers mention minimal padding at the ball of the foot, so adding a thin insole insert can extend all-day comfort significantly. A common trade-off with sleek pointed-toe pumps - and a $5 gel insert is a simple solve.</p>
+<p><strong>Goes way beyond the cubicle.</strong> Owners wear the Noir to offices, weddings, date nights, and events - confirming it works well past 5 p.m. Whether you're heading from a client meeting to dinner or from your desk to a rooftop happy hour, the Noir transitions without a second thought.</p>
+<p>And some owners take it all the way to the altar<span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">. "I'm getting married in July and needed a gold pump to go with my Bridal Event Attire! These are perfect and they are comfortable and I'm a Queen so these just add more royalty to my style!" - LaToya T. (5</span>★)</p>
+<hr />
+<h2>Getting It Right: Sizing, Styling, and Getting the Most From Your Noir</h2>
+<p>You've decided. Now let's make sure you nail it.</p>
+<p><strong>Sizing guidance.</strong> Based on consistent reviewer feedback, order a half size up - especially if you're between sizes or have a wider foot<span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">. If between sizes, it is recommended to size up a half-siz</span>e. The Noir runs narrow, so erring up prevents that break-in squeeze.</p>
+<p><strong>Comfort tip.</strong> For full-day office wear, add a thin gel cushion at the ball of the foot. Reviewers who did this report significantly improved comfort through long meetings and commutes. Th<span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">e stiletto heel sty</span>le is sleek - a little extra cushioning goes a long way.</p>
+<p><strong>Styling strategy.</strong> Start with a neutral - black leather or tan leather - as your everyday office workhorse. Then grab a statement color like wine, red, or metallic for the days your outfit needs a lift. You already know the fit from your first pair, so buying additional colors is a confident move.</p>
+<p>Your neutral pair for Monday. Your bold pair for Friday. Your rules.</p>
+<p><em><em>Shipping made easy.</em><span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006"></em> Steve Madden offers free shipping on orders over $</span>75, so ordering two sizes or colors and returning what doesn't work is painless. A<span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">t $109.</span>95, a single pair of the Noir qualifies for free shipping - no cart-padding required.</p>
+<hr />
+<h2>Frequently Asked Questions About the Steve Madden Noir</h2>
+<p><strong>Are the Steve Madden Noir heels comfortable enough for a full day at the office?</strong><br />
+Owners widely praise the Noir's comfort for a pointed-toe pump. The one tip that keeps coming up? Add a thin gel insert at the ball of the foot for extended all-day wear. 93% of reviewers rate the Noir 4–5 stars across 86+ reviews - overall satisfaction is high.</p>
+<p><strong>What makes the Noir a good choice for stylish work heels for office outfits?</strong><br />
+The Noir's sharp pointed-toe design is polished enough for professional settings, and the pump comes in an unusually wide range of colors and materials - from classic black leather to bold red and metallic finishes - so it pairs with virtually any office wardrobe.</p>
+<p>Th<span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">e stiletto heel sty</span>le adds elevation without veering into impractical territory for workday wear.</p>
+<p><strong>Do the Noir pumps run true to size?</strong><br />
+Short answer: they run small and narrow<span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">. If between sizes, it is recommended to size up a half-si</span>ze, especially if you have wider feet. Ordering up prevents that tight-toe squeeze that can make pointed-toe pumps uncomfortable.</p>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_016",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_title",
+    "start_index": 0,
+    "stop_index": 83,
+    "text_snippet": "\n# Stylish Work Heels for Office Outfits: An Expert Guide to the Steve Madden Noir\n",
+    "description": "Query Echo Title: Title echoes target query 'stylish work heels for office outfits'",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 101,
+    "stop_index": 163,
+    "text_snippet": "The Steve Madden Noir pump features a sharp pointed-toe design",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 139,
+    "stop_index": 163,
+    "text_snippet": "sharp pointed-toe design",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "editorial",
+    "editorial_subtype": "tov_rhythm",
+    "start_index": 535,
+    "stop_index": 567,
+    "text_snippet": "Don't just take our word for it.",
+    "description": "Tov Rhythm: Short punchy fragment for emphasis, followed by conversational quote integration",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Rhythm"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 2111,
+    "stop_index": 2124,
+    "text_snippet": "leather upper",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 2331,
+    "stop_index": 2355,
+    "text_snippet": "sharp pointed-toe design",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "customer_experience",
+    "start_index": 2671,
+    "stop_index": 2853,
+    "text_snippet": "\"These are so comfortable and completely stylish! So much so that a follower of mine bought the same...",
+    "description": "Customer testimonial by Alexa B.",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "NOIR NEWSPAPER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "customer_experience",
+    "start_index": 3163,
+    "stop_index": 3352,
+    "text_snippet": "\"I'm so obsessed with these shoes! I love everything about them\u2014the color, the style, and the height...",
+    "description": "Customer testimonial by Irina G.",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "NOIR WINE LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "customer_experience",
+    "start_index": 3663,
+    "stop_index": 3815,
+    "text_snippet": "\"The quality and the look of this shoe is fantastic. I have purchased three pairs in different color...",
+    "description": "Customer testimonial by Diane W.",
+    "source_url": null,
+    "evidence_id": "quote_4",
+    "product_name": "NOIR TAN LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "customer_experience",
+    "start_index": 4272,
+    "stop_index": 4371,
+    "text_snippet": "\"I love these shoes, they are so elegant and elevate any outfit you are wearing.\" \u2014 Ivannia A. (5\u2605)",
+    "description": "Customer testimonial by Ivannia A.",
+    "source_url": null,
+    "evidence_id": "quote_7",
+    "product_name": "NOIR CHESTNUT SUEDE",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 4529,
+    "stop_index": 4594,
+    "text_snippet": "If you're between sizes, it's recommended to size up a half-size.",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "customer_experience",
+    "start_index": 5331,
+    "stop_index": 5538,
+    "text_snippet": "\"I'm getting married in July and needed a gold pump to go with my Bridal Event Attire! These are per...",
+    "description": "Customer testimonial by LaToya T.",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "NOIR GOLD LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 5812,
+    "stop_index": 5871,
+    "text_snippet": "If between sizes, it is recommended to size up a half-size.",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 6132,
+    "stop_index": 6151,
+    "text_snippet": "stiletto heel style",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 6604,
+    "stop_index": 6656,
+    "text_snippet": "Steve Madden offers free shipping on orders over $75",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_014",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 6738,
+    "stop_index": 6745,
+    "text_snippet": "$109.95",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "claim",
+    "start_index": 7600,
+    "stop_index": 7619,
+    "text_snippet": "stiletto heel style",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "claim",
+    "start_index": 7779,
+    "stop_index": 7837,
+    "text_snippet": "If between sizes, it is recommended to size up a half-size",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
