@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Blog Content</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<p><span class="annotation" data-annotation-id="anno_021" data-annotation-ids="anno_021"></p>
+<h1>Sparkly Heels for Wedding Guest Outfits: An Expert Guide to Getting It Right</h1>
+<p></span></p>
+<p><strong>In Short:</strong> The best sparkly heels for wedding guests nail two things at once - shimmer that turns heads and comfort that actually lasts. Harder to find than you'd think. Steve Madden's metallic and embellished heel collection, led by styles like the Noir and Jypsey (rated 4.6 stars across 86+ reviews), brings occasion-ready glamour with the wearability to carry you from ceremony to last dance.</p>
+<p><span class="annotation" data-annotation-id="anno_022" data-annotation-ids="anno_022"><br />
+You've got the invite. The outfit's narrowed down. Now you need the shoes - and not just any shoes. Sparkly heels that actually deliver.<br />
+</span></p>
+<p>We're here to break down exactly what makes a sparkly wedding guest heel worth your money, your closet space, and your feet's patience. Because a gorgeous heel that leaves you limping by cocktail hour? Not it.</p>
+<p><span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">"SM is just an overall comfortable shoe and the quality is amazing. SM never fails." - Alexandria J. (5★)</span></p>
+<p>That kind of trust? You can't fake it.</p>
+<p>So let's get into what separates a great sparkly heel from a regrettable impulse buy.</p>
+<hr />
+<h2>What Actually Makes a Great Sparkly Wedding Guest Heel</h2>
+<p>Not all sparkle is created equal. Here's what matters when you're choosing heels for someone else's big day.</p>
+<p><strong>Visual impact that photographs well</strong> is non-negotiable. A sparkly heel needs to catch light without looking costume-y - it should complement your outfit, not compete with it. Color and finish matter enormously. Across Steve Madden reviews, 18 separate customers called out color appeal as a deciding factor when choosing their pair. The right shade of shimmer can make or break the whole look.</p>
+<p>You want to turn heads walking into that venue. You also want heels that look incredible in every photo - ceremony, reception, dance floor selfies. The best sparkly heels hit that sweet spot between statement and sophistication.</p>
+<p><strong>Comfort that lasts the whole event</strong> is where most sparkly heels fail you.</p>
+<p>Think about it: 4–6 hours of standing, walking on grass or cobblestone, dancing. Most sparkly heels on the market sacrifice padding for aesthetics. Knowing what to look for - cushioning, heel height, strap security - is what separates a great pick from a pretty one you'll kick off by the reception.</p>
+<p><strong>Occasion-specific design, not an afterthought,</strong> rounds it out. <span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">Steve Madden has a dedicated wedding shop featuring bridal shoes, bridesmaids shoes, flower girl shoes, and mother of bride shoes</span> - plus styles built specifically for wedding guests. Not an afterthought.</p>
+<p>When a brand builds an entire shopping experience around weddings, the details - heel height, strap placement, finish options - reflect real event needs rather than generic "dressy shoe" thinking.</p>
+<hr />
+<h2>How the Noir and Jypsey Deliver on Every Criterion</h2>
+<p>So what does all of this look like in an actual shoe? Let's map it out.</p>
+<p><strong>Quality you can trust</strong> starts with the numbers. <span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">The JYPSEY is a gold leather strappy stiletto heel designed for women</span>, carrying a 4.65 average rating with 93% of reviewers giving 4–5 stars. That's not hype. That's consistency.</p>
+<p><span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">"SM is just an overall comfortable shoe and the quality is amazing. SM never fails." - Alexandria J. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">The upper material is made of leather</span>, and <span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">the JYPSEY features a strappy design with a secure ankle strap</span>. <span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">The heels have a rounded toe and crisscross back design</span> - details that add visual interest while keeping your foot locked in place.</p>
+<p><strong>Versatility across wedding contexts</strong> is where the Noir line really earns it. Multiple finishes - metallic multi, gold leather, green snake, and more - give you options spanning black-tie shimmer to garden-party sparkle. Whether you're headed to a rooftop cocktail wedding or a vineyard ceremony, there's a finish that fits.</p>
+<p><span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">"These are so comfortable and completely stylish! So much so that a follower of mine bought the same pair. They are so versatile and go with everything and anything!" - Alexa B. (5★)</span></p>
+<p>Whether you're pairing them with a satin midi or a bold jewel-toned jumpsuit - these heels adapt.</p>
+<p><strong>Color range as a real differentiator</strong> is what sets these apart. Gold, metallic multi, wine, jewel tones - you're not stuck settling for generic silver. You can match your sparkly heels to a specific wedding color palette and dress code. That kind of intention elevates your whole outfit.</p>
+<p><span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">"Noir Metallic Multi - These heels are absolutely stunning - I have never received so many compliments for a pair of heels." - Joujou</span></p>
+<p><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">"They're more beautiful in person! Love them!" - Lauren R. (5★)</span></p>
+<hr />
+<h2>What Owners Actually Find After Wearing Them</h2>
+<p>We love a gorgeous heel. But you deserve the full picture - not just the highlight reel. Here's what real owners report after wearing these styles to actual events.</p>
+<p><strong>The repeat-purchase test</strong> is the ultimate proof. Nothing says "this shoe delivers" like buying it again. And again.</p>
+<p><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">"I'm so obsessed with these shoes! I love everything about them - the color, the style, and the height of the heel. I have seven or eight different colors in this same style." - Irina G. (5★)</span></p>
+<p>Seven or eight colors in the same style. That's not a one-time impulse buy - it's a heel that delivers consistently across occasions, not just on first impression.</p>
+<p><strong>Sizing: know before you order.</strong> Multiple reviewers report the Noir and Jypsey styles run small or narrow, especially for wide feet. The consistent recommendation? Size up by a half to full size. Worth knowing before ordering for a wedding where you won't have time for exchanges.</p>
+<p>Plan ahead. Your future self will thank you.</p>
+<p><strong>Comfort: the honest take.</strong> Several owners flag limited padding at the ball of the foot, making these heels better suited for dinner-length events than all-day wear. Experienced buyers recommend adding cushion inserts for longer celebrations - and breaking the shoes in before the event rather than debuting them on the big day. (More on that in a second.)</p>
+<p><span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">The JYPSEY features a stiletto heel style with a 4-inch heel height</span>. Classic for formal occasions - but be real with yourself about what you can handle for the full duration.</p>
+<p><span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">"Absolutely love the fit and the look. Very comfortable as well." - Beatriz D. (5★)</span></p>
+<hr />
+<h2>Size, Prep, and Style Your Sparkly Heels</h2>
+<p>You've picked your pair. Now let's make the experience flawless.</p>
+<p><strong>Break them in - seriously.</strong> Don't skip this.</p>
+<p>Some owners report initial tightness or stiffness. Wear your heels around the house for 2–3 short sessions before the wedding. Especially important if you sized up and want to confirm fit with any inserts.</p>
+<p>Your shoes, your prep routine. But trust us - a little break-in goes a long way.</p>
+<p><strong>A few more practical tips.</strong> Adding cushioned ball-of-foot pads makes a real difference for receptions that run long - and stick with a heel height you already know you can handle. A wedding is not the time to test your limits. <span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">The heels have a rounded toe and crisscross back design</span>, and that rounded toe gives your toes more room than a pointed style, which helps on longer nights. If you're unsure about sizing, order two sizes and compare at home - <span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">Steve Madden offers free shipping on orders over $75</span>, so it's easy to get your size plus a half-size up, try both, and send one back.</p>
+<p><strong>Styling your sparkle</strong> is the fun part. Gold heels pair beautifully with navy, emerald, and burgundy. Metallic multi finishes work with just about everything - that's the beauty of them. Jewel-tone options let you match or intentionally contrast for a bolder look.</p>
+<p>Your outfit, your statement. We've got the looks to back it up.</p>
+<p><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">"I love these shoes, they are so elegant and elevated any outfit you are wearing." - Ivannia A. (5★)</span></p>
+<hr />
+<h2>Frequently Asked Questions About Sparkly Heels for Wedding Guests</h2>
+<p><strong>What sparkly heels work best for a wedding guest in 2026?</strong><br />
+Metallic or embellished pumps in colors that complement the wedding palette. Steve Madden's Noir and Jypsey lines offer gold, metallic multi, wine, and jewel-tone finishes <span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">specifically categorized under Steve Madden's wedding guest shoes collection</span>, with a 4.65 average rating on the Jypsey Gold Leather. <span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">The heels are imported</span> and <span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">designed for formal or professional occasions</span>.</p>
+<p><strong>Do sparkly wedding guest heels run true to size?</strong><br />
+Many customers say size up - a half to full size, especially with wider feet. Smart move: order two sizes and compare at home. <span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">Free shipping on orders over $75</span> makes that painless with Steve Madden.</p>
+<p><strong>Are sparkly heels comfortable enough for a full wedding?</strong><br />
+For ceremony-and-dinner-length events, owners say yes. For extended receptions, add ball-of-foot inserts and break the shoes in beforehand. <span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">The JYPSEY features a 4-inch stiletto heel height</span> - factor that into your comfort expectations.</p>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_021",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_title",
+    "start_index": 2,
+    "stop_index": 82,
+    "text_snippet": "\n# Sparkly Heels for Wedding Guest Outfits: An Expert Guide to Getting It Right\n",
+    "description": "Query Echo Title: Title echoes target query 'sparkly heels for wedding guest 2026'",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_022",
+    "type": "editorial",
+    "editorial_subtype": "tov_rhythm",
+    "start_index": 489,
+    "stop_index": 627,
+    "text_snippet": "\nYou've got the invite. The outfit's narrowed down. Now you need the shoes \u2014 and not just any shoes....",
+    "description": "Tov Rhythm: Short punchy opener with fragment energy, matching brand's confident-friend tone",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Rhythm"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "customer_experience",
+    "start_index": 842,
+    "stop_index": 947,
+    "text_snippet": "\"SM is just an overall comfortable shoe and the quality is amazing. SM never fails.\" \u2014 Alexandria J....",
+    "description": "Customer testimonial by Alexandria J.",
+    "source_url": null,
+    "evidence_id": "quote_9",
+    "product_name": "Jypsey Gold Leather",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 2333,
+    "stop_index": 2462,
+    "text_snippet": "Steve Madden has a dedicated wedding shop featuring bridal shoes, bridesmaids shoes, flower girl sho...",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 2923,
+    "stop_index": 2992,
+    "text_snippet": "The JYPSEY is a gold leather strappy stiletto heel designed for women",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_010",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "customer_experience",
+    "start_index": 3104,
+    "stop_index": 3209,
+    "text_snippet": "\"SM is just an overall comfortable shoe and the quality is amazing. SM never fails.\" \u2014 Alexandria J....",
+    "description": "Customer testimonial by Alexandria J.",
+    "source_url": null,
+    "evidence_id": "quote_9",
+    "product_name": "Jypsey Gold Leather",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 3211,
+    "stop_index": 3248,
+    "text_snippet": "The upper material is made of leather",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 3254,
+    "stop_index": 3316,
+    "text_snippet": "the JYPSEY features a strappy design with a secure ankle strap",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 3318,
+    "stop_index": 3373,
+    "text_snippet": "The heels have a rounded toe and crisscross back design",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "customer_experience",
+    "start_index": 3781,
+    "stop_index": 3963,
+    "text_snippet": "\"These are so comfortable and completely stylish! So much so that a follower of mine bought the same...",
+    "description": "Customer testimonial by Alexa B.",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "NOIR NEWSPAPER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "customer_experience",
+    "start_index": 4360,
+    "stop_index": 4493,
+    "text_snippet": "\"Noir Metallic Multi \u2014 These heels are absolutely stunning - I have never received so many complimen...",
+    "description": "Customer testimonial by Joujou",
+    "source_url": null,
+    "evidence_id": "highlight_1",
+    "product_name": null,
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "customer_experience",
+    "start_index": 4495,
+    "stop_index": 4558,
+    "text_snippet": "\"They're more beautiful in person! Love them!\" \u2014 Lauren R. (5\u2605)",
+    "description": "Customer testimonial by Lauren R.",
+    "source_url": null,
+    "evidence_id": "quote_6",
+    "product_name": "NOIR GREEN SNAKE",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "customer_experience",
+    "start_index": 4902,
+    "stop_index": 5093,
+    "text_snippet": "\"I'm so obsessed with these shoes! I love everything about them \u2014 the color, the style, and the heig...",
+    "description": "Customer testimonial by Irina G.",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "NOIR WINE LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 5958,
+    "stop_index": 6025,
+    "text_snippet": "The JYPSEY features a stiletto heel style with a 4-inch heel height",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "customer_experience",
+    "start_index": 6134,
+    "stop_index": 6217,
+    "text_snippet": "\"Absolutely love the fit and the look. Very comfortable as well.\" \u2014 Beatriz D. (5\u2605)",
+    "description": "Customer testimonial by Beatriz D.",
+    "source_url": null,
+    "evidence_id": "quote_13",
+    "product_name": "NOIR TAN MULTI",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 6908,
+    "stop_index": 6963,
+    "text_snippet": "The heels have a rounded toe and crisscross back design",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 7133,
+    "stop_index": 7185,
+    "text_snippet": "Steve Madden offers free shipping on orders over $75",
+    "description": "Factual claim from company_information",
+    "source_url": "",
+    "evidence_id": "fact_013",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "customer_experience",
+    "start_index": 7606,
+    "stop_index": 7706,
+    "text_snippet": "\"I love these shoes, they are so elegant and elevated any outfit you are wearing.\" \u2014 Ivannia A. (5\u2605)",
+    "description": "Customer testimonial by Ivannia A.",
+    "source_url": null,
+    "evidence_id": "quote_7",
+    "product_name": "NOIR CHESTNUT SUEDE",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 8019,
+    "stop_index": 8095,
+    "text_snippet": "specifically categorized under Steve Madden's wedding guest shoes collection",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_011",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "claim",
+    "start_index": 8152,
+    "stop_index": 8174,
+    "text_snippet": "The heels are imported",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "claim",
+    "start_index": 8179,
+    "stop_index": 8224,
+    "text_snippet": "designed for formal or professional occasions",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "claim",
+    "start_index": 8407,
+    "stop_index": 8439,
+    "text_snippet": "Free shipping on orders over $75",
+    "description": "Factual claim from company_information",
+    "source_url": "",
+    "evidence_id": "fact_013",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "claim",
+    "start_index": 8681,
+    "stop_index": 8730,
+    "text_snippet": "The JYPSEY features a 4-inch stiletto heel height",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
