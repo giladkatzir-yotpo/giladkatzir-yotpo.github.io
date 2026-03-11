@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Blog Content</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<p><span class="annotation" data-annotation-id="anno_024" data-annotation-ids="anno_024"></p>
+<h1>Dressy Sandals for Summer Parties: 2 Stylish Picks to Celebrate the Season</h1>
+<p></span></p>
+<p><strong>In Short:</strong> This summer party guide features 2 curated dressy sandal picks for occasion shoppers.</p>
+<p>From the classic white leather Hadyn to the luxe champagne Calissi - here's everything you need to walk into your next warm-weather celebration feeling ready. Rooftop cocktail hour? Backyard celebration? We've got the looks to get you there with confidence and style.</p>
+<p><span class="annotation" data-annotation-id="anno_025" data-annotation-ids="anno_025"><br />
+Summer parties don't wait. Neither should your sandal game. You need something that looks good, feels good, and works across every invite on your calendar - from the casual to the kind that calls for a little extra shimmer.</span></p>
+<p>Two sandals. Two vibes. We're here to make it easy.</p>
+<hr />
+<h2>Best Dressy Sandals for Summer Parties at a Glance</h2>
+<p>Here's the quick side-by-side.</p>
+<p>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Hadyn White Leather</strong></th>
+<th><strong>Calissi Champagne Leather</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Style Vibe</strong></td>
+<td>Classic, clean, effortlessly versatile</td>
+<td>Elevated, polished, party-ready</td>
+</tr>
+<tr>
+<td><strong>Best For</strong></td>
+<td>Casual-to-dressy summer events - garden parties, barbecues, daytime celebrations</td>
+<td>Evening gatherings, dressier occasions, statement moments</td>
+</tr>
+<tr>
+<td><strong>Color Versatility</strong></td>
+<td>True neutral white - pairs with bold prints, pastels, and everything in between</td>
+<td>Warm champagne tone - complements earth tones, metallics, and warm-toned fabrics</td>
+</tr>
+<tr>
+<td><strong>Sizing Note</strong></td>
+<td><span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">If between sizes, size up a half-size</span></td>
+<td>Runs small or tight per reviewers - order a half to full size up</td>
+</tr>
+<tr>
+<td><strong>Reviewer Love</strong></td>
+<td>1,440 reviews</td>
+<td>4.5 average rating</td>
+</tr>
+<tr>
+<td><strong>Price</strong></td>
+<td><span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">$69.95</span></td>
+<td><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">$79.95</span></td>
+</tr>
+<tr>
+<td><strong>Heel Height</strong></td>
+<td><span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">0.75 inches</span></td>
+<td><span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">0.5 inches</span></td>
+</tr>
+</tbody>
+</table>
+<p>Quick note: both sandals benefit from sizing up per reviewer recommendations. Now let's get into it.</p>
+<hr />
+<h2>The Sandal That Goes with Every Summer Party Outfit</h2>
+<p>The one that does it all. That's the Hadyn White Leather.</p>
+<p><span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">The Hadyn is a women's sandal made of white leather</span> - the kind of slide reviewers buy in multiple colors. <span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">It features geometric cutouts on a wide single strap</span>, a detail that adds visual interest without trying too hard. <span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">The slip-on flat design</span> keeps things easy, whether you're running between summer events or dancing through one.</p>
+<p>Polished enough for a rooftop cocktail party. Relaxed enough for a backyard barbecue. That white leather colorway is the summer party neutral that does double duty effortlessly.</p>
+<p>Customers describe the Hadyn as the sandal that enhances any summer outfit - pair it with a flowy dress, casual jeans, or bold prints and it just works.</p>
+<p><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">"The quality is great, and it looks good with any summer outfits. Whether paired with shorts, a flowy dress, or casual jeans, it enhances the overall look effortlessly." - Sasha S. (5★)</span></p>
+<p>Here's what really stands out: reviewers consistently praise the quality and comfortable fit right out of the box. No awkward break-in period. No regrets. Just a sandal that shows up ready to work for you.</p>
+<p><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">"I've been upgrading my wardrobe, and these have been a great addition. They fit very well, are comfortable, and the quality is excellent. I love them!" - Crystal M. (5★)</span></p>
+<p>The kind of sandal you add to cart - then come back for in another color. That's the Hadyn effect.</p>
+<p><span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">"I have these in several different colors. They fit and look great on." - Anntoniette D. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">The Hadyn is part of Steve Madden's women's designer sandals collection</span>. At <span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">$69.95</span>, it's a strong value play for a leather sandal that covers this much ground.</p>
+<hr />
+<h2>When the Occasion Calls for Something a Little Luxe</h2>
+<p>Some parties call for a little more. The Calissi Champagne Leather answers.</p>
+<p><span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">The Calissi features a sleek strappy slide design with a flat sole</span>, and that <span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">champagne-colored leather</span> brings an unmistakably party-ready aesthetic. Reviewers describe it as beautiful and always in style - the kind of sandal that catches light at evening events and turns heads without screaming for attention.</p>
+<p>This is your statement sandal. The one that makes people ask, "Where did you get those?"</p>
+<p><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">"I'm in love!!! Beautiful shoe and great price." - LaTisha D. (5★)</span></p>
+<p>One reviewer called the Calissi her favorite sandals she's ever owned - and said she gets compliments every single time she wears them.</p>
+<p><span class="annotation" data-annotation-id="anno_021" data-annotation-ids="anno_021">"My favorite pair of sandals I've ever owned. They are beautiful and comfortable and I get compliments when I wear them. Run and get these!" - Maddy E. (5★)</span></p>
+<p>Now - the honest part.</p>
+<p>Multiple reviewers flagged that the Calissi runs small or tight. Ordering a half to full size up is essential for a comfortable fit. Don't wait until the day of your event to try them on.</p>
+<p><span class="annotation" data-annotation-id="anno_022" data-annotation-ids="anno_022">"The sandal is really cute and simple, but I could've gone up a full size for a more comfortable fit." - Amaya P.</span></p>
+<p>Your move? Order early. Try them on at home. Walk around for an evening. That way, by party night, you're not thinking about your shoes - you're just wearing them.</p>
+<p>At <span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">$79.95</span> with a <span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">0.5 inch heel height</span>, the Calissi keeps things low to the ground while still delivering dressed-up energy. A <span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">leather upper</span> and <span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">sleek strappy design</span> give you all the polish - without the fuss.</p>
+<hr />
+<h2>How to Choose the Right Dressy Sandal for Your Summer Party</h2>
+<p>Your party, your outfit, your rules. But if you want a little guidance? We've got you.</p>
+<p><strong>Match the sandal to the event.</strong> The Hadyn's classic white leather suits casual garden parties and daytime celebrations. The Calissi's champagne finish leans dressier - think evening gatherings and polished occasions. Know your vibe before you add to cart.</p>
+<p><strong>Think about what you're wearing.</strong> White works as a true neutral across bold prints and pastels alike. Champagne adds warmth that pairs beautifully with earth tones, metallics, and warm-toned fabrics. Different lanes - both covered.</p>
+<p><strong>Size up for both styles.</strong> Order early enough to try them before the event. Wear them around the house once or twice. The Calissi especially benefits from going a half to full size up.</p>
+<p><strong>One event or a whole summer?</strong> If you attend multiple summer events and want one sandal that covers the widest range of looks, the Hadyn's versatility makes it a strong everyday pick. Want a statement shoe for a special night? The Calissi delivers.</p>
+<p><span class="annotation" data-annotation-id="anno_023" data-annotation-ids="anno_023">"They are comfortable and perfect to combine with different looks." - Keylin M. (5★)</span></p>
+<p>Your summer, your celebrations. Find your look and own it.</p>
+<hr />
+<h2>Summer Party Dressy Sandals FAQs</h2>
+<p><strong>What are the best dressy sandals for summer parties in 2026?</strong><br />
+A: Two strong picks depending on how dressed up you're going. The Hadyn White Leather is a versatile, reviewer-loved classic that pairs with virtually any summer outfit. The Calissi Champagne Leather offers a more elevated, party-ready look with its luxe champagne tone - better suited for dressier occasions and evening events.</p>
+<p><strong>Do these summer party sandals run true to size?</strong><br />
+A: Size up for both. The Calissi runs small or tight, so ordering a half to full size up is essential. <span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">Sizing up a half-size is recommended if you're between sizes</span> on the Hadyn - though many customers found the fit comfortable right away.</p>
+<p><strong>Can I wear dressy sandals to both casual and formal summer parties?</strong><br />
+A: Absolutely. The Hadyn White Leather works across casual barbecues and dressier daytime events thanks to its clean neutral colorway, while the Calissi Champagne Leather is better suited for evening gatherings where you want a more polished, statement-making look.</p>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_024",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_title",
+    "start_index": 2,
+    "stop_index": 80,
+    "text_snippet": "\n# Dressy Sandals for Summer Parties: 2 Stylish Picks to Celebrate the Season\n",
+    "description": "Query Echo Title: Title echoes target query 'dressy sandals for summer parties 2026'",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_025",
+    "type": "editorial",
+    "editorial_subtype": "tov_perspective",
+    "start_index": 456,
+    "stop_index": 680,
+    "text_snippet": "\nSummer parties don't wait. Neither should your sandal game. You need something that looks good, fee...",
+    "description": "Tov Perspective: Second-person 'you' establishes peer-to-peer dynamic from the start",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Perspective"
+  },
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 1376,
+    "stop_index": 1413,
+    "text_snippet": "If between sizes, size up a half-size",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 1556,
+    "stop_index": 1562,
+    "text_snippet": "$69.95",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 1565,
+    "stop_index": 1571,
+    "text_snippet": "$79.95",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 1594,
+    "stop_index": 1605,
+    "text_snippet": "0.75 inches",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 1608,
+    "stop_index": 1618,
+    "text_snippet": "0.5 inches",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 1849,
+    "stop_index": 1900,
+    "text_snippet": "The Hadyn is a women's sandal made of white leather",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_010",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 1955,
+    "stop_index": 2007,
+    "text_snippet": "It features geometric cutouts on a wide single strap",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 2069,
+    "stop_index": 2092,
+    "text_snippet": "The slip-on flat design",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "customer_experience",
+    "start_index": 2516,
+    "stop_index": 2701,
+    "text_snippet": "\"The quality is great, and it looks good with any summer outfits. Whether paired with shorts, a flow...",
+    "description": "Customer testimonial by Sasha S.",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "HADYN BLACK LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "customer_experience",
+    "start_index": 2911,
+    "stop_index": 3081,
+    "text_snippet": "\"I've been upgrading my wardrobe, and these have been a great addition. They fit very well, are comf...",
+    "description": "Customer testimonial by Crystal M.",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "HADYN BLACK LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "customer_experience",
+    "start_index": 3184,
+    "stop_index": 3277,
+    "text_snippet": "\"I have these in several different colors. They fit and look great on.\" \u2014 Anntoniette D. (5\u2605)",
+    "description": "Customer testimonial by Anntoniette D.",
+    "source_url": null,
+    "evidence_id": "quote_8",
+    "product_name": "Hadyn White Leather",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 3279,
+    "stop_index": 3350,
+    "text_snippet": "The Hadyn is part of Steve Madden's women's designer sandals collection",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_011",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "claim",
+    "start_index": 3355,
+    "stop_index": 3361,
+    "text_snippet": "$69.95",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "claim",
+    "start_index": 3580,
+    "stop_index": 3646,
+    "text_snippet": "The Calissi features a sleek strappy slide design with a flat sole",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "claim",
+    "start_index": 3657,
+    "stop_index": 3682,
+    "text_snippet": "champagne-colored leather",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_011",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "customer_experience",
+    "start_index": 3983,
+    "stop_index": 4049,
+    "text_snippet": "\"I'm in love!!! Beautiful shoe and great price.\" \u2014 LaTisha D. (5\u2605)",
+    "description": "Customer testimonial by LaTisha D.",
+    "source_url": null,
+    "evidence_id": "quote_5",
+    "product_name": "HADYN BLACK LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_021",
+    "type": "customer_experience",
+    "start_index": 4188,
+    "stop_index": 4344,
+    "text_snippet": "\"My favorite pair of sandals I've ever owned. They are beautiful and comfortable and I get complimen...",
+    "description": "Customer testimonial by Maddy E.",
+    "source_url": null,
+    "evidence_id": "quote_21",
+    "product_name": "CALISSI WHITE LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_022",
+    "type": "customer_experience",
+    "start_index": 4560,
+    "stop_index": 4673,
+    "text_snippet": "\"The sandal is really cute and simple, but I could've gone up a full size for a more comfortable fit...",
+    "description": "Customer testimonial by Amaya P.",
+    "source_url": null,
+    "evidence_id": "quote_17",
+    "product_name": null,
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "claim",
+    "start_index": 4844,
+    "stop_index": 4850,
+    "text_snippet": "$79.95",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "claim",
+    "start_index": 4858,
+    "stop_index": 4878,
+    "text_snippet": "0.5 inch heel height",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "claim",
+    "start_index": 4967,
+    "stop_index": 4980,
+    "text_snippet": "leather upper",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "claim",
+    "start_index": 4985,
+    "stop_index": 5005,
+    "text_snippet": "sleek strappy design",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_023",
+    "type": "customer_experience",
+    "start_index": 6149,
+    "stop_index": 6233,
+    "text_snippet": "\"They are comfortable and perfect to combine with different looks.\" \u2014 Keylin M. (5\u2605)",
+    "description": "Customer testimonial by Keylin M.",
+    "source_url": null,
+    "evidence_id": "quote_6",
+    "product_name": "Hadyn White Leather",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "claim",
+    "start_index": 6892,
+    "stop_index": 6952,
+    "text_snippet": "Sizing up a half-size is recommended if you're between sizes",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
