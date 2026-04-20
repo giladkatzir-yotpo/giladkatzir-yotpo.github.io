@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chic Bachelorette Party Shoes: Platform Sandals, Rhinestone Heels, and Bridal-Worthy Picks</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Content Brief</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<h1>Chic Bachelorette Party Shoes: Platform Sandals, Rhinestone Heels, and Bridal-Worthy Picks</h1>
+<p><strong>Target Query:</strong> bachelorette party shoes heels bridal heels rhinestone heels platform sandals 2026<br />
+<strong>Article Type:</strong> product_spotlight<br />
+<strong>Word Range:</strong> 1500–2500<br />
+<strong>Audience:</strong> People interested in Chic Bachelorette Party Shoes: Platform Sandals, Rhinestone Heels, and Bridal-Worthy Picks</p>
+<hr />
+<p><em>Immediately answer the target queries about bachelorette party shoes with a concise summary of the guide's scope and featured products.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><strong>In Short:</strong> This bachelorette party guide features 2 curated heel picks for guests heading out to celebrate the bride. From champagne platform sandals with party-ready sparkle to sleek black patent rhinestone heels, here's everything you need to find the perfect bachelorette party shoes that balance style and comfort.</li>
+</ul>
+<hr />
+<p><span class="annotation" data-annotation-id="anno_034" data-annotation-ids="anno_034">## Best Bachelorette Party Shoes at a Glance </span></p>
+<p><em>Quick-reference comparison table so decisive readers can immediately see the two featured shoes side by side — style, heel height, comfort notes, and best-for occasion context.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>Markdown table comparing Liandra Champagne and Priya Black Patent across key attributes: style (platform sandal vs. mule heel), vibe (glamorous/festive vs. sexy/sleek), comfort highlights, reviewer rating, and ideal bachelorette scenario</li>
+<li>Liandra Champagne rated 4.8 average across 13 reviews with 92% rating 4–5 stars; Priya Black Patent rated 4.5 average across 151 reviews with 89% rating 4–5 stars</li>
+<li>Position each shoe for its ideal bachelorette moment: Liandra for dinner-to-cocktails glam, Priya for bar-hopping and dancing</li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">"Stable, supportive, comfortable! Easy to stand in at party time. Awesome for flared pantsuits and longer dresses." — Lesley Z. (5★)</span></p>
+</blockquote>
+<hr />
+<h2>The Party-Ready Platform: Liandra Champagne</h2>
+<p><em>Deep editorial feature on the Liandra Champagne as a statement bachelorette platform sandal — covering its look, comfort profile, and honest trade-offs for extended evening wear.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>OWNS: Platform sandal design and all-evening comfort trade-off — the Liandra's thick block heel and cushioned insole deliver stability that reviewers call 'easy to stand in at party time,' but at least one reviewer noted sole discomfort developed after prolonged wear, making a backup pair of foldable flats a smart bachelorette move</li>
+<li>Champagne tone works as a versatile party neutral that pairs with dresses, jumpsuits, and going-out looks — reviewers praise its ability to elevate any outfit</li>
+<li>Honest note on fit: reviewers suggest this style is best suited for those with thinner or petite feet, so wider-footed guests may want to try before committing</li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">"Stable, supportive, comfortable! Easy to stand in at party time. Awesome for flared pantsuits and longer dresses." — Lesley Z. (5★)</span></p>
+</blockquote>
+<hr />
+<h2>Why the Priya Black Patent Is the Sexy Heel You'll Actually Want to Dance In</h2>
+<p><em>Editorial feature on the Priya Black Patent as the sleek, sexy rhinestone-accented mule heel built for a bachelorette night out — covering its look, color variety, comfort, and sizing nuance.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>OWNS: Sexy mule silhouette and color variety — reviewers describe the Priya as 'classy and sexy' with a glossy patent finish that turns heads, and multiple customers bought it in several colors because they loved it so much</li>
+<li>OWNS: Sizing guidance — customers have mixed experiences with sizing on the Priya, with many recommending sizing up a half size especially in the patent leather version; plan ahead so you're not scrambling before the party</li>
+<li>Wry personality moment: the Priya is the heel that lets you show up looking like the main character at someone else's bachelorette — just make sure you don't upstage the bride (with 151 reviews and a 4.5 average, you won't be the only one obsessed)</li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">"I absolutely LOVE these heels. The look, the feel, the support, and they are true to size." — Johnette W. (5★)</span></p>
+</blockquote>
+<hr />
+<h2>How to Choose the Right Bachelorette Party Shoes for Your Night Out</h2>
+<p><em>Selection guidance helping readers pick between the two styles based on occasion type, outfit coordination, comfort needs, and versatility across multiple bachelorette events.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>OWNS: Occasion-type matching — for a seated dinner or rooftop cocktails, the Liandra Champagne's platform height and ankle strap deliver a polished, stable look; for a bar crawl or club night, the Priya's easy slip-on mule design means quick on-and-off and a sexier silhouette</li>
+<li>Outfit coordination tips: champagne tones pair with pastels, whites, and metallics for a cohesive bridal-party palette, while black patent goes with literally everything — reviewers confirm it pairs effortlessly with any party outfit</li>
+<li>Comfort vs. duration: if you know the night will run long (think 5+ hours on your feet), factor in that platform sandals may need a comfort backup, while the mule heel's lower-commitment fit makes it easier to slip off between venues</li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">"I can wear these shoes with any type of outfits and I look very well put together. High comfortable for a high thick heel." — Camila R. (5★)</span></p>
+</blockquote>
+<hr />
+<p><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035">## Bachelorette Party Shoes FAQs </span></p>
+<p><em>Summarize the blog post's key points about bachelorette party shoes in Q&amp;A format for quick scanning and LLM retrieval.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>Q: What are the best bachelorette party shoes for comfort and style? A: The Liandra Champagne platform sandal (4.8-star average) offers a glamorous, stable heel ideal for dinners and cocktails, while the Priya Black Patent mule (4.5-star average, 151 reviews) delivers a sexy, dance-friendly option — both balance party-ready looks with real comfort.</li>
+<li>Q: Do I need to size up for rhinestone heels or platform sandals? A: It depends on the style. The Priya Black Patent runs slightly small according to reviewers, who recommend sizing up a half size in patent leather. The Liandra fits best on slimmer feet, so consider your foot width when ordering.</li>
+<li>Q: Are platform sandals comfortable enough for an all-night bachelorette party? A: Reviewers find them comfortable for the first several hours thanks to cushioned insoles and block heels, but some note that sole comfort fades during extended all-night wear — packing foldable flats as a backup is a smart move.</li>
+</ul>
+<hr />
+<p><em>CTA: Shop the full bachelorette party collection.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>Shop the full Bachelorette Party collection — Steve Madden's dedicated Wedding Shop features bridal shoes, bridesmaids shoes, and guest-ready styles for every celebration.</li>
+</ul>
+<p><strong>Supporting Facts:</strong></p>
+<ul>
+<li>The sole is made of synthetic material.</li>
+</ul>
+<hr />
+<h2>Quote Bank</h2>
+<p><em>Spare quotes available for use in the blog. Remove any you don't want included.</em></p>
+<blockquote>
+<p><span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">"I got these to be my 'something blue' for my kitschy Las Vegas wedding. So far they feel stable and comfortable!" — Alanis K. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">"The shoe is very sturdy and has the cushioned insole so you don't even feel like this is a tall heel. The ankle strap is very thin so it's a delicate look even though these are platforms! I'm so happy I found these!" — Alicia R. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">"I love the quality and the look of these heels. I can wear them all day without problems and they don't scuff as fast as other brands." — Mariela H. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">"Wore these for my wedding, absolutely perfect! Very comfortable and well made!" — Alli (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">"I seriously looked everywhere for the perfect heel for my wedding. These straps actually keep my foot in! The satin fabric matches my dress perfectly." — sydney l. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">"I needed a tall, block heel to wear with my wedding dress that is comfortable enough to wear for many hours standing, walking, and dancing, and these are it!" — Alicia R. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">"The heel is tall but the block of the heel is thick and sturdy enough that my feet do not ache when I wear them. There's some cushioning which is great for added comfort!" — Kaitlin (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">"I got these for graduation photos and they're so cute and so comfortable." — Kaitlin (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">"True size! Beautiful shoes." — Vivian l. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">"The heels were exactly what I needed to compliment my bridesmaid's dress." — Sherly G. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">"They are best on thin feet — they hug your feet perfectly." — Victoria M. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">"You won't regret it. They look great on your foot and go with everything." — Ilyse B. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">"Amazing heels, they are so classy and sexy." — Jennifer H. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">"These are my 4th pair in this style! Comfortable, dress them up or down, stylish and true to size! I wish I could wear these all year long." — Alexa B. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">"The gold is so good. The leather is buttery soft and they fit like a dream." — Janelle L. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">"These slides are extremely comfortable and elegant." — Diana P. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">"I love these heels! They are so comfy, elegant. Wear them with jeans or dresses. I was so surprised the burgundy color matches almost with everything, so I'm ordering my 2nd pair." — Vero (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_021" data-annotation-ids="anno_021">"I love these so much I bought them in 3 colors! They are so comfortable especially for a mule. The heel is the perfect height to dress up or down." — Alexa B. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_022" data-annotation-ids="anno_022">"This shoe is both stylish and comfortable, and it pairs well with a variety of outfits. I wore them on a date night, and my feet felt great the entire evening." — Clarice O. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_023" data-annotation-ids="anno_023">"So comfortable and yet so sophisticated." — Joan P. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_024" data-annotation-ids="anno_024">"Beautiful shoe and so comfortable! Love them. Will buy more colors!" — Ciara S. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_025" data-annotation-ids="anno_025">"I absolutely adore the Priya mule, I own them in several colors." — Brittany (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_026" data-annotation-ids="anno_026">"I love these shoes, it's comfortable, chic and classy. Would 10000% recommend." — alyssa Y. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_027" data-annotation-ids="anno_027">"Beautiful shoes, comfortable and trending, love them." — Marni R. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_028" data-annotation-ids="anno_028">"Shoes are beautiful and look great with jeans, going to order another pair." — Maxine O. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_029" data-annotation-ids="anno_029">"Nice quality, perfect height." — elsa m. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_030" data-annotation-ids="anno_030">"These heels are actually very very comfortable. They are so comfortable I actually thought they were 4 inch heels. If you have medium width and are used to 4.5 heels you won't be disappointed." — DMC (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_031" data-annotation-ids="anno_031">"Height is comfortable and classy." (4★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_032" data-annotation-ids="anno_032">"Fits well, very comfortable and looks good :blush:" — Margaret</span></p>
+<p><span class="annotation" data-annotation-id="anno_033" data-annotation-ids="anno_033">"Love this shoe the denim is cute and sexy I’m definitely getting the other colors." — Vincent G.</span></p>
+</blockquote>
+<hr />
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_000",
+    "type": "customer_experience",
+    "start_index": 1680,
+    "stop_index": 1812,
+    "text_snippet": "\"Stable, supportive, comfortable! Easy to stand in at party time. Awesome for flared pantsuits and l...",
+    "description": "Customer testimonial by Lesley Z.",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "LIANDRA SILVER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "customer_experience",
+    "start_index": 2752,
+    "stop_index": 2884,
+    "text_snippet": "\"Stable, supportive, comfortable! Easy to stand in at party time. Awesome for flared pantsuits and l...",
+    "description": "Customer testimonial by Lesley Z.",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "LIANDRA SILVER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "customer_experience",
+    "start_index": 3913,
+    "stop_index": 4024,
+    "text_snippet": "\"I absolutely LOVE these heels. The look, the feel, the support, and they are true to size.\" \u2014 Johne...",
+    "description": "Customer testimonial by Johnette W.",
+    "source_url": null,
+    "evidence_id": "quote_13",
+    "product_name": "PRIYA GOLD LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "customer_experience",
+    "start_index": 5076,
+    "stop_index": 5217,
+    "text_snippet": "\"I can wear these shoes with any type of outfits and I look very well put together. High comfortable...",
+    "description": "Customer testimonial by Camila R.",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "LIANDRA BLACK SUEDE",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "customer_experience",
+    "start_index": 6790,
+    "stop_index": 6921,
+    "text_snippet": "\"I got these to be my 'something blue' for my kitschy Las Vegas wedding. So far they feel stable and...",
+    "description": "Customer testimonial by Alanis K.",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "LIANDRA TEAL SATIN",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "customer_experience",
+    "start_index": 6925,
+    "stop_index": 7159,
+    "text_snippet": "\"The shoe is very sturdy and has the cushioned insole so you don't even feel like this is a tall hee...",
+    "description": "Customer testimonial by Alicia R.",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "LIANDRA BONE PATENT",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "customer_experience",
+    "start_index": 7163,
+    "stop_index": 7317,
+    "text_snippet": "\"I love the quality and the look of these heels. I can wear them all day without problems and they d...",
+    "description": "Customer testimonial by Mariela H.",
+    "source_url": null,
+    "evidence_id": "quote_4",
+    "product_name": "LIANDRA BLACK SUEDE",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "customer_experience",
+    "start_index": 7321,
+    "stop_index": 7413,
+    "text_snippet": "\"Wore these for my wedding, absolutely perfect! Very comfortable and well made!\" \u2014 Alli (5\u2605)",
+    "description": "Customer testimonial by Alli",
+    "source_url": null,
+    "evidence_id": "quote_5",
+    "product_name": "LIANDRA IVORY SATIN",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "customer_experience",
+    "start_index": 7417,
+    "stop_index": 7586,
+    "text_snippet": "\"I seriously looked everywhere for the perfect heel for my wedding. These straps actually keep my fo...",
+    "description": "Customer testimonial by sydney l.",
+    "source_url": null,
+    "evidence_id": "quote_6",
+    "product_name": "LIANDRA IVORY SATIN",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "customer_experience",
+    "start_index": 7590,
+    "stop_index": 7766,
+    "text_snippet": "\"I needed a tall, block heel to wear with my wedding dress that is comfortable enough to wear for ma...",
+    "description": "Customer testimonial by Alicia R.",
+    "source_url": null,
+    "evidence_id": "quote_7",
+    "product_name": "LIANDRA BONE PATENT",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "customer_experience",
+    "start_index": 7770,
+    "stop_index": 7957,
+    "text_snippet": "\"The heel is tall but the block of the heel is thick and sturdy enough that my feet do not ache when...",
+    "description": "Customer testimonial by Kaitlin",
+    "source_url": null,
+    "evidence_id": "quote_8",
+    "product_name": "LIANDRA BONE PATENT",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "customer_experience",
+    "start_index": 7961,
+    "stop_index": 8051,
+    "text_snippet": "\"I got these for graduation photos and they're so cute and so comfortable.\" \u2014 Kaitlin (5\u2605)",
+    "description": "Customer testimonial by Kaitlin",
+    "source_url": null,
+    "evidence_id": "quote_9",
+    "product_name": "LIANDRA BONE PATENT",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "customer_experience",
+    "start_index": 8055,
+    "stop_index": 8101,
+    "text_snippet": "\"True size! Beautiful shoes.\" \u2014 Vivian l. (5\u2605)",
+    "description": "Customer testimonial by Vivian l.",
+    "source_url": null,
+    "evidence_id": "quote_10",
+    "product_name": "LIANDRA IVORY SATIN",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "customer_experience",
+    "start_index": 8105,
+    "stop_index": 8197,
+    "text_snippet": "\"The heels were exactly what I needed to compliment my bridesmaid's dress.\" \u2014 Sherly G. (5\u2605)",
+    "description": "Customer testimonial by Sherly G.",
+    "source_url": null,
+    "evidence_id": "quote_11",
+    "product_name": "LIANDRA SILVER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "customer_experience",
+    "start_index": 8201,
+    "stop_index": 8280,
+    "text_snippet": "\"They are best on thin feet \u2014 they hug your feet perfectly.\" \u2014 Victoria M. (5\u2605)",
+    "description": "Customer testimonial by Victoria M.",
+    "source_url": null,
+    "evidence_id": "quote_12",
+    "product_name": "LIANDRA EMBELLISHED WHITE MESH",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "customer_experience",
+    "start_index": 8284,
+    "stop_index": 8375,
+    "text_snippet": "\"You won't regret it. They look great on your foot and go with everything.\" \u2014 Ilyse B. (5\u2605)",
+    "description": "Customer testimonial by Ilyse B.",
+    "source_url": null,
+    "evidence_id": "quote_14",
+    "product_name": "PRIYA SILVER DISCO",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "customer_experience",
+    "start_index": 8379,
+    "stop_index": 8443,
+    "text_snippet": "\"Amazing heels, they are so classy and sexy.\" \u2014 Jennifer H. (5\u2605)",
+    "description": "Customer testimonial by Jennifer H.",
+    "source_url": null,
+    "evidence_id": "quote_15",
+    "product_name": "Priya Black Patent",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "customer_experience",
+    "start_index": 8447,
+    "stop_index": 8604,
+    "text_snippet": "\"These are my 4th pair in this style! Comfortable, dress them up or down, stylish and true to size! ...",
+    "description": "Customer testimonial by Alexa B.",
+    "source_url": null,
+    "evidence_id": "quote_16",
+    "product_name": "PRIYA SILVER DISCO",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "customer_experience",
+    "start_index": 8608,
+    "stop_index": 8703,
+    "text_snippet": "\"The gold is so good. The leather is buttery soft and they fit like a dream.\" \u2014 Janelle L. (5\u2605)",
+    "description": "Customer testimonial by Janelle L.",
+    "source_url": null,
+    "evidence_id": "quote_17",
+    "product_name": "PRIYA GOLD LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "customer_experience",
+    "start_index": 8707,
+    "stop_index": 8776,
+    "text_snippet": "\"These slides are extremely comfortable and elegant.\" \u2014 Diana P. (5\u2605)",
+    "description": "Customer testimonial by Diana P.",
+    "source_url": null,
+    "evidence_id": "quote_18",
+    "product_name": "Priya Black Patent",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "customer_experience",
+    "start_index": 8780,
+    "stop_index": 8973,
+    "text_snippet": "\"I love these heels! They are so comfy, elegant. Wear them with jeans or dresses. I was so surprised...",
+    "description": "Customer testimonial by Vero",
+    "source_url": null,
+    "evidence_id": "quote_19",
+    "product_name": "PRIYA WINE PATENT",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_021",
+    "type": "customer_experience",
+    "start_index": 8977,
+    "stop_index": 9141,
+    "text_snippet": "\"I love these so much I bought them in 3 colors! They are so comfortable especially for a mule. The ...",
+    "description": "Customer testimonial by Alexa B.",
+    "source_url": null,
+    "evidence_id": "quote_20",
+    "product_name": "Priya Black Patent",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_022",
+    "type": "customer_experience",
+    "start_index": 9145,
+    "stop_index": 9324,
+    "text_snippet": "\"This shoe is both stylish and comfortable, and it pairs well with a variety of outfits. I wore them...",
+    "description": "Customer testimonial by Clarice O.",
+    "source_url": null,
+    "evidence_id": "quote_21",
+    "product_name": "PRIYA WHITE PATENT",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_023",
+    "type": "customer_experience",
+    "start_index": 9328,
+    "stop_index": 9385,
+    "text_snippet": "\"So comfortable and yet so sophisticated.\" \u2014 Joan P. (5\u2605)",
+    "description": "Customer testimonial by Joan P.",
+    "source_url": null,
+    "evidence_id": "quote_22",
+    "product_name": "Priya Black Patent",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_024",
+    "type": "customer_experience",
+    "start_index": 9389,
+    "stop_index": 9474,
+    "text_snippet": "\"Beautiful shoe and so comfortable! Love them. Will buy more colors!\" \u2014 Ciara S. (5\u2605)",
+    "description": "Customer testimonial by Ciara S.",
+    "source_url": null,
+    "evidence_id": "quote_23",
+    "product_name": "Priya Black Patent",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_025",
+    "type": "customer_experience",
+    "start_index": 9478,
+    "stop_index": 9560,
+    "text_snippet": "\"I absolutely adore the Priya mule, I own them in several colors.\" \u2014 Brittany (5\u2605)",
+    "description": "Customer testimonial by Brittany",
+    "source_url": null,
+    "evidence_id": "quote_24",
+    "product_name": "PRIYA WHITE PATENT",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_026",
+    "type": "customer_experience",
+    "start_index": 9564,
+    "stop_index": 9661,
+    "text_snippet": "\"I love these shoes, it's comfortable, chic and classy. Would 10000% recommend.\" \u2014 alyssa Y. (5\u2605)",
+    "description": "Customer testimonial by alyssa Y.",
+    "source_url": null,
+    "evidence_id": "quote_25",
+    "product_name": "PRIYA BLUE/WHITE",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_027",
+    "type": "customer_experience",
+    "start_index": 9665,
+    "stop_index": 9736,
+    "text_snippet": "\"Beautiful shoes, comfortable and trending, love them.\" \u2014 Marni R. (5\u2605)",
+    "description": "Customer testimonial by Marni R.",
+    "source_url": null,
+    "evidence_id": "quote_26",
+    "product_name": "PRIYA WHITE PATENT",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_028",
+    "type": "customer_experience",
+    "start_index": 9740,
+    "stop_index": 9834,
+    "text_snippet": "\"Shoes are beautiful and look great with jeans, going to order another pair.\" \u2014 Maxine O. (5\u2605)",
+    "description": "Customer testimonial by Maxine O.",
+    "source_url": null,
+    "evidence_id": "quote_27",
+    "product_name": "PRIYA GOLD LEATHER",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_029",
+    "type": "customer_experience",
+    "start_index": 9838,
+    "stop_index": 9884,
+    "text_snippet": "\"Nice quality, perfect height.\" \u2014 elsa m. (5\u2605)",
+    "description": "Customer testimonial by elsa m.",
+    "source_url": null,
+    "evidence_id": "quote_28",
+    "product_name": "PRIYA FLOWER IVORY SATIN",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_030",
+    "type": "customer_experience",
+    "start_index": 9888,
+    "stop_index": 10093,
+    "text_snippet": "\"These heels are actually very very comfortable. They are so comfortable I actually thought they wer...",
+    "description": "Customer testimonial by DMC",
+    "source_url": null,
+    "evidence_id": "quote_29",
+    "product_name": "PRIYA WHITE PATENT",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_031",
+    "type": "customer_experience",
+    "start_index": 10097,
+    "stop_index": 10137,
+    "text_snippet": "\"Height is comfortable and classy.\" (4\u2605)",
+    "description": "Customer testimonial",
+    "source_url": null,
+    "evidence_id": "quote_30",
+    "product_name": "PRIYA WINE PATENT",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_032",
+    "type": "customer_experience",
+    "start_index": 10141,
+    "stop_index": 10204,
+    "text_snippet": "\"Fits well, very comfortable and looks good :blush:\" \u2014 Margaret",
+    "description": "Customer testimonial by Margaret",
+    "source_url": null,
+    "evidence_id": "quote_31",
+    "product_name": null,
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_033",
+    "type": "customer_experience",
+    "start_index": 10208,
+    "stop_index": 10305,
+    "text_snippet": "\"Love this shoe the denim is cute and sexy I\u2019m definitely getting the other colors.\" \u2014 Vincent G.",
+    "description": "Customer testimonial by Vincent G.",
+    "source_url": null,
+    "evidence_id": "quote_32",
+    "product_name": null,
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_034",
+    "type": "editorial",
+    "editorial_subtype": "table_format",
+    "start_index": 878,
+    "stop_index": 923,
+    "text_snippet": "## Best Bachelorette Party Shoes at a Glance ",
+    "description": "Table Format: Comparison table early for structured data extraction",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Table Format"
+  },
+  {
+    "annotation_id": "anno_035",
+    "type": "editorial",
+    "editorial_subtype": "faq",
+    "start_index": 5224,
+    "stop_index": 5257,
+    "text_snippet": "## Bachelorette Party Shoes FAQs ",
+    "description": "Faq: FAQ section for generative search targeting",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "FAQ"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>

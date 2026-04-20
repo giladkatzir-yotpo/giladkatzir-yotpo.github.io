@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Blog Content</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<p><span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015"></p>
+<h1>Chic Bachelorette Party Shoes: Platform Sandals, Rhinestone Heels, and Bridal-Worthy Picks</h1>
+<p></span></p>
+<p><span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016"></p>
+<p><strong>In Short:</strong> Two standout heels for every guest heading out to celebrate the bride. A champagne platform sandal dripping with party-ready sparkle and sleek black patent rhinestone heels - here's your guide to finding the pair that delivers on style and comfort without making you choose.<br />
+</span></p>
+<p>She said yes. Now it's your turn - to find the shoes that carry you from dinner toasts to dance floors without a single regret.</p>
+<p>Whether you're the one planning every detail or just showing up ready to celebrate, the right heels make a statement. We've got the looks to prove it.</p>
+<p>Let's get into it.</p>
+<hr />
+<h2>Best Picks at a Glance</h2>
+<p>Here's the side-by-side before you dive deeper.</p>
+<p><strong>The Liandra Champagne</strong> is a glamorous, statement-making platform sandal built on a chunky block heel - the kind of shoe that walks into a rooftop celebration and immediately owns the room. At <span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">4.75 inches</span> with a <span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">1.25-inch platform</span> to offset the height, it delivers real stability without sacrificing drama. The <span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">synthetic</span> upper keeps it lightweight, and a cushioned insole means your feet stay in the game longer than you'd expect. Reviewers are obsessed - 4.8 average across 13 reviews, with 92% rating it 4–5 stars. At <span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">$119.95</span>, it's your dinner-to-cocktails power move.</p>
+<p><strong>The Priya Black Patent</strong> is a completely different mood - sexy, sleek, and effortlessly cool. This stiletto mule with a <span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">patent leather</span> finish and a <span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">4.25-inch</span> heel was made for bar-hopping and dance floors. The slip-on mule design means easy on-and-off between venues, and the leather lining keeps things comfortable when the night runs long. With 151 reviews and a 4.5-star average (89% rating 4–5 stars), it's a crowd favorite for a reason. And at <span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">$109.95</span>, it's the steal of the night.</p>
+<p>Two very different moods. One mission: find your look and own the night.</p>
+<hr />
+<h2>The Party-Ready Platform: Liandra Champagne</h2>
+<p>Bold, glamorous, and undeniably festive - the Liandra Champagne is the platform sandal that walks into a bachelorette and immediately sets the tone.</p>
+<p>Here's the deal. This shoe was built for celebrations. The <span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">platform block heel and square-toe design</span> create a modern, structured silhouette - equal parts polished and playful. And that champagne tone? A versatile party neutral that pairs beautifully with dresses, jumpsuits, and every going-out look already in your closet.</p>
+<p>It's the shade that plays well with pastels, metallics, and that white mini you've been saving for exactly this kind of night.</p>
+<h3>Comfort That Actually Shows Up</h3>
+<p>Four hours into a bachelorette, one thing matters above all else. Stability.</p>
+<p>The Liandra Champagne's thick block heel and <span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">1.25-inch platform</span> work together to offset that <span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">4.75-inch heel height</span>, so the effective pitch on your foot feels more manageable than the numbers suggest. <span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">The shoe is designed for all-day wear, providing stability and comfort due to its elevated heel.</span></p>
+<p>Reviewers say it best:</p>
+<blockquote>
+<p>"Stable, supportive, comfortable! Easy to stand in at party time. Awesome for flared pantsuits and longer dresses." - Lesley Z. (5★)</p>
+<p>"The shoe is very sturdy and has the cushioned insole so you don't even feel like this is a tall heel. The ankle strap is very thin so it's a delicate look even though these are platforms! I'm so happy I found these!" - Alicia R. (5★)</p>
+</blockquote>
+<h3>The Honest Trade-Off</h3>
+<p>We're keeping it real. The Liandra delivers impressive stability for the first several hours, but at least one reviewer noted that sole comfort faded during prolonged wear. The move? Pack foldable flats in your bag. Smart bachelorette planning isn't just about the itinerary - it's about the backup plan for your feet.</p>
+<h3>A Note on Fit</h3>
+<p>If you're unsure about the fit for your foot shape, try before you commit - a sizing surprise the night of is nobody's idea of fun.</p>
+<blockquote>
+<p>"They are best on thin feet - they hug your feet perfectly." - Victoria M. (5★)</p>
+</blockquote>
+<hr />
+<h2>Why the Priya Black Patent Is the Sexy Heel You'll Actually Want to Dance In</h2>
+<p>Some heels look incredible but punish you on the dance floor. The Priya Black Patent? Not one of them.</p>
+<p><span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">This sandal features a slender stiletto heel with a retro-inspired peep toe design on the slide strap at the front</span> - and the result is a silhouette that's minimal yet striking, with a glossy patent finish and a sexy mule shape that turns heads without trying too hard.</p>
+<blockquote>
+<p>"Amazing heels, they are so classy and sexy." - Jennifer H. (5★)</p>
+<p>"I absolutely LOVE these heels. The look, the feel, the support, and they are true to size." - Johnette W. (5★)</p>
+</blockquote>
+<h3>The Color Obsession Is Real</h3>
+<p>Don't take our word for it:</p>
+<blockquote>
+<p>"I love these so much I bought them in 3 colors! They are so comfortable especially for a mule. The heel is the perfect height to dress up or down." - Alexa B. (5★)</p>
+<p>"I absolutely adore the Priya mule, I own them in several colors." - Brittany (5★)</p>
+</blockquote>
+<p>Black patent is a bachelorette go-to for a reason - it goes with literally everything. But knowing you can come back for more colors after the party? That's versatility that makes a real statement.</p>
+<h3>Sizing: Plan Ahead</h3>
+<p>Pay attention here. Customers have mixed experiences with sizing on the Priya, and many recommend going up a half size - especially in patent leather. <span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">If you're between sizes, consider sizing up a half-size for the best fit.</span> Order early. Try them on. You don't want to be scrambling the day before.</p>
+<h3>Main Character Energy Warning</h3>
+<p>Let's be honest. The Priya is the heel that lets you show up looking like the main character at someone else's bachelorette. Just make sure you don't upstage the bride. (With 151 reviews and a 4.5-star average, you won't be the only one obsessed.)</p>
+<hr />
+<h2>How to Choose the Right Shoe for Your Night Out</h2>
+<p>Two incredible shoes. Different vibes entirely. So how do you pick?</p>
+<p>The key? Match the shoe to the night.</p>
+<h3>Match Your Shoe to the Occasion</h3>
+<p>For a seated dinner or rooftop cocktails, the Liandra's platform height and ankle strap deliver a polished, stable look ideal for standing and mingling. Heading out on a bar crawl or club night instead? The Priya's <span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">slip-on style</span> means quick on-and-off between stops, and that sexy stiletto silhouette was born for dance floors. And if the night is a multi-venue marathon that starts at dinner and ends at a club, think seriously about how many hours you'll actually be on your feet - more on that below.</p>
+<h3>Outfit Coordination Tips</h3>
+<p>Champagne tones pair beautifully with pastels, whites, and metallics - perfect for a cohesive bridal-party palette where everyone coordinates without matching.</p>
+<p>Black patent? Goes with everything:</p>
+<blockquote>
+<p>"I can wear these shoes with any type of outfits and I look very well put together. High comfortable for a high thick heel." - Camila R. (5★)</p>
+<p>"You won't regret it. They look great on your foot and go with everything." - Ilyse B. (5★)</p>
+</blockquote>
+<p>Whether you're in a mini dress, tailored pants, or a co-ord set - the Priya works seamlessly.</p>
+<h3>Comfort vs. Duration</h3>
+<p>If you know the night will run long - think 5+ hours on your feet - factor this in. The Liandra's platform delivers solid comfort for the first several hours but may need a backup for the final stretch. The Priya's mule design offers a lower-commitment fit that's easier to slip off between venues, giving your feet a breather without the full shoe-removal production.</p>
+<p>Your style, your rules. We're here to make it easy.</p>
+<hr />
+<h2>FAQs</h2>
+<p><strong>What are the best bachelorette party shoes for comfort and style?</strong><br />
+A: The Liandra Champagne platform sandal (4.8-star average, 13 reviews) offers glamorous stability ideal for dinners and cocktails. The Priya Black Patent mule (4.5-star average, 151 reviews) delivers a sexy, dance-friendly silhouette. Both balance party-ready looks with real-world comfort - just match the shoe to your night's agenda.</p>
+<p><strong>Do I need to size up for rhinestone heels or platform sandals?</strong><br />
+A: Depends on the style. The Priya Black Patent runs slightly small according to reviewers - most recommend going up a half size in patent leather. <span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">If you're between sizes, consider sizing up a half-size for the best fit.</span> For the Liandra, one reviewer noted it fits best on thinner feet, so consider your foot shape when ordering.</p>
+<p><strong>Are platform sandals comfortable enough for an all-night bachelorette party?</strong><br />
+A: For the first several hours, yes - cushioned insoles and block heels do the work. Extended all-night wear is where some reviewers note fading comfort. Pack foldable flats as backup.</p>
+<hr />
+<p>The bride's night is about to be unforgettable.</p>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_015",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_title",
+    "start_index": 0,
+    "stop_index": 94,
+    "text_snippet": "\n# Chic Bachelorette Party Shoes: Platform Sandals, Rhinestone Heels, and Bridal-Worthy Picks\n",
+    "description": "Query Echo Title: Title echoes target query 'bachelorette party shoes heels rhinestone heels platform sandals'",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "editorial",
+    "editorial_subtype": "answer_first",
+    "start_index": 96,
+    "stop_index": 387,
+    "text_snippet": "\n\n**In Short:** Two standout heels for every guest heading out to celebrate the bride. A champagne p...",
+    "description": "Answer First: Direct answer block in opening - immediately addresses target query about bachelorette party shoes",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Answer First"
+  },
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 974,
+    "stop_index": 985,
+    "text_snippet": "4.75 inches",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 993,
+    "stop_index": 1011,
+    "text_snippet": "1.25-inch platform",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 1092,
+    "stop_index": 1101,
+    "text_snippet": "synthetic",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 1301,
+    "stop_index": 1308,
+    "text_snippet": "$119.95",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 1475,
+    "stop_index": 1489,
+    "text_snippet": "patent leather",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 1503,
+    "stop_index": 1512,
+    "text_snippet": "4.25-inch",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 1804,
+    "stop_index": 1811,
+    "text_snippet": "$109.95",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 2185,
+    "stop_index": 2226,
+    "text_snippet": "platform block heel and square-toe design",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 2740,
+    "stop_index": 2758,
+    "text_snippet": "1.25-inch platform",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "claim",
+    "start_index": 2788,
+    "stop_index": 2809,
+    "text_snippet": "4.75-inch heel height",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "claim",
+    "start_index": 2895,
+    "stop_index": 2991,
+    "text_snippet": "The shoe is designed for all-day wear, providing stability and comfort due to its elevated heel.",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "claim",
+    "start_index": 4171,
+    "stop_index": 4285,
+    "text_snippet": "This sandal features a slender stiletto heel with a retro-inspired peep toe design on the slide stra...",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "claim",
+    "start_index": 5317,
+    "stop_index": 5390,
+    "text_snippet": "If you're between sizes, consider sizing up a half-size for the best fit.",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "claim",
+    "start_index": 6173,
+    "stop_index": 6186,
+    "text_snippet": "slip-on style",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "claim",
+    "start_index": 8121,
+    "stop_index": 8194,
+    "text_snippet": "If you're between sizes, consider sizing up a half-size for the best fit.",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
