@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Blog Content</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<p><span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016"></p>
+<h1>Best Evening Clutches for Wedding Guests and Bridal Events in 2026</h1>
+<p></span></p>
+<p><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017"></p>
+<p><strong>In Short:</strong> Two evening clutches. Two wedding weekend roles. This 2026 guide covers a gold chain-strap clutch built for guests and a crisp white satin bag made for brides-to-be - from rehearsal dinner to reception. Your outfit tells a story. The right clutch finishes the sentence.</span></p>
+<hr />
+<h2>Best Evening Clutches for Weddings at a Glance</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Juliana Bag Gold</strong></th>
+<th><strong>Lilia Bag White</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Best For</strong></td>
+<td>Wedding guest</td>
+<td>Bride-to-be</td>
+</tr>
+<tr>
+<td><strong>Style</strong></td>
+<td>Gold chain-strap clutch</td>
+<td>White satin bridal bag</td>
+</tr>
+<tr>
+<td><strong>Carry Options</strong></td>
+<td>Clutch, crossbody, or shoulder bag</td>
+<td>Clutch or crossbody (23–24" strap)</td>
+</tr>
+<tr>
+<td><strong>Standout Feature</strong></td>
+<td>Three-way versatility for cocktail hour to dance floor</td>
+<td><span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">Roomy enough for your phone and essentials</span></td>
+</tr>
+<tr>
+<td><strong>Average Review Score</strong></td>
+<td>5.0 ★</td>
+<td>5.0 ★</td>
+</tr>
+<tr>
+<td><strong>Price</strong></td>
+<td><span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">$69.00</span></td>
+<td><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">$78.00</span></td>
+</tr>
+</tbody>
+</table>
+<p>Two bags. Two roles. One unforgettable wedding weekend.</p>
+<p>The Juliana Bag Gold works triple duty - clutch, crossbody, or shoulder bag - so you're never locked into one look. The Lilia Bag White keeps your hands free when you're juggling bridal party photos and last-minute coordination texts.</p>
+<blockquote>
+<p>"The perfect evening clutch." - Brandie S. (5★)</p>
+</blockquote>
+<hr />
+<h2>The Gold Clutch That Ties Your Whole Outfit Together</h2>
+<p>Here's the thing about wedding guest dressing. You obsess over the dress. You deliberate on shoes. You layer the jewelry just right. But the bag? That's the finishing detail that pulls everything from "nice" to <em>intentional</em> - and it's almost always an afterthought.</p>
+<p>Not this time.</p>
+<p>As Vidia P. put it:</p>
+<p>"I bought this handbag with the shoes to match. I love the coordinated look," according to Vidia P. (5★).</p>
+<p><span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">The Juliana Bag Gold is a clutch handbag with a removable chain crossbody strap</span>, and that flexibility matters when you're moving between a ceremony, cocktail hour, and reception in a single evening.</p>
+<p>Rated 5.0 across 21 reviews. Not a fluke.</p>
+<blockquote>
+<p>"Beautiful color, good sized quality made bag. Wear as a clutch, crossbody or shoulder bag." - Cheryl G. (5★)</p>
+</blockquote>
+<p>There's something deeply satisfying about walking into a rehearsal dinner knowing your bag and shoes were made for each other - literally. It's the kind of detail only you and the person who compliments you will notice. That's exactly the point.</p>
+<p><strong>What's inside:</strong> <span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">The interior includes a back-wall slip pocket designed to hold credit cards and valuables</span>. <span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">Magnetic snap closure</span> keeps everything secure while you're on the move. <span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">A duster bag is included with the purchase</span> - so your clutch stays pristine between wedding weekends.</p>
+<blockquote>
+<p>"I am excited to pair it with my dress and shoes." - Taronda S. (5★)</p>
+</blockquote>
+<hr />
+<h2>A Bridal Clutch for the Weekend Before 'I Do'</h2>
+<p>Picture the full weekend ahead of you - the rehearsal dinner, the bridal brunch, the morning-after breakfast. Your wedding weekend isn't one event. It's a whole series of moments where you want to feel like <em>you</em>: polished, effortless, and unmistakably bridal.</p>
+<p><span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">The Lilia Bag White is crafted from satin fabric with hand-pleated detailing</span> - and that texture reads as bridal without being over-the-top. Elegant, modern, intentional.</p>
+<p>"Got this as a gift to use during my wedding festivities and I loved it!" - Jess (5★)</p>
+<p><span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">The bag dimensions are 5.25 inches H x 9.25 inches W x 1 inch D</span>. That's enough room for your phone - a genuine advantage when you're fielding last-minute texts from your wedding planner or snapping candid photos with the bridal party.</p>
+<blockquote>
+<p>"My phone fits in it which will be so handy!" - Jess (5★)</p>
+</blockquote>
+<p><span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">The bag features a top metal zip closure</span> for secure storage, and <span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">includes a removable chain crossbody strap</span> so you can go hands-free when the toasts start flowing. <span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">The crossbody strap measures 23–24 inches in length</span> - comfortable and practical for a long evening.</p>
+<p><strong>A note on strap weight:</strong> The Juliana's chain strap is noted as very heavy - a signal of quality, but worth considering if you're on your feet all evening. The Lilia offers a lighter crossbody alternative at that same 23–24 inch drop.</p>
+<blockquote>
+<p>"Beautiful, I love the fabric and size." - Rosalind H. (5★)</p>
+</blockquote>
+<p><span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">The bag has an elongated silhouette designed to transition from day to night</span> - so it works just as well at a morning bridal brunch as it does under candlelight at the rehearsal dinner.</p>
+<hr />
+<h2>How to Choose the Right Evening Clutch for a Wedding</h2>
+<p>Your style, your rules. But a few smart decisions can make your whole weekend feel more polished.</p>
+<p><strong>Are you a guest or the bride?</strong><br />
+Gold and metallic tones complement a range of guest outfits without competing with the bride. White? That's a bride's prerogative.</p>
+<p><strong>How long will you be on your feet?</strong><br />
+If you'll be moving between venues or dancing, a crossbody option keeps your hands free. Consider whether you prefer a chain strap (heavier, statement-making) or a lighter crossbody drop.</p>
+<p><strong>One bag, multiple events?</strong><br />
+A clutch that transitions from rehearsal dinner to brunch to reception gives you more styling mileage from a single accessory.</p>
+<blockquote>
+<p>"Bought to coordinate with shoes. Perfect color match, and clutch is a great size." - Sandra H. (5★)</p>
+</blockquote>
+<p>The key? Think about your whole weekend - not just one event. The right clutch works overtime.</p>
+<hr />
+<h2>Wedding Evening Clutch FAQs</h2>
+<p><strong>What are the best evening clutches for a wedding in 2026?</strong><br />
+A: For guests, the Juliana Bag Gold - three carry styles, effortless shoe coordination, and a perfect 5.0 rating. For brides-to-be, the Lilia Bag White is built for rehearsal dinners and pre-wedding events. Both rated 5.0 by reviewers.</p>
+<p><strong>Can these bridal clutches fit a phone?</strong><br />
+A: Yes. The Lilia Bag White measures <span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">5.25" H x 9.25" W</span>, and reviewers confirm a phone fits inside. The Juliana Bag Gold is a compact clutch style best suited for lipstick and cards.</p>
+<p><strong>How do I coordinate an evening clutch with my wedding outfit?</strong><br />
+A: Match your clutch to your shoes - reviewers swear by it. Gold complements jewel tones, navy, and blush. White pairs naturally with everything in a bride's pre-wedding wardrobe.</p>
+<h2>Complete Your Wedding Weekend Look</h2>
+<p>Wedding season is about celebrating love - and looking good while you do it. Whether you're the guest who coordinates every detail or the bride-to-be who wants one perfect bag for every pre-wedding moment, we've got the looks.</p>
+<p><span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">Steve Madden offers a dedicated Wedding Shop featuring bridal shoes, bridesmaids shoes, flower girl shoes, mother of bride shoes, and wedding guest shoes</span>. Shop the full collection for shoes, clutches, and accessories to complete your wedding weekend - from rehearsal dinner to reception.</p>
+<p><span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">Steve Madden offers free shipping on orders over $75</span>, so building your full wedding look is easier than ever.</p>
+<p>Your wedding weekend. Your style. Find your look.</p>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_016",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_title",
+    "start_index": 0,
+    "stop_index": 70,
+    "text_snippet": "\n# Best Evening Clutches for Wedding Guests and Bridal Events in 2026\n",
+    "description": "Query Echo Title: Title echoes target query 'evening clutches for wedding guests 2026'",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "editorial",
+    "editorial_subtype": "answer_first",
+    "start_index": 72,
+    "stop_index": 357,
+    "text_snippet": "\n\n**In Short:** Two evening clutches. Two wedding weekend roles. This 2026 guide covers a gold chain...",
+    "description": "Answer First: Direct answer block for LLM retrieval on wedding clutch queries",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Answer First"
+  },
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 774,
+    "stop_index": 816,
+    "text_snippet": "Roomy enough for your phone and essentials",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 878,
+    "stop_index": 884,
+    "text_snippet": "$69.00",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 887,
+    "stop_index": 893,
+    "text_snippet": "$78.00",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 1728,
+    "stop_index": 1807,
+    "text_snippet": "The Juliana Bag Gold is a clutch handbag with a removable chain crossbody strap",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 2355,
+    "stop_index": 2444,
+    "text_snippet": "The interior includes a back-wall slip pocket designed to hold credit cards and valuables",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 2446,
+    "stop_index": 2467,
+    "text_snippet": "Magnetic snap closure",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 2518,
+    "stop_index": 2560,
+    "text_snippet": "A duster bag is included with the purchase",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 3013,
+    "stop_index": 3089,
+    "text_snippet": "The Lilia Bag White is crafted from satin fabric with hand-pleated detailing",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 3274,
+    "stop_index": 3337,
+    "text_snippet": "The bag dimensions are 5.25 inches H x 9.25 inches W x 1 inch D",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "claim",
+    "start_index": 3574,
+    "stop_index": 3614,
+    "text_snippet": "The bag features a top metal zip closure",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "claim",
+    "start_index": 3639,
+    "stop_index": 3681,
+    "text_snippet": "includes a removable chain crossbody strap",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "claim",
+    "start_index": 3738,
+    "stop_index": 3789,
+    "text_snippet": "The crossbody strap measures 23\u201324 inches in length",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "claim",
+    "start_index": 4144,
+    "stop_index": 4220,
+    "text_snippet": "The bag has an elongated silhouette designed to transition from day to night",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_010",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "claim",
+    "start_index": 5675,
+    "stop_index": 5692,
+    "text_snippet": "5.25\" H x 9.25\" W",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "claim",
+    "start_index": 6338,
+    "stop_index": 6491,
+    "text_snippet": "Steve Madden offers a dedicated Wedding Shop featuring bridal shoes, bridesmaids shoes, flower girl ...",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "claim",
+    "start_index": 6627,
+    "stop_index": 6679,
+    "text_snippet": "Steve Madden offers free shipping on orders over $75",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
