@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Blog Content</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<p><span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019"></p>
+<h1>Trendy Shoes to Wear to Fall Weddings as a Guest: Heels and Loafers for 2026</h1>
+<p></span></p>
+<p><strong>In Short:</strong> Looking for fall wedding guest shoes for women? The best wedding guest heels for 2026 are two Steve Madden stilettos that balance style, comfort, and value at <span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">$109.95</span> each. The Jypsey White Leather strappy stiletto is a versatile pick that works from casual outdoor ceremonies to upscale receptions, while the Bri White Lace Pearl slingback pump makes a romantic statement at formal fall weddings. Both feature <span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">synthetic lining</span>, <span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">synthetic sock, and synthetic sole construction</span>, and are available now at <span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">stevemadden.com</span>. Whether you're looking for timeless heels or exploring wedding guest shoe options for the season ahead, these two deliver style, comfort, and value.</p>
+<hr />
+<h2>Both Picks at a Glance</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Jypsey White Leather</strong></th>
+<th><strong>Bri White Lace Pearl</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Style</strong></td>
+<td>Strappy stiletto heel</td>
+<td>Pearl-and-lace detailed slingback pump</td>
+</tr>
+<tr>
+<td><strong>Best For</strong></td>
+<td>Versatile - ceremony through cocktail hour</td>
+<td>Romantic or formal fall weddings</td>
+</tr>
+<tr>
+<td><strong>Vibe</strong></td>
+<td>Timeless and minimal</td>
+<td>Elegant and feminine</td>
+</tr>
+<tr>
+<td><strong>Sizing Tip</strong></td>
+<td>Size up half to full size</td>
+<td>Size up half to full size</td>
+</tr>
+<tr>
+<td><strong>Avg. Rating</strong></td>
+<td>4.64 avg across 50 reviews</td>
+<td>4.7 avg across 171 reviews</td>
+</tr>
+</tbody>
+</table>
+<p>Ready? Let's break them down. Find your look.</p>
+<hr />
+<h2>The Strappy Classic: Jypsey White Leather</h2>
+<p>Some shoes try too hard. The Jypsey doesn't have to.</p>
+<p>A satin midi for an upscale barn reception? Done. A floral maxi for a vineyard ceremony? Effortless. With its clean strappy silhouette and timeless design, the Jypsey is the kind of heel you grab without overthinking because its minimal styling pairs naturally with a range of fall wedding outfits.</p>
+<p>Here's what you're working with: <span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">a strappy design with a secure ankle strap</span>, <span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">a rounded toe and crisscross back design</span>, and <span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">a 4-inch stiletto heel</span>. The <span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">upper is genuine leather</span> - polished, structured, and ready to elevate any ensemble.</p>
+<h3>Real Wedding Proof</h3>
+<p>Not just pretty on a product page. Real guests have worn these to real weddings - and lived to dance about it.</p>
+<p>"Such a sexy, simple, classy heel. So comfortable - wore them to a wedding and danced for hours in them." - Miriam J. (5★)</p>
+<p>That's the endorsement that matters when you're RSVP-ing yes. She danced. For hours. In heels.</p>
+<p>And then there's this:</p>
+<p>"These are not only so freakin cute they are actually comfy. I didn't have to break them in. I was able to walk for more than the distance from the door to the table!" - Devi N. (5★)</p>
+<p>Says everything about what we've all come to expect from heels.</p>
+<h3>Sizing Alert</h3>
+<p>One thing before you add to cart: these run small. Multiple reviewers recommend sizing up a half to full size to avoid a tight fit around the toes. <span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">The Jypsey is priced at $109.95</span>, and <span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">Steve Madden offers free shipping on orders over $75</span> - so order early. Give yourself time to exchange if needed before the big day.</p>
+<hr />
+<h2>The Romantic Statement: Bri White Lace Pearl</h2>
+<p>If the Jypsey is your effortlessly cool plus-one, the Bri is the one who turns heads the moment she walks in.</p>
+<p>The numbers back it up. 94% of reviewers rated it 4–5 stars across 171 reviews, and the praise is universal: pearl accents, lace design, undeniably eye-catching.</p>
+<p>Delicate in design but built for real occasions, the Bri is <span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">a pointed-toe stiletto slingback pump</span> with <span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">a grosgrain ribbon that wraps around the slingback strap, finishing with a bow on the side</span>. It sits on <span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">a 4-inch heel</span> with <span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">a textile and synthetic upper</span>.</p>
+<h3>The Compliment Magnet</h3>
+<p>This is the shoe people stop you to ask about between the ceremony and cocktail hour.</p>
+<p>"These are the most beautiful and comfortable shoes I ever had!" - Alina G. (5★)</p>
+<p>Reviewers love how the soft material feels gentle even on pinky toes during hours of wear. That detail matters - because when you're navigating a fall wedding in heels, every point of contact counts.</p>
+<h3>The Comfort Trade-Off (Let's Be Honest)</h3>
+<p>Here's the deal. The Bri is ideal for seated dinners, photo ops, and shorter stretches of standing. Gorgeous through cocktail hour and the first few dances. But heel height and design do contribute to foot fatigue during extended wear - that's true of almost any 4-inch stiletto.</p>
+<p>Your comfort strategy? Slip them off under the table during the speeches. No one's watching your feet during the best man's toast. Promise.</p>
+<h3>Sizing Note</h3>
+<p>Same story as the Jypsey - the Bri runs small. <span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">If you're between sizes, size up a half size</span> - or go a full size up if you want breathing room. <span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">Priced at $109.95</span>, it's the same accessible price point. Same advice: order early.</p>
+<hr />
+<h2>How to Choose Between Them</h2>
+<p>Your style, your rules. But a little guidance never hurts - especially when the invite says "cocktail attire" and you're staring at two gorgeous pairs of white heels.</p>
+<h3>Match Shoe to Wedding Formality</h3>
+<p>Candlelit ballrooms, garden estates, weddings where the florals are abundant and the dress code leans dressy - that's Bri territory. The pearl-and-lace detailing suits romantic or formal fall settings. The Jypsey's clean strappy silhouette? It works across a wider range: casual outdoor ceremonies, upscale receptions, and everything between.</p>
+<h3>Outfit Coordination</h3>
+<p>Both come in white leather, which pairs beautifully with fall wedding palettes - burgundy, emerald, rust, navy. White heels ground a bold dress without competing for attention. They let your outfit do the talking.</p>
+<p>"These strappy heels are timeless and good. Just what I was looking for. I think they are comparable to luxury brands that are seven times the price." - Ann G. (5★)</p>
+<p>That kind of value makes either pick a smart wardrobe investment - way beyond a single wedding.</p>
+<h3>Comfort Strategy for the Occasion</h3>
+<p>Wedding guest duties run in bursts - standing for the ceremony, mingling at cocktail hour, a few songs on the dance floor. Both heels' comfort sweet spot aligns well with that rhythm.</p>
+<p>But if your invite says "dancing all night," the Jypsey may edge out for extended movement. Its secure ankle strap and crisscross back give you a locked-in feel that holds up through those later hours.</p>
+<h3>Versatility Beyond the Wedding</h3>
+<p>Neither of these is a one-and-done shoe. The Jypsey can move from a Saturday wedding to a weeknight out, and the Bri's pearl-and-lace detailing adds a touch of glamour to any dressier occasion. Both are designed to earn their place in your closet beyond a single celebration.</p>
+<hr />
+<h2>Fall Wedding Guest Shoes FAQs</h2>
+<p><strong>What are the best fall wedding guest shoes for women?</strong><br />
+A: The Jypsey White Leather strappy heel delivers versatile, timeless styling that works from casual outdoor ceremonies to upscale receptions. The Bri White Lace Pearl makes a romantic, elegant statement with pearl accents and lace detailing - perfect for formal fall settings. Both pair well with rich autumn tones like burgundy, emerald, rust, and navy.</p>
+<p><strong>Do these wedding guest heels run true to size?</strong><br />
+A: They run small. Size up a half to full size - and order early so you have time to exchange before the wedding.</p>
+<p><strong>Are strappy heels comfortable enough for a wedding reception?</strong><br />
+A: For the typical wedding guest experience - ceremony, cocktail hour, bursts of dancing - reviewers report both shoes hold up well. Both feature <span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">synthetic lining, synthetic sock, and synthetic sole</span> construction. Extended all-night wear may cause some foot fatigue, which is common with <span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">4-inch heeled</span> stilettos. The Jypsey's ankle strap design offers a more locked-in feel for longer stretches on the dance floor.</p>
+<hr />
+<h2>Shop the Look</h2>
+<p>Fall wedding season is calling. You've got the outfit. You've got the confidence. Now you need the shoes to match.</p>
+<p><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">Steve Madden offers a dedicated Wedding Shop</span> with everything from wedding guest shoes to bridal picks and beyond. Shop the full collection and step into the celebration - looking good, feeling good, and turning every head in the room.</p>
+<p>Your style, your rules. We've got the looks.</p>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_019",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_title",
+    "start_index": 0,
+    "stop_index": 80,
+    "text_snippet": "Trendy Shoes to Wear to Fall Weddings as a Guest: Heels and Loafers for 2026",
+    "description": "Query Echo Title: Title echoes target queries 'fall wedding guest shoes women' and 'wedding guest shoes heels loafers 2026'",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 256,
+    "stop_index": 263,
+    "text_snippet": "$109.95",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 508,
+    "stop_index": 524,
+    "text_snippet": "synthetic lining",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 526,
+    "stop_index": 573,
+    "text_snippet": "synthetic sock, and synthetic sole construction",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 600,
+    "stop_index": 615,
+    "text_snippet": "stevemadden.com",
+    "description": "Factual claim from brand_identity",
+    "source_url": null,
+    "evidence_id": "brand_url",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 1759,
+    "stop_index": 1801,
+    "text_snippet": "a strappy design with a secure ankle strap",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 1803,
+    "stop_index": 1843,
+    "text_snippet": "a rounded toe and crisscross back design",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 1849,
+    "stop_index": 1871,
+    "text_snippet": "a 4-inch stiletto heel",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 1877,
+    "stop_index": 1901,
+    "text_snippet": "upper is genuine leather",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 2763,
+    "stop_index": 2794,
+    "text_snippet": "The Jypsey is priced at $109.95",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "claim",
+    "start_index": 2800,
+    "stop_index": 2852,
+    "text_snippet": "Steve Madden offers free shipping on orders over $75",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_010",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "claim",
+    "start_index": 3325,
+    "stop_index": 3362,
+    "text_snippet": "a pointed-toe stiletto slingback pump",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "claim",
+    "start_index": 3368,
+    "stop_index": 3458,
+    "text_snippet": "a grosgrain ribbon that wraps around the slingback strap, finishing with a bow on the side",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "claim",
+    "start_index": 3471,
+    "stop_index": 3484,
+    "text_snippet": "a 4-inch heel",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "claim",
+    "start_index": 3490,
+    "stop_index": 3519,
+    "text_snippet": "a textile and synthetic upper",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "claim",
+    "start_index": 4455,
+    "stop_index": 4499,
+    "text_snippet": "If you're between sizes, size up a half size",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "claim",
+    "start_index": 4551,
+    "stop_index": 4568,
+    "text_snippet": "Priced at $109.95",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "claim",
+    "start_index": 7314,
+    "stop_index": 7366,
+    "text_snippet": "synthetic lining, synthetic sock, and synthetic sole",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "claim",
+    "start_index": 7455,
+    "stop_index": 7468,
+    "text_snippet": "4-inch heeled",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "claim",
+    "start_index": 7726,
+    "stop_index": 7770,
+    "text_snippet": "Steve Madden offers a dedicated Wedding Shop",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_015",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
