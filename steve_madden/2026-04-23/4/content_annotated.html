@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Blog Content</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<p><span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013"></p>
+<h1>Fall Wedding Guest Shoes Women Will Love: 2 Stunning Heels for the Season</h1>
+<p></span></p>
+<p><strong>In Short:</strong> This fall wedding guest shoe guide spotlights 2 standout heels for women who want to look stunning and feel confident at autumn celebrations. A gold strappy sandal built for dancing. A mocha-toned heel that channels fall's richest tones. Everything you need to nail your next wedding guest outfit - from the feet up.</p>
+<hr />
+<p>Fall wedding season hits different. Golden light. Dreamy venues. And your shoe game? It needs to keep up.</p>
+<p>Whether you're stepping into a vineyard ceremony, a rooftop cocktail reception, or a ballroom that smells like cinnamon and champagne - the right pair of heels changes everything.</p>
+<p>Your outfit starts at the ground. Let's make it count.</p>
+<p>We pulled two of our most-loved heels - both reviewer-backed, both fall-ready - so you can spend less time scrolling and more time celebrating. Your style, your rules. We're here to make the decision easy.</p>
+<hr />
+<h2>Best Fall Wedding Guest Shoes at a Glance</h2>
+<p>The <strong>JYPSEY GOLD LEATHER</strong> is your glamorous dance-floor companion - a strappy <span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">stiletto with a 4-inch heel</span> that catches candlelight and keeps you moving all night. Reviewers rave about dancing for hours pain-free, though it runs small, so size up a half to full size. At <span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">$109.95</span> with a 4.64 average across 50 reviews, it's the gold standard for evening receptions.</p>
+<p>The <strong>NOIR MOCHA</strong> brings warm, autumnal sophistication - a <span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">stiletto heel</span> with a <span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">sharp pointed toe</span> that owns the room from daytime vineyard ceremonies to formal autumn events. Praised for quality and all-day wearability, it earns a 4.65 average across 93 reviews at <span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">$109.95</span>. One note: it runs narrow, so wider feet should size up or add inserts.</p>
+<p>Two heels. Two vibes. Both stunning. The only hard part? Choosing.</p>
+<p>Now let's dig into each one.</p>
+<hr />
+<h2>The Gold Strappy Heel That Dances All Night</h2>
+<p>Some heels look incredible but punish your feet by hour two.</p>
+<p>The JYPSEY GOLD LEATHER? Not one of them.</p>
+<p>A strappy gold heel that pairs beautifully with cocktail dresses, jewel-toned ensembles, and every autumnal palette you can dream up - <span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">the strappy design with a secure ankle strap</span> keeps you locked in whether you're swaying during the first dance or sprinting to catch the bouquet.</p>
+<p>The vibe? Elegant, event-ready glamour. <span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">The upper is genuine leather</span>, and the <span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">rounded toe with crisscross back design</span> gives it a timeless silhouette that reviewers compare to brands costing seven times more.</p>
+<p>Reviewers say it best:</p>
+<p>"These are the most perfect pair of champagne heels! Very elegant and classy AND sooo comfortable! I can walk in and dance in these all night with no pain." - Rachel L. (5★)</p>
+<p>"Such a sexy, simple, classy heel. Soo comfortable - wore them to a wedding and danced for hours in them." - Miriam J. (5★)</p>
+<p><strong>The sizing note you need:</strong> Multiple reviewers flag that the JYPSEY runs small, especially around the toes. Size up a half to full size so you can focus on celebrating - not squeezing.</p>
+<p>Here's the thing about gold strappy heels at a fall wedding. They catch the candlelight. They photograph like a dream. They're the heels that make strangers lean over somewhere between cocktail hour and the bouquet toss to ask, "where did you get those?"</p>
+<blockquote>
+<p>"These strappy heels are timeless and good. Just what I was looking for. I think they are comparable to luxury brands that are seven times the price." - Ann G. (5★)</p>
+</blockquote>
+<p><span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">Designed for formal or professional occasions</span>, the JYPSEY doesn't clock out after the wedding. Holiday parties. Date nights. Anniversary dinners. She keeps showing up.</p>
+<hr />
+<h2>Why the NOIR MOCHA Is Made for Fall Weddings</h2>
+<p>If gold is the life of the party, mocha is the one who walks in and owns the room - without saying a word.</p>
+<p>Rich, warm, and unmistakably autumnal, the NOIR MOCHA's mocha tone is a natural complement to fall wedding settings - think amber leaves, candlelit barns, earth-toned tablescapes. Reviewers don't just like the color - they rave about it.</p>
+<p><span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">The sharp pointed-toe design</span> paired with a <span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">4-inch stiletto heel</span> and <span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">leather upper</span> delivers polish without pretension.</p>
+<p>"SM is just an overall comfortable shoe and the quality is amazing. SM never fails." - Alexandria J. (5★)</p>
+<p>That's not hype - that's 93 reviews deep.</p>
+<blockquote>
+<p>"Love the shoes &amp; the point is fierce!" - Melinda W. (5★)</p>
+</blockquote>
+<p><strong>Beyond the wedding:</strong> One reviewer loved these so much they became her go-to work shoe - a testament to versatility.</p>
+<blockquote>
+<p>"I love em shoes, very comfortable and chic, made with quality material. Had to order another one as it became my favorite work shoe." - Ezinne E. (5★)</p>
+</blockquote>
+<p><strong>The honest trade-off:</strong> The NOIR MOCHA runs narrow and isn't the most accommodating for wide feet. If you're wider through the toe box, size up or add cushioned inserts so you can dance through the full reception without regret.</p>
+<hr />
+<h2>How to Choose the Right Shoes for a Fall Wedding</h2>
+<p>Two incredible heels. One wedding invite. Here's how to decide.</p>
+<h3>Consider the Formality</h3>
+<p>Whether you're attending an evening cocktail reception with champagne towers or a daytime vineyard ceremony surrounded by rolling hills - formality sets the tone. Gold strappy heels read glamorous and celebratory, ideal for evening events and any reception with a dance floor. Mocha pointed-toe heels work seamlessly from daytime ceremonies to formal ballroom events - that rich, neutral tone adapts to nearly any setting.</p>
+<h3>Coordinate with Your Outfit</h3>
+<ul>
+<li><strong>Gold pairs with:</strong> Jewel tones, navy, black, and deep emerald cocktail dresses - the classic fall wedding guest palette.</li>
+<li><strong>Mocha complements:</strong> Burgundy, forest green, rust, olive, and earth-toned ensembles. Think warm and grounded.</li>
+</ul>
+<p>Both colors work with prints, solids, and everything in between. No wrong answers here.</p>
+<h3>Plan for Comfort</h3>
+<p>Let's be real. Wedding events involve seated dining, standing for toasts, and bursts of dance-floor energy - sometimes all in one night. Both heels earn strong comfort marks from reviewers during shorter wear periods. But for a full reception that stretches past midnight? Cushioned insoles extend your endurance and your fun.</p>
+<h3>Think Beyond the Wedding</h3>
+<p>Pick the shoe you'll reach for again. Both styles have the polished look to transition from wedding guest duty to holiday parties, date nights, and work events. From day to night - without compromising on style.</p>
+<p>The key? Pick the one that makes you feel like <em>you</em>. Bold and golden? Warm and grounded? Either way, you're showing up with confidence.</p>
+<hr />
+<h2>Fall Wedding Guest Shoes FAQs</h2>
+<p><strong>What are the best fall wedding guest shoes for women in 2026?</strong><br />
+A: Two standout picks: the JYPSEY GOLD LEATHER strappy heel for glamorous evening receptions and the NOIR MOCHA pointed-toe heel for autumnal color impact. Both earn high marks from reviewers for style and event-ready comfort, and both are <span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">priced at $109.95</span>.</p>
+<p><strong>Do fall wedding guest heels run true to size?</strong><br />
+A: Not quite. Both the JYPSEY GOLD LEATHER and NOIR MOCHA tend to run small or narrow based on widespread reviewer feedback. Most customers recommend sizing up a half to full size for the best fit at your event.</p>
+<p><strong>Can I wear strappy heels or open-toe shoes to a fall wedding?</strong><br />
+A: Absolutely. Strappy heels and pointed-toe styles remain popular fall wedding guest choices. Pair them with a cocktail dress in seasonal tones like burgundy, navy, or forest green - and consider cushioned inserts if you plan to dance through the reception.</p>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_013",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_title",
+    "start_index": 0,
+    "stop_index": 77,
+    "text_snippet": "Fall Wedding Guest Shoes Women Will Love: 2 Stunning Heels for the Season",
+    "description": "Query Echo Title: Title echoes target query 'fall wedding guest shoes women heels'",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 1106,
+    "stop_index": 1133,
+    "text_snippet": "stiletto with a 4-inch heel",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 1298,
+    "stop_index": 1305,
+    "text_snippet": "$109.95",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 1453,
+    "stop_index": 1466,
+    "text_snippet": "stiletto heel",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 1474,
+    "stop_index": 1491,
+    "text_snippet": "sharp pointed toe",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 1659,
+    "stop_index": 1666,
+    "text_snippet": "$109.95",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 2133,
+    "stop_index": 2177,
+    "text_snippet": "the strappy design with a secure ankle strap",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 2320,
+    "stop_index": 2348,
+    "text_snippet": "The upper is genuine leather",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 2358,
+    "stop_index": 2397,
+    "text_snippet": "rounded toe with crisscross back design",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 3425,
+    "stop_index": 3470,
+    "text_snippet": "Designed for formal or professional occasions",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "claim",
+    "start_index": 3995,
+    "stop_index": 4023,
+    "text_snippet": "The sharp pointed-toe design",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "claim",
+    "start_index": 4038,
+    "stop_index": 4058,
+    "text_snippet": "4-inch stiletto heel",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "claim",
+    "start_index": 4063,
+    "stop_index": 4076,
+    "text_snippet": "leather upper",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "claim",
+    "start_index": 6852,
+    "stop_index": 6869,
+    "text_snippet": "priced at $109.95",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
