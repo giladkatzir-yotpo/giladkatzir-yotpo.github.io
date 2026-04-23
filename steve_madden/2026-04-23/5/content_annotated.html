@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Blog Content</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<p><span class="annotation" data-annotation-id="anno_021" data-annotation-ids="anno_021"></p>
+<h1>Chic Bachelorette Party Shoes: Bridal Heels and Rhinestone-Worthy Styles for the Bride-to-Be</h1>
+<p></span></p>
+<p><strong>In Short:</strong> Two bridal heels. One unforgettable night. From pearl-accented lace platform sandals to sleek ivory satin pointed-toe heels, this guide covers the standout picks for brides who want to steal the spotlight - all from <span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">Steve Madden's dedicated Wedding Shop</span>.</p>
+<p>Your bachelorette party isn't just another night out. It's <em>the</em> night out - the one where every detail, from the playlist to the dress to the shoes, needs to match your energy. Bold, fun, and unapologetically you.</p>
+<p>And the shoes? They carry the whole look - turning heads, sparking compliments from strangers, keeping you on the dance floor long after the playlist should've ended.</p>
+<p>We've got two heels that deliver statement-making style without sacrificing wearability. Let's get into it.</p>
+<hr />
+<h2>Best Picks at a Glance</h2>
+<p>Already know what you want? We respect that. Here's both heels, side by side.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>BRI WHITE LACE PEARL</strong></th>
+<th><strong>LARINA IVORY SATIN</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Style</strong></td>
+<td>Lace &amp; pearl detailing - dreamy, romantic, unmistakably bridal</td>
+<td><span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">Satin finish in ivory</span> - sleek, modern, refined</td>
+</tr>
+<tr>
+<td><strong>Heel Vibe</strong></td>
+<td>Romantic with textured, feminine energy</td>
+<td>Sleek modern with a ballet-inspired silhouette</td>
+</tr>
+<tr>
+<td><strong>Heel Height</strong></td>
+<td><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">4 inches</span></td>
+<td><span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">4 inches</span></td>
+</tr>
+<tr>
+<td><strong>Comfort Window</strong></td>
+<td>Great for a few hours of celebration</td>
+<td>Great for a few hours of celebration</td>
+</tr>
+<tr>
+<td><strong>Sizing Advice</strong></td>
+<td><span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">Size up a half to full size if between sizes</span></td>
+<td>Runs large - most reviewers suggest sizing down a half size</td>
+</tr>
+<tr>
+<td><strong>Avg. Review Score</strong></td>
+<td>4.7 stars across 171 reviews</td>
+<td>4.8 stars across 124 reviews</td>
+</tr>
+<tr>
+<td><strong>Positive Rating</strong></td>
+<td>94% rated 4–5 stars</td>
+<td>95% rated 4–5 stars</td>
+</tr>
+<tr>
+<td><strong>Price</strong></td>
+<td><span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">$109.95</span></td>
+<td><span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">$119.95</span></td>
+</tr>
+</tbody>
+</table>
+<p>94–95% positive ratings across both styles. That's not marketing spin - that's hundreds of real customers backing up the promise.</p>
+<hr />
+<h2>The Bride's Night-Out Heel: Pearl, Lace, and Satin Styles Worth the Hype</h2>
+<p>Two heels. Both worth the hype. Let the reviews speak for themselves.</p>
+<h3>BRI WHITE LACE PEARL</h3>
+<p>Dreamy, textured, and unmistakably bridal. The BRI WHITE LACE PEARL looks like it was made for a celebration - because it was.</p>
+<p>Pearl accents and delicate lace detailing give this shoe a romantic aesthetic that photographs beautifully and feels even better in person. <span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">The BRI is a point-toe stiletto slingback pump</span> with <span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">a grosgrain ribbon that wraps around the slingback strap and finishes with a bow accenting the side of the shoe</span>. Intentional down to the last stitch - and chic from every angle.</p>
+<p>"These are the most beautiful and comfortable shoes I ever had!" - Alina G. (5★)</p>
+<p>As Cristina D. put it after wearing them to an engagement party:</p>
+<p>"Wore these for the first time to an engagement party and everyone complimented my shoes. They didn't hurt at all after all the dancing. Very beautiful and elegant." - Cristina D. (5★)</p>
+<p>Rated 4.7 stars across 171 reviews with 94% rating 4–5 stars. <span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">Upper material is textile and synthetic</span>, with <span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">synthetic lining, synthetic sock, and synthetic sole</span>.</p>
+<p><strong>Sizing note:</strong> <span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">If you're between sizes, size up a half size</span>. You want these fitting perfectly for your big night - no second-guessing.</p>
+<h3>LARINA IVORY SATIN</h3>
+<p>The kind of heel that makes your legs look incredible - and makes everyone else wish they'd asked you for styling advice.</p>
+<p><span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">The LARINA IVORY SATIN is a ballet pump heel with a square-toe design and lace-up closure</span>. That pointed square toe box - inspired by pointe shoes, according to one former ballerina reviewer - elongates the leg while feeling far more comfortable than a traditional pointed toe. A silhouette that reads effortlessly stylish from every angle.</p>
+<p>"I have this style of shoe in 3 colors now because I love it that much! The pointe shoe square toe box feels way better than a traditional pointed toe but still elongates the leg more than a round-toed heel." - Maggie (5★)</p>
+<p>As Eanna H. put it:</p>
+<p>"This shoe is SOOOO glamorous! Stunning details and finish, makes the foot and leg look gorgeous!" - Eanna H. (5★)</p>
+<p>Rated 4.8 stars across 124 reviews with 95% rating 4–5 stars. <span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">The shoe features a satin finish in ivory</span>, with <span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">a textile upper</span> and <span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">synthetic lining</span>. <span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">Heel height is 4 inches</span> - tall enough to make a statement, manageable enough to actually enjoy your night.</p>
+<p><strong>Sizing note:</strong> This one runs large. Most reviewers say size down a half for the best fit.</p>
+<hr />
+<h2>How to Choose the Right Heel for Your Night</h2>
+<p>Two incredible heels and one bachelorette party. So how do you decide?</p>
+<p>The key? Think about the vibe.</p>
+<h3>Occasion Type Matters</h3>
+<p>Whether you're planning a brunch-to-bar crawl with your crew or a downtown dinner that ends at the hottest club - your heel should match the energy.</p>
+<p><strong>The BRI WHITE LACE PEARL</strong> leans romantic and textured. Think garden-party vibes, rooftop brunches, or any bachelorette with a feminine, whimsical dress code.</p>
+<p><strong>The LARINA IVORY SATIN</strong> reads sleeker, more modern. Your downtown dinner heel. Your club-night showstopper. A refined silhouette that pairs with clean lines and confident energy.</p>
+<h3>Outfit Coordination</h3>
+<p>Lace and pearl pair naturally with white mini dresses and floral prints. The texture creates visual interest - you don't need much else.</p>
+<p>Ivory satin? Complements satin slip dresses, tailored jumpsuits, anything with clean lines. Go monochromatic. Let the shoe do the talking.</p>
+<h3>The Honest Trade-Off</h3>
+<p>Reviewers consistently praise both heels for impressive comfort at 4 inches. But let's be real - comfort tapers after a couple of hours. These are designed to steal the spotlight for a few fabulous hours, not survive a 12-hour endurance test.</p>
+<p>The move? Tuck a cute pair of flats in your bag if your night involves an all-hours marathon. Smart brides plan ahead.</p>
+<p>"Those shoes are elegant, comfortable and stylish. Love everything about them. Material is really comfortable, black lace color makes it stand out more, heel is not too high and easy to walk." - Irina G. (5★)</p>
+<h3>Versatility Beyond the Bachelorette</h3>
+<p>Here's the best part. Neither of these is a one-and-done purchase.</p>
+<p>Reviewers report wearing both to engagement parties, rehearsal dinners, anniversary dates, even Sunday brunch. <span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">The LARINA is designed for both formal occasions and chic everyday wear</span> - and the BRI's romantic detailing translates beautifully well beyond your bachelorette.</p>
+<p>A smart investment, not just a party shoe.</p>
+<p>"This is the first pair of heels I bought myself after being unable to walk properly for a year. I wore these out to anniversary dinner with my husband and they were wonderful. I was able to easily wear them the whole night. I got so many compliments on these heels." - Diana s. (5★)</p>
+<hr />
+<h2>FAQs</h2>
+<p><strong>What are the best bachelorette party shoes for the bride?</strong><br />
+A: Two top picks from <span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">Steve Madden's dedicated Wedding Shop</span>: the BRI WHITE LACE PEARL (romantic lace and pearl detailing, 4.7 stars across 171 reviews) and the LARINA IVORY SATIN (sleek ballet-inspired satin heel, 4.8 stars across 124 reviews). Both feature <span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">synthetic lining</span> and 4-inch heels that balance head-turning style with real wearability.</p>
+<p><strong>How should I size these bridal heels?</strong><br />
+A: They size differently. <span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">For the BRI WHITE LACE PEARL, reviewers recommend sizing up a half to full size if you're between sizes</span>. The LARINA runs large - most customers say go down a half size. When in doubt, check product reviews for your specific foot shape.</p>
+<p><strong>Are these heels comfortable enough for a full bachelorette party?</strong><br />
+A: For the first few hours? Absolutely - customers consistently praise both styles for impressive comfort in a 4-inch heel. For longer celebrations, bring backup flats to keep the party going past midnight.</p>
+<hr />
+<p>Your bachelorette.</p>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_021",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_title",
+    "start_index": 0,
+    "stop_index": 96,
+    "text_snippet": "Chic Bachelorette Party Shoes: Bridal Heels and Rhinestone-Worthy Styles for the Bride-to-Be",
+    "description": "Query Echo Title: Title echoes target query 'bachelorette party shoes heels bridal heels rhinestone'",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 330,
+    "stop_index": 367,
+    "text_snippet": "Steve Madden's dedicated Wedding Shop",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 1132,
+    "stop_index": 1153,
+    "text_snippet": "Satin finish in ivory",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 1310,
+    "stop_index": 1318,
+    "text_snippet": "4 inches",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 1321,
+    "stop_index": 1329,
+    "text_snippet": "4 inches",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 1455,
+    "stop_index": 1499,
+    "text_snippet": "Size up a half to full size if between sizes",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 1734,
+    "stop_index": 1741,
+    "text_snippet": "$109.95",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 1744,
+    "stop_index": 1751,
+    "text_snippet": "$119.95",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 2340,
+    "stop_index": 2386,
+    "text_snippet": "The BRI is a point-toe stiletto slingback pump",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 2392,
+    "stop_index": 2503,
+    "text_snippet": "a grosgrain ribbon that wraps around the slingback strap and finishes with a bow accenting the side ",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "claim",
+    "start_index": 2967,
+    "stop_index": 3006,
+    "text_snippet": "Upper material is textile and synthetic",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "claim",
+    "start_index": 3013,
+    "stop_index": 3065,
+    "text_snippet": "synthetic lining, synthetic sock, and synthetic sole",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "claim",
+    "start_index": 3086,
+    "stop_index": 3130,
+    "text_snippet": "If you're between sizes, size up a half size",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "claim",
+    "start_index": 3355,
+    "stop_index": 3444,
+    "text_snippet": "The LARINA IVORY SATIN is a ballet pump heel with a square-toe design and lace-up closure",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "claim",
+    "start_index": 4119,
+    "stop_index": 4160,
+    "text_snippet": "The shoe features a satin finish in ivory",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "claim",
+    "start_index": 4167,
+    "stop_index": 4182,
+    "text_snippet": "a textile upper",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "claim",
+    "start_index": 4187,
+    "stop_index": 4203,
+    "text_snippet": "synthetic lining",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "claim",
+    "start_index": 4205,
+    "stop_index": 4228,
+    "text_snippet": "Heel height is 4 inches",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "claim",
+    "start_index": 6221,
+    "stop_index": 6292,
+    "text_snippet": "The LARINA is designed for both formal occasions and chic everyday wear",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_010",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "claim",
+    "start_index": 6813,
+    "stop_index": 6850,
+    "text_snippet": "Steve Madden's dedicated Wedding Shop",
+    "description": "Factual claim from company_information",
+    "source_url": "",
+    "evidence_id": "fact_013",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "claim",
+    "start_index": 7049,
+    "stop_index": 7065,
+    "text_snippet": "synthetic lining",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "claim",
+    "start_index": 7210,
+    "stop_index": 7313,
+    "text_snippet": "For the BRI WHITE LACE PEARL, reviewers recommend sizing up a half to full size if you're between si",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
