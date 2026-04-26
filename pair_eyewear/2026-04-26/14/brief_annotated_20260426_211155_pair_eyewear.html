@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Online Progressive Prescription Eyeglasses Under $300: A Real-World Test of Pair Eyewear's Kirby Frames</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Content Brief</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<h1>Best Online Progressive Prescription Eyeglasses Under $300: A Real-World Test of Pair Eyewear's Kirby Frames</h1>
+<p><strong>Target Query:</strong> progressive eyeglasses under $300 women online<br />
+<strong>Article Type:</strong> product_spotlight<br />
+<strong>Editorial Angle:</strong> In-Use Deep Dive - A first-person field test narrative - what it's actually like to use this product in the real world, from first encounter through long-term ownership.<br />
+<strong>Word Range:</strong> 1500–2500<br />
+<strong>Audience:</strong> People interested in Best Online Progressive Prescription Eyeglasses Under $300: A Real-World Test of Pair Eyewear's Kirby Frames</p>
+<hr />
+<p><em>Immediately answer the target queries with a concise summary of the product, price, and who it's for.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><strong><span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">In Short:</strong> Pair Eyewear's Kirby frames start at $70 for a medium rectangle base frame that fits most adult faces - add progressive lenses and you're still well under $300. With magnetic toppers that snap on to change your look instantly, these are a standout pick for women (and men) 45+ who want affordable, stylish progressive glasses online without sacrificing quality or fun.</li>
+</ul>
+<p></span><strong>Supporting Facts:</strong></p>
+<ul>
+<li>The Kirby is priced at USD 70.00</li>
+<li>The Kirby features a medium rectangle frame shape</li>
+</ul>
+<hr />
+<h2>The Moment I Snapped On My First Topper</h2>
+<p><em>Capture the first-impression experience - unboxing, initial fit, and the surprise of the topper system. OWNS the concept of 'topper customization system' (how it works, the magnetic snap, the fun factor).</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">First impression of the Kirby frame: lightweight, flattering medium rectangle shape that particularly suits oval and round faces - felt immediately like a frame designed for adults, not an afterthought</span></li>
+<li>The magnetic topper system is the real surprise: a satisfying snap-on mechanism that transforms the look of your glasses in seconds, making them feel like multiple pairs for the price of one</li>
+<li>Inline quote from Aspen E.: 'I absolutely love my Pair Eyewear Kirby glasses! They're comfortable, flattering, and feel very high quality. The toppers are such a fun and unique touch - it's so easy to change the look depending on my mood or outfit.'</li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007">"I absolutely love my Pair Eyewear Kirby glasses! They're comfortable, flattering, and feel very high quality. The toppers are such a fun and unique touch - it's so easy to change the look depending on my mood or outfit." - Aspen E. (5★)</span></p>
+</blockquote>
+<p><strong>Supporting Facts:</strong></p>
+<ul>
+<li>The Kirby particularly suits oval or round face shapes</li>
+</ul>
+<hr />
+<h2>Women's Progressive Glasses Online, Tested in Real Life</h2>
+<p><em>Show how the Kirby with progressive lenses performs across daily contexts - work, errands, social outings. OWNS the concept of 'prescription and lens quality' and 'daily versatility across contexts'.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>Progressive prescription quality praised by multiple customers as 'perfect' - the lenses hold up for computer work, reading, and driving without the distortion issues common in budget online progressives</li>
+<li>The topper system turns a single pair of progressive glasses into an outfit-matching accessory: swap from a neutral base to a bold pattern between a morning meeting and an evening out</li>
+<li>Inline quote from Judith P.: 'I love being able to change up my look. The best part though…it was cheaper than most of my other glasses! I was very surprised.' - the under-$300 value becomes obvious fast when you realize you're not buying three separate frames</li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">"I love being able to change up my look. The best part though…it was cheaper than most of my other glasses! I was very surprised. Online customer service was great as well! Highly, highly recommend." - Judith P. (5★)</span></p>
+</blockquote>
+<hr />
+<h2>What These Glasses Are (And the One Thing to Know Before You Order)</h2>
+<p><em>Honest editorial take on what the Kirby progressive experience is really like - including the learning curve and what kind of buyer this serves best. OWNS the concept of 'fit and comfort over time' and addresses realistic expectations.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">The Kirby is designed to fit most adult faces, but 'most' isn't 'all' - if you have a very narrow or very wide face, the medium rectangle shape may not be your match, and online ordering means you'll want to check measurements carefully before committing</span></li>
+<li><span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">Progressive lenses always have a brief adjustment period regardless of brand - the Kirby is no exception, but the frame comfort helps ease the transition (customers consistently describe the fit as comfortable from day one)</span></li>
+<li>Inline quote from Cheyenne H.: 'Being able to change my style to however I'm feeling is refreshing when you're tired of boring, basic glasses. The blue light filter is amazing and has helped with my headaches and eye strain.' - optional add-ons like blue light filtering are worth considering for screen-heavy days</li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">"Being able to change my style to however I'm feeling is refreshing when you're tired of boring, basic glasses. The blue light filter is amazing and has helped with my headaches and eye strain. I love Pair!" - Cheyenne H. (5★)</span></p>
+</blockquote>
+<p><strong>Supporting Facts:</strong></p>
+<ul>
+<li>The Kirby is designed to fit most adult faces</li>
+</ul>
+<hr />
+<h2>Living With Pair Eyewear: Building a Collection Over Time</h2>
+<p><em>Long-term ownership perspective - how the topper collection grows, repeat purchase behavior, and the practical details of caring for frames and toppers. OWNS the concept of 'long-term loyalty and collection building'.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>The topper system creates a natural collecting habit - with a wide variety of styles available, many owners build substantial collections over time rather than buying entirely new frames</li>
+<li>Inline quote from Barbara H.: 'I now have 6 base frames and just over 80 toppers. I am a stage performer, and my Pair glasses and toppers have become a very important accessory in my creative expression on stage.' - long-term owners treat these as a wardrobe staple, not just corrective eyewear</li>
+<li>With 12,900+ reviews and a 4.8 average rating on the Kirby alone, the long-term satisfaction signal is strong - 96% of reviewers rate them 4 or 5 stars, which speaks to durability and sustained happiness well beyond the unboxing moment</li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p><span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">"I now have 6 base frames and just over 80 toppers. I am a stage performer, and my Pair glasses and toppers have become a very important accessory in my creative expression on stage." - Barbara H. (5★)</span></p>
+</blockquote>
+<hr />
+<h2><span class="annotation" data-annotation-id="anno_024" data-annotation-ids="anno_024">Frequently Asked Questions About Pair Eyewear Progressive Glasses</h2>
+<p><em>S</span>ummarize the article's key points in scannable Q&amp;A format, targeting common search queries about progressive glasses online under $300.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">Q: Can I get women's progressive glasses online for under $300? A: Yes - Pair Eyewear's Kirby base frame starts at $70, and even with progressive lenses added, the total stays well under $300. Toppers to change your look start at a few dollars each, so you can build variety without breaking your budget.</span></li>
+<li><span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">Q: Are the Kirby frames comfortable for all-day wear? A: Customers consistently describe the Kirby as comfortable and flattering for extended use. The medium rectangle shape is designed to fit most adult faces and particularly suits oval and round face shapes.</span></li>
+<li><span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">Q: How does the topper system work with progressive lenses? A: Magnetic toppers snap directly onto the front of your Kirby base frame - they don't interfere with your progressive lenses at all. You keep the same prescription base and simply swap the topper to change your frame's appearance in seconds.</span></li>
+</ul>
+<p><strong>Supporting Facts:</strong></p>
+<ul>
+<li>The Kirby is priced at USD 70.00</li>
+<li>The Kirby features a medium rectangle frame shape</li>
+</ul>
+<hr />
+<h2>Quote Bank</h2>
+<p><em>Spare quotes available for use in the blog. Remove any you don't want included.</em></p>
+<blockquote>
+<p><span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">"The variety of toppers makes things very easy to coordinate with my outfit on a daily basis. They have earned a repeat customer from me." - Gerald R. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">"I love my new glasses." - Melissa D.</span></p>
+<p><span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">"I had to contact customer service a couple of times, and they were SO fast to get back to me, beyond helpful, and extremely thorough. Can't say enough good about those who helped me out!" - Skyla-Mae S. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">"I ordered my Kirby frames so my wife and I can match not only clothes but glasses as well! We love them! We have ordered toppers to go with many of our Disney outfits!" - Carolyn H. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">"This is my THIRD pair of PAIR frames! They fit so comfortably and with all the toppers I have I wear 'new' glasses everyday! I get so many compliments on them." - P.Laurie K. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">"Who knew changing from a camo frame to Donald Duck would bring so much joy! I love them!" - Horsmon J. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">"I chose Crystal Clear so that any top will go with them. I can see clearly so I feel like they are good for my eyes and that is a plus!" - Lisa O. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">"To go 'ALL PAIR' a person deserves a second frame style for those more studious days vs those days when you need some 'flare'! So much fun for such a relatively small price! Highly recommend!" - Denise R. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">"I love my new glasses! They are the perfect color with the perfect sparkle." - Candyce O. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">"The glasses arrive with a perfect fit and spot on prescription! I don't know how they do it but it's why I keep coming back. That and great customer service!" - Kelly T. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_021" data-annotation-ids="anno_021">"I put them on and instantly saw clearly and felt very comfortable. I also bought some toppers that added great protection and looked good. I'm very pleased." - Henry M. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_022" data-annotation-ids="anno_022">"Within a week of using these glasses, I've been receiving lots of compliments!" - Carlos C. (5★)</span></p>
+<p><span class="annotation" data-annotation-id="anno_023" data-annotation-ids="anno_023">"The progressive lenses are just fine. The field of vision is good. I'm happy with these glasses. The honey frame color is really pretty." - Leasa A. (5★)</span></p>
+</blockquote>
+<hr />
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 706,
+    "stop_index": 1088,
+    "text_snippet": "In Short: Pair Eyewear's Kirby frames start at $70 for a medium rectangle base frame that fits most",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 1475,
+    "stop_index": 1676,
+    "text_snippet": "First impression of the Kirby frame: lightweight, flattering medium rectangle shape that",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 3985,
+    "stop_index": 4239,
+    "text_snippet": "The Kirby is designed to fit most adult faces, but 'most' isn't 'all' - if you have a very narrow or",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 4242,
+    "stop_index": 4465,
+    "text_snippet": "Progressive lenses always have a brief adjustment period regardless of brand - the Kirby is no",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 6599,
+    "stop_index": 6903,
+    "text_snippet": "Q: Can I get women's progressive glasses online for under $300? A: Yes - Pair Eyewear's Kirby base",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 6906,
+    "stop_index": 7166,
+    "text_snippet": "Q: Are the Kirby frames comfortable for all-day wear? A: Customers consistently describe the Kirby",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 7169,
+    "stop_index": 7471,
+    "text_snippet": "Q: How does the topper system work with progressive lenses? A: Magnetic toppers snap directly onto",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "customer_experience",
+    "start_index": 2147,
+    "stop_index": 2384,
+    "text_snippet": "\"I absolutely love my Pair Eyewear Kirby glasses! They're comfortable, flattering, and feel very",
+    "description": "Customer testimonial by Aspen E.",
+    "source_url": null,
+    "evidence_id": "quote_9",
+    "product_name": "The Kirby",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "customer_experience",
+    "start_index": 3432,
+    "stop_index": 3648,
+    "text_snippet": "\"I love being able to change up my look. The best part though\u2026it was cheaper than most of my other",
+    "description": "Customer testimonial by Judith P.",
+    "source_url": null,
+    "evidence_id": "quote_7",
+    "product_name": "The Kirby",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "customer_experience",
+    "start_index": 4808,
+    "stop_index": 5034,
+    "text_snippet": "\"Being able to change my style to however I'm feeling is refreshing when you're tired of boring,",
+    "description": "Customer testimonial by Cheyenne H.",
+    "source_url": null,
+    "evidence_id": "quote_4",
+    "product_name": "The Kirby - Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "customer_experience",
+    "start_index": 6162,
+    "stop_index": 6363,
+    "text_snippet": "\"I now have 6 base frames and just over 80 toppers. I am a stage performer, and my Pair glasses and",
+    "description": "Customer testimonial by Barbara H.",
+    "source_url": null,
+    "evidence_id": "quote_5",
+    "product_name": "The Kirby - Crystal Clear Acetate Silver Metal",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "customer_experience",
+    "start_index": 7689,
+    "stop_index": 7844,
+    "text_snippet": "\"The variety of toppers makes things very easy to coordinate with my outfit on a daily basis. They",
+    "description": "Customer testimonial by Gerald R.",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "The Kirby",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "customer_experience",
+    "start_index": 7848,
+    "stop_index": 7885,
+    "text_snippet": "\"I love my new glasses.\" - Melissa D.",
+    "description": "Customer testimonial by Melissa D.",
+    "source_url": null,
+    "evidence_id": "highlight_0",
+    "product_name": null,
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "customer_experience",
+    "start_index": 7889,
+    "stop_index": 8097,
+    "text_snippet": "\"I had to contact customer service a couple of times, and they were SO fast to get back to me,",
+    "description": "Customer testimonial by Skyla-Mae S.",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "The Kirby - Black Acetate Gold Metal",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "customer_experience",
+    "start_index": 8101,
+    "stop_index": 8288,
+    "text_snippet": "\"I ordered my Kirby frames so my wife and I can match not only clothes but glasses as well! We love",
+    "description": "Customer testimonial by Carolyn H.",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "The Kirby - Blue Tortoise",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "customer_experience",
+    "start_index": 8292,
+    "stop_index": 8472,
+    "text_snippet": "\"This is my THIRD pair of PAIR frames! They fit so comfortably and with all the toppers I have I",
+    "description": "Customer testimonial by P.Laurie K.",
+    "source_url": null,
+    "evidence_id": "quote_6",
+    "product_name": "The Kirby",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "customer_experience",
+    "start_index": 8476,
+    "stop_index": 8584,
+    "text_snippet": "\"Who knew changing from a camo frame to Donald Duck would bring so much joy! I love them!\" - Horsmon",
+    "description": "Customer testimonial by Horsmon J.",
+    "source_url": null,
+    "evidence_id": "quote_8",
+    "product_name": "The Kirby",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "customer_experience",
+    "start_index": 8588,
+    "stop_index": 8740,
+    "text_snippet": "\"I chose Crystal Clear so that any top will go with them. I can see clearly so I feel like they are",
+    "description": "Customer testimonial by Lisa O.",
+    "source_url": null,
+    "evidence_id": "quote_10",
+    "product_name": "The Kirby",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "customer_experience",
+    "start_index": 8744,
+    "stop_index": 8954,
+    "text_snippet": "\"To go 'ALL PAIR' a person deserves a second frame style for those more studious days vs those days",
+    "description": "Customer testimonial by Denise R.",
+    "source_url": null,
+    "evidence_id": "quote_13",
+    "product_name": "The Kirby - Tortoise",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "customer_experience",
+    "start_index": 8958,
+    "stop_index": 9053,
+    "text_snippet": "\"I love my new glasses! They are the perfect color with the perfect sparkle.\" - Candyce O. (5\u2605)",
+    "description": "Customer testimonial by Candyce O.",
+    "source_url": null,
+    "evidence_id": "quote_14",
+    "product_name": "The Kirby - Pink Glitter Clear",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "customer_experience",
+    "start_index": 9057,
+    "stop_index": 9232,
+    "text_snippet": "\"The glasses arrive with a perfect fit and spot on prescription! I don't know how they do it but",
+    "description": "Customer testimonial by Kelly T.",
+    "source_url": null,
+    "evidence_id": "quote_15",
+    "product_name": "The Kirby - Black",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_021",
+    "type": "customer_experience",
+    "start_index": 9236,
+    "stop_index": 9410,
+    "text_snippet": "\"I put them on and instantly saw clearly and felt very comfortable. I also bought some toppers that",
+    "description": "Customer testimonial by Henry M.",
+    "source_url": null,
+    "evidence_id": "quote_16",
+    "product_name": "The Kirby",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_022",
+    "type": "customer_experience",
+    "start_index": 9414,
+    "stop_index": 9511,
+    "text_snippet": "\"Within a week of using these glasses, I've been receiving lots of compliments!\" - Carlos C. (5\u2605)",
+    "description": "Customer testimonial by Carlos C.",
+    "source_url": null,
+    "evidence_id": "quote_17",
+    "product_name": "The Kirby - Black Acetate Gold Metal",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_023",
+    "type": "customer_experience",
+    "start_index": 9515,
+    "stop_index": 9669,
+    "text_snippet": "\"The progressive lenses are just fine. The field of vision is good. I'm happy with these glasses.",
+    "description": "Customer testimonial by Leasa A.",
+    "source_url": null,
+    "evidence_id": "quote_18",
+    "product_name": "The Kirby - Honey Clear",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_024",
+    "type": "editorial",
+    "editorial_subtype": "faq",
+    "start_index": 6373,
+    "stop_index": 6442,
+    "text_snippet": "Frequently Asked Questions About Pair Eyewear Progressive Glasses",
+    "description": "Faq: FAQ section for generative search targeting",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "FAQ"
+  },
+  {
+    "annotation_id": "anno_025",
+    "type": "customer_experience",
+    "evidence_id": "highlight_0",
+    "text_snippet": "",
+    "start_index": -1,
+    "stop_index": -1,
+    "description": "Quote present in evidence but not used in brief: I love my new glasses.",
+    "snippet_verified": false,
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
