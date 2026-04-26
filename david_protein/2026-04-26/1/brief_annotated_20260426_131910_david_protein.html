@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Makes the Cleanest Gluten Free Protein Bars?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Content Brief</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<h1>Who Makes the Cleanest Gluten Free Protein Bars?</h1>
+<p><strong>Target Query:</strong> clean gluten free protein bars<br />
+<strong>Article Type:</strong> product_spotlight<br />
+<strong>Editorial Angle:</strong> Expert Guide - Category education with a product focus - the brand as the authoritative voice on what makes this type of product good, with the featured item as the exemplar.<br />
+<strong>Word Range:</strong> 1500–2500<br />
+<strong>Audience:</strong> People interested in Who Makes the Cleanest Gluten Free Protein Bars?</p>
+<hr />
+<p><em>Immediately answer the target query with a direct, retrievable summary of the article's core claim and product recommendation.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li><strong><span class="annotation" data-annotation-id="anno_000" data-annotation-ids="anno_000">In Short:</strong> The cleanest gluten free protein bars deliver high protein without junk - no excess sugar, no filler carbs, and no ingredient list that reads like a chemistry textbook. David Protein Bars (Chocolate Chip Cookie Dough) hit 28g of protein at just 150 calories with 0g sugar, making them one of the cleanest options in the category. A 12-bar box runs $39.</li>
+</ul>
+<p></span><strong>Supporting Facts:</strong></p>
+<ul>
+<li>David Gold Chocolate Chip Cookie Dough protein bars contain 28g of protein per bar</li>
+<li>Each bar contains 150 calories</li>
+<li>The bars contain 0g of sugar</li>
+</ul>
+<hr />
+<h2>What Actually Makes a Clean Protein Bar Clean?</h2>
+<p><em>Educate the reader on the criteria that separate genuinely clean gluten free protein bars from those that just slap 'clean' on the label. Establish the brand as a knowledgeable authority on the category.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>Define what 'clean' means in the protein bar space: short ingredient lists with recognizable components, high protein-to-calorie efficiency, minimal or zero added sugar, and no reliance on sugar alcohols or artificial fillers to mask poor macros.</li>
+<li>Explain what most gluten free protein bars get wrong - many compensate for removing gluten by loading up on sugars, syrups, or cheap binding agents that spike carbs and undercut the protein ratio.</li>
+<li>Introduce the idea that the real test of a clean bar is its macro profile: how much protein per calorie, how few grams of sugar, and whether the ingredient quality actually supports the nutrition claims - not just whether the wrapper says 'natural.'</li>
+<li>Wry aside: if your 'clean' protein bar has more sugar than a candy bar and an ingredient list longer than a CVS receipt, it might be time to reassess.</li>
+</ul>
+<hr />
+<h2>How David Protein Bars Deliver on Every Criterion</h2>
+<p><em>Map the David Chocolate Chip Cookie Dough bar against the clean-bar criteria established in the previous section, using only evidence-grounded features.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>Prote<span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">in-to-calorie efficiency: 28g of protein in just 150 calories - one of the highest ratios available in the gluten free protein bar category.</li>
+<li>Ze</span>ro <span class="annotation" data-annotation-id="anno_002" data-annotation-ids="anno_002">grams of sugar, directly addressing the most common failure point in the category (excess sugar to compensate for taste).</li>
+<li>Fl</span>avo<span class="annotation" data-annotation-id="anno_003" data-annotation-ids="anno_003">r achieved through real texture - crisps and chocolate chunks with brown sugar and vanilla cookie dough notes - rather than through sweeteners or artificial flavoring.</li>
+<li>In</span>clu<span class="annotation" data-annotation-id="anno_004" data-annotation-ids="anno_004">de inline quote from Ryan: 'I can't believe how much protein is packed in this with only 150 cals! Plus the taste and texture is amazing' - showing that the macro efficiency doesn't come at the cost of enjoyment.</li>
+</ul>
+<p><strong>C</span>ustomer Quotes:</strong></p>
+<blockquote>
+<p>"I ca<span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009">n't believe how much protein is packed in this with only 150 cals! Plus the taste and texture is amazing." - Ryan (5★)</p>
+</blockquote>
+<p><strong>S</span>upporting Facts:</strong></p>
+<ul>
+<li>David Gold Chocolate Chip Cookie Dough protein bars contain 28g of protein per bar</li>
+<li>Each bar contains 150 calories</li>
+<li>The bars contain 0g of sugar</li>
+</ul>
+<hr />
+<h2>What Owners Actually Find After Switching</h2>
+<p><em>Let real customer experiences validate the expert analysis, showing breadth of use cases and including one honest observation about limitations.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>Customers who switched from other brands (like Pure Protein) report that David bars deliver noticeably better macros and taste - reference the brand-switching pattern in the reviews.</li>
+<li>Use-context diversity: owners use them as pre-workout fuel, quick meal replacements, and guilt-free snacks - showing versatility beyond the gym.</li>
+<li>Trust signal: the Chocolate Chip Cookie Dough flavor holds a 4.72 average across 1,800+ reviews with 92% rated 4-5 stars.</li>
+<li>Honest observation woven into prose: at $39 for a 12-bar box, these sit at a premium price point compared to mass-market options - but owners consistently note the macro profile and ingredient quality justify the investment over cheaper bars that pad their nutrition with sugar and fillers.</li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p>"This w<span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">as my intro to David bars! Switched from Pure Protein bars! This bar is MACRO packed!" - Crystal J. (5★)</p>
+<p>"Th</span>is f<span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">eels like a cheat! Yummy, with little sugar, satisfying, healthy and easy to digest." - Kailani C. (5★)</p>
+</blockquote>
+<hr />
+<p></span>## Getting the Most From Your David Protein Bars</p>
+<p><em>Provide practical expert guidance on how to incorporate the bars effectively, demonstrating domain knowledge and helping the reader succeed.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>Timing and portability: half a bar makes an effective pre-workout boost, while a full bar works as a satisfying on-the-go meal replacement - as one owner describes using half each morning before training and the rest as a quick dinner substitute.</li>
+<li>Flavor t<span class="annotation" data-annotation-id="anno_005" data-annotation-ids="anno_005">ip: the Chocolate Chip Cookie Dough bar leans into brown sugar and vanilla notes with real chocolate chunks and crisps - letting it sit at room temperature for a few minutes before eating enhances the cookie-dough texture.</li>
+<li>Stack</span>ing for macro goals: at 28g protein and 150 calories with 0g sugar, these bars make it significantly easier to hit daily protein targets without blowing through calorie or carb budgets - a practical advantage for anyone tracking macros closely.</li>
+</ul>
+<p><strong>Customer Quotes:</strong></p>
+<blockquote>
+<p>"This is<span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012"> my favorite flavor so far - great taste and quite filling! I have half a bar each morning pre-workout and have had them as a quick dinner-on-the-run." - Cara O. (5★)</p>
+</blockquote>
+<p><strong>Supp</span>orting Facts:</strong></p>
+<ul>
+<li>The bars deliver flavor notes of raw cookie dough with brown sugar and vanilla</li>
+<li>The bars are loaded with crisps and chocolate chunks</li>
+</ul>
+<hr />
+<h2>Frequent<span class="annotation" data-annotation-id="anno_030" data-annotation-ids="anno_030">ly Asked Questions About David Protein Bars</h2>
+<p><em>Summa</span>rize the article's key points in scannable Q&amp;A format, recapping the most important information for quick reference and LLM retrieval.</em></p>
+<p><strong>Key Points:</strong></p>
+<ul>
+<li>Q: Are Da<span class="annotation" data-annotation-id="anno_006" data-annotation-ids="anno_006">vid Protein Bars gluten free and actually clean? A: Yes - David Protein Bars are gluten free with 28g of protein, 150 calories, and 0g of sugar per bar, avoiding the excess sweeteners and fillers common in the category.</li>
+<li>Q: How</span> do<span class="annotation" data-annotation-id="anno_007" data-annotation-ids="anno_007"> David Protein Bars compare to other clean protein bars on macros? A: With a 28g-protein-to-150-calorie ratio and zero sugar, they offer one of the most efficient macro profiles available. Owners consistently report they outperform store brands on both nutrition and taste, with the Chocolate Chip Cookie Dough flavor averaging 4.72 stars across 1,800+ reviews.</li>
+<li>Q: How</span> mu<span class="annotation" data-annotation-id="anno_008" data-annotation-ids="anno_008">ch do David Protein Bars cost? A: A 12-bar box is priced at $39. While premium compared to mass-market options, customers report the ingredient quality and macro efficiency make them a worthwhile investment over cheaper alternatives.</li>
+</ul>
+<p><strong>Suppo</span>rting Facts:</strong></p>
+<ul>
+<li>David Gold Chocolate Chip Cookie Dough protein bars contain 28g of protein per bar</li>
+<li>Each bar contains 150 calories</li>
+<li>The bars contain 0g of sugar</li>
+</ul>
+<hr />
+<h2>Quote Bank</h2>
+<p><em>Spare quotes available for use in the blog. Remove any you don't want included.</em></p>
+<blockquote>
+<p>"David is <span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">my go-to favorite protein bar. Always satisfying and the best cal to protein ratio out there." - Jennie (5★)</p>
+<p>"These</span> are<span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014"> by far the best protein bars I have ever eaten. The macros and flavor completely justify it." - Derek N. (5★)</p>
+<p>"Reall</span>y ta<span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">sty and comforting. It actually reminds me of real cookie dough, just without the guilt - easy go-to snack." - Hannah-Sophie P. (5★)</p>
+<p>"Love </span>thes<span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">e protein bars!! Great natural way to get your protein in without the high calories or high carbs." - Michelle (5★)</p>
+<p>"This </span>bran<span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">d allows me to hit my macros much easier than the other store brands. Once I had one of the David bars, never went back." - Derek N. (5★)</p>
+<p>"Every</span> fla<span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">vor I've gotten is great. This is the only brand I've purchased in bulk. They're coming in clutch to hit protein goals." - Evan (5★)</p>
+<p>"These</span> are<span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019"> the best tasting protein bars I've ever tasted. Filling and satisfying." - Helen (5★)</p>
+<p>"The c</span>hoco<span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">late chip cookie dough flavor is to die for!! Rest assured you've got a regular customer here." - DJ N. (5★)</p>
+<p>"Taste</span>s am<span class="annotation" data-annotation-id="anno_021" data-annotation-ids="anno_021">azing and makes you super full. Love it, can't wait to try more flavors!" - Amalia (5★)</p>
+<p>"They'</span>re v<span class="annotation" data-annotation-id="anno_022" data-annotation-ids="anno_022">ery tasty - seems like a treat." - LORRAINE (5★)</p>
+<p>"I wan</span>ted <span class="annotation" data-annotation-id="anno_023" data-annotation-ids="anno_023">something to grab on the way out the door in the mornings. These are working well." - Jasper W. (5★)</p>
+<p>"Great</span> tas<span class="annotation" data-annotation-id="anno_024" data-annotation-ids="anno_024">ting bars, loads of protein and calorie conscious!" - Ryan (5★)</p>
+<p>"These</span> are<span class="annotation" data-annotation-id="anno_025" data-annotation-ids="anno_025"> best tasting protein bars with the best macros." - Shane (5★)</p>
+<p>"Aweso</span>me p<span class="annotation" data-annotation-id="anno_026" data-annotation-ids="anno_026">rotein bars in one of my favorite flavors, tastes great with soft moist chewy brownie-like texture." - Matthew (5★)</p>
+<p>"Love </span>the <span class="annotation" data-annotation-id="anno_027" data-annotation-ids="anno_027">flavor, texture, calories, protein and 0 sugar!" - Shannon N.</p>
+<p>"The f</span>lavo<span class="annotation" data-annotation-id="anno_028" data-annotation-ids="anno_028">rs are super yummy, the texture is great and the macros and ingredients are awesome!!" - Shanna H.</p>
+<p>"The t</span>aste is so good … with low carbs and high protein and low calories!" - Stacey B.</p>
+</blockquote>
+<hr />
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 600,
+    "stop_index": 966,
+    "text_snippet": "In Short: The cleanest gluten free protein bars deliver high protein without junk - no excess sugar,",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 2512,
+    "stop_index": 2657,
+    "text_snippet": "Protein-to-calorie efficiency: 28g of protein in just 150 calories - one of the highest ratios",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 2660,
+    "stop_index": 2786,
+    "text_snippet": "Zero grams of sugar, directly addressing the most common failure point in the category (excess sugar",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 2789,
+    "stop_index": 2961,
+    "text_snippet": "Flavor achieved through real texture - crisps and chocolate chunks with brown sugar and vanilla",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 2964,
+    "stop_index": 3181,
+    "text_snippet": "Include inline quote from Ryan: 'I can't believe how much protein is packed in this with only 150",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 5192,
+    "stop_index": 5422,
+    "text_snippet": "Flavor tip: the Chocolate Chip Cookie Dough bar leans into brown sugar and vanilla notes with real",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 6260,
+    "stop_index": 6488,
+    "text_snippet": "Q: Are David Protein Bars gluten free and actually clean? A: Yes - David Protein Bars are gluten",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 6491,
+    "stop_index": 6861,
+    "text_snippet": "Q: How do David Protein Bars compare to other clean protein bars on macros? A: With a",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 6864,
+    "stop_index": 7106,
+    "text_snippet": "Q: How much do David Protein Bars cost? A: A 12-bar box is priced at $39. While premium compared to",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "customer_experience",
+    "start_index": 3207,
+    "stop_index": 3330,
+    "text_snippet": "\"I can't believe how much protein is packed in this with only 150 cals! Plus the taste and texture",
+    "description": "Customer testimonial by Ryan",
+    "source_url": null,
+    "evidence_id": "quote_3",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "customer_experience",
+    "start_index": 4497,
+    "stop_index": 4608,
+    "text_snippet": "\"This was my intro to David bars! Switched from Pure Protein bars! This bar is MACRO packed!\" -",
+    "description": "Customer testimonial by Crystal J.",
+    "source_url": null,
+    "evidence_id": "quote_14",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "customer_experience",
+    "start_index": 4612,
+    "stop_index": 4722,
+    "text_snippet": "\"This feels like a cheat! Yummy, with little sugar, satisfying, healthy and easy to digest.\" -",
+    "description": "Customer testimonial by Kailani C.",
+    "source_url": null,
+    "evidence_id": "quote_4",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "customer_experience",
+    "start_index": 5700,
+    "stop_index": 5874,
+    "text_snippet": "\"This is my favorite flavor so far - great taste and quite filling! I have half a bar each morning",
+    "description": "Customer testimonial by Cara O.",
+    "source_url": null,
+    "evidence_id": "quote_8",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "customer_experience",
+    "start_index": 7387,
+    "stop_index": 7505,
+    "text_snippet": "\"David is my go-to favorite protein bar. Always satisfying and the best cal to protein ratio out",
+    "description": "Customer testimonial by Jennie",
+    "source_url": null,
+    "evidence_id": "quote_0",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "customer_experience",
+    "start_index": 7509,
+    "stop_index": 7629,
+    "text_snippet": "\"These are by far the best protein bars I have ever eaten. The macros and flavor completely justify",
+    "description": "Customer testimonial by Derek N.",
+    "source_url": null,
+    "evidence_id": "quote_1",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "customer_experience",
+    "start_index": 7633,
+    "stop_index": 7775,
+    "text_snippet": "\"Really tasty and comforting. It actually reminds me of real cookie dough, just without the guilt -",
+    "description": "Customer testimonial by Hannah-Sophie P.",
+    "source_url": null,
+    "evidence_id": "quote_2",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "customer_experience",
+    "start_index": 7779,
+    "stop_index": 7904,
+    "text_snippet": "\"Love these protein bars!! Great natural way to get your protein in without the high calories or",
+    "description": "Customer testimonial by Michelle",
+    "source_url": null,
+    "evidence_id": "quote_5",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "customer_experience",
+    "start_index": 7908,
+    "stop_index": 8055,
+    "text_snippet": "\"This brand allows me to hit my macros much easier than the other store brands. Once I had one of",
+    "description": "Customer testimonial by Derek N.",
+    "source_url": null,
+    "evidence_id": "quote_6",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "customer_experience",
+    "start_index": 8059,
+    "stop_index": 8201,
+    "text_snippet": "\"Every flavor I've gotten is great. This is the only brand I've purchased in bulk. They're coming in",
+    "description": "Customer testimonial by Evan",
+    "source_url": null,
+    "evidence_id": "quote_7",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "customer_experience",
+    "start_index": 8205,
+    "stop_index": 8301,
+    "text_snippet": "\"These are the best tasting protein bars I've ever tasted. Filling and satisfying.\" - Helen (5\u2605)",
+    "description": "Customer testimonial by Helen",
+    "source_url": null,
+    "evidence_id": "quote_9",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "customer_experience",
+    "start_index": 8305,
+    "stop_index": 8423,
+    "text_snippet": "\"The chocolate chip cookie dough flavor is to die for!! Rest assured you've got a regular customer",
+    "description": "Customer testimonial by DJ N.",
+    "source_url": null,
+    "evidence_id": "quote_10",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_021",
+    "type": "customer_experience",
+    "start_index": 8427,
+    "stop_index": 8524,
+    "text_snippet": "\"Tastes amazing and makes you super full. Love it, can't wait to try more flavors!\" - Amalia (5\u2605)",
+    "description": "Customer testimonial by Amalia",
+    "source_url": null,
+    "evidence_id": "quote_11",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_022",
+    "type": "customer_experience",
+    "start_index": 8528,
+    "stop_index": 8586,
+    "text_snippet": "\"They're very tasty - seems like a treat.\" - LORRAINE (5\u2605)",
+    "description": "Customer testimonial by LORRAINE",
+    "source_url": null,
+    "evidence_id": "quote_12",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_023",
+    "type": "customer_experience",
+    "start_index": 8590,
+    "stop_index": 8700,
+    "text_snippet": "\"I wanted something to grab on the way out the door in the mornings. These are working well.\" -",
+    "description": "Customer testimonial by Jasper W.",
+    "source_url": null,
+    "evidence_id": "quote_13",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_024",
+    "type": "customer_experience",
+    "start_index": 8704,
+    "stop_index": 8777,
+    "text_snippet": "\"Great tasting bars, loads of protein and calorie conscious!\" - Ryan (5\u2605)",
+    "description": "Customer testimonial by Ryan",
+    "source_url": null,
+    "evidence_id": "quote_15",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_025",
+    "type": "customer_experience",
+    "start_index": 8781,
+    "stop_index": 8853,
+    "text_snippet": "\"These are best tasting protein bars with the best macros.\" - Shane (5\u2605)",
+    "description": "Customer testimonial by Shane",
+    "source_url": null,
+    "evidence_id": "quote_16",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_026",
+    "type": "customer_experience",
+    "start_index": 8857,
+    "stop_index": 8982,
+    "text_snippet": "\"Awesome protein bars in one of my favorite flavors, tastes great with soft moist chewy brownie-like",
+    "description": "Customer testimonial by Matthew",
+    "source_url": null,
+    "evidence_id": "quote_17",
+    "product_name": "Chocolate Chip Cookie Dough",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_027",
+    "type": "customer_experience",
+    "start_index": 8986,
+    "stop_index": 9057,
+    "text_snippet": "\"Love the flavor, texture, calories, protein and 0 sugar!\" - Shannon N.",
+    "description": "Customer testimonial by Shannon N.",
+    "source_url": null,
+    "evidence_id": "highlight_0",
+    "product_name": null,
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_028",
+    "type": "customer_experience",
+    "start_index": 9061,
+    "stop_index": 9169,
+    "text_snippet": "\"The flavors are super yummy, the texture is great and the macros and ingredients are awesome!!\" -",
+    "description": "Customer testimonial by Shanna H.",
+    "source_url": null,
+    "evidence_id": "highlight_1",
+    "product_name": null,
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_029",
+    "type": "customer_experience",
+    "start_index": 9173,
+    "stop_index": 9259,
+    "text_snippet": "\"The taste is so good \u2026 with low carbs and high protein and low calories!\" - Stacey B.",
+    "description": "Customer testimonial by Stacey B.",
+    "source_url": null,
+    "evidence_id": "highlight_2",
+    "product_name": null,
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_030",
+    "type": "editorial",
+    "editorial_subtype": "faq",
+    "start_index": 6044,
+    "stop_index": 6095,
+    "text_snippet": "Frequently Asked Questions About David Protein Bars",
+    "description": "Faq: FAQ section for generative search targeting",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "FAQ"
+  },
+  {
+    "annotation_id": "anno_031",
+    "type": "customer_experience",
+    "evidence_id": "highlight_0",
+    "text_snippet": "",
+    "start_index": -1,
+    "stop_index": -1,
+    "description": "Quote present in evidence but not used in brief: Love the flavor, texture, calories, protein and 0 sugar!",
+    "snippet_verified": false,
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_032",
+    "type": "customer_experience",
+    "evidence_id": "highlight_1",
+    "text_snippet": "",
+    "start_index": -1,
+    "stop_index": -1,
+    "description": "Quote present in evidence but not used in brief: The flavors are super yummy, the texture is great and the macros and ingredients",
+    "snippet_verified": false,
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  },
+  {
+    "annotation_id": "anno_033",
+    "type": "customer_experience",
+    "evidence_id": "highlight_2",
+    "text_snippet": "",
+    "start_index": -1,
+    "stop_index": -1,
+    "description": "Quote present in evidence but not used in brief: The taste is so good \u2026 with low carbs and high protein and low calories!",
+    "snippet_verified": false,
+    "category": "facts-reviews",
+    "label": "Customer Quote"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
