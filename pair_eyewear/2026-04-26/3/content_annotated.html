@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Blog Content</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<p><span class="annotation" data-annotation-id="anno_030" data-annotation-ids="anno_030"></p>
+<h1>Best stylish prescription eyeglasses for women: two frames that change everything</h1>
+<p></span></p>
+<p><span class="annotation" data-annotation-id="anno_031" data-annotation-ids="anno_031"></p>
+<p><strong>In short:</strong> Want stylish women's eyeglasses that don't box you into a single look? This guide covers two designer-quality prescription frames - The Wanda and The Casper - built around </span><span class="annotation" data-annotation-id="anno_031" data-annotation-ids="anno_031,anno_000">Pair Eyewear's magnetic topper system, which turns one pair of glasses into an entire eyewear wardrobe</span><span class="annotation" data-annotation-id="anno_031" data-annotation-ids="anno_031">. Cat-eye femininity, versatile everyday shape, and everything you need to pick your next frames - all right here.<br />
+</span></p>
+<p><span class="annotation" data-annotation-id="anno_032" data-annotation-ids="anno_032"><br />
+Remember when finding stylish prescription glasses meant choosing between looking great and actually seeing clearly? Or committing to one pair that somehow had to work with every outfit, every mood, every season?</p>
+<p>Yeah, that era is over.<br />
+</span></p>
+<p><span class="annotation" data-annotation-id="anno_033" data-annotation-ids="anno_033"><br />
+Whether you're drawn to bold cat-eye character or you lean toward a silhouette that goes with literally everything, the right frames change the way you feel every time you catch your reflection. That's why we're spotlighting two standouts - The Wanda and The Casper - with designer-level style and a twist you won't find anywhere else.<br />
+</span></p>
+<p>And the best part? <span class="annotation" data-annotation-id="anno_001" data-annotation-ids="anno_001">Both work with Pair Eyewear's interchangeable Top Frames, which snap magnetically onto your base frame to completely change your look</span>. One prescription investment. Endless style possibilities.</p>
+<hr />
+<p><span class="annotation" data-annotation-id="anno_034" data-annotation-ids="anno_034"></p>
+<h2>Stylish women's eyeglasses at a glance</h2>
+<p></span></p>
+<p>Before we get into the details, here's a quick side-by-side.</p>
+<p><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035"></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>The Wanda</th>
+<th>The Casper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Frame shape</strong></td>
+<td></span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035,anno_002">Medium cat-eye</span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035"></td>
+<td></span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035,anno_003">Medium, modified rectangle</span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035"></td>
+</tr>
+<tr>
+<td><strong>Best face shapes</strong></td>
+<td></span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035,anno_004">Oval, round, square, heart, diamond, triangle</span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035"></td>
+<td></span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035,anno_005">Oval, round, heart, diamond</span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035"></td>
+</tr>
+<tr>
+<td><strong>Material</strong></td>
+<td></span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035,anno_006">Hand-polished, flexible, and durable acetate</span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035"></td>
+<td></span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035,anno_007">Hand-polished, flexible, and durable acetate</span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035"></td>
+</tr>
+<tr>
+<td><strong>Base price</strong></td>
+<td></span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035,anno_008">$70</span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035"></td>
+<td></span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035,anno_009">$70</span><span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035"></td>
+</tr>
+<tr>
+<td><strong>Average rating</strong></td>
+<td>4.8 stars across 9,200+ reviews</td>
+<td>4.8 stars across 4,200+ reviews</td>
+</tr>
+<tr>
+<td><strong>Standout feature</strong></td>
+<td>Feminine cat-eye silhouette with bold personality</td>
+<td>Versatile all-occasion shape praised for progressive lens accuracy</td>
+</tr>
+</tbody>
+</table>
+<p></span></p>
+<p><span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">Both frames start at $70, or $59.50 with a Pair+ membership</span>. That means you're getting designer-quality craftsmanship at a price that leaves room for the fun part - building your topper collection.</p>
+<hr />
+<h2>The Wanda: a cat-eye frame with endless personality</h2>
+<p><span class="annotation" data-annotation-id="anno_036" data-annotation-ids="anno_036"><br />
+Some frames just sit on your face. The Wanda? It announces you've arrived.<br />
+</span></p>
+<p><span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">This medium cat-eye silhouette is designed with feminine flair</span>, <span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">crafted from hand-polished, flexible, and durable acetate</span> that feels as refined as it looks. <span class="annotation" data-annotation-id="anno_013" data-annotation-ids="anno_013">The Wanda suits most adult faces</span> and <span class="annotation" data-annotation-id="anno_014" data-annotation-ids="anno_014">particularly flatters oval, round, square, heart, diamond, and triangle face shapes</span>.</p>
+<p><span class="annotation" data-annotation-id="anno_015" data-annotation-ids="anno_015">The Wanda acetate frame comes in multiple colors including Crystal Clear, Black, Lavender Clear, Honey Clear, Gray Clear, Blue Tortoise, and Tortoise</span>. <span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016">It's also available in a mixed material option with black gold metal</span> for a more elevated look. Your base frame is already a style statement before you even snap on a topper.</p>
+<p><span class="annotation" data-annotation-id="anno_037" data-annotation-ids="anno_037"><br />
+</span><span class="annotation" data-annotation-id="anno_037" data-annotation-ids="anno_037,anno_017">Pair Eyewear's interchangeable Top Frames snap magnetically onto the base</span><span class="annotation" data-annotation-id="anno_037" data-annotation-ids="anno_037">, so you can reinvent your look whenever the mood strikes. Here's what that feels like in practice:<br />
+</span></p>
+<blockquote>
+<p>"It's like having multiple pairs in one, and I'm here for it. So excited about this new eyewear - definitely a game changer for both style and fit." - Kimberly P. (5★)</p>
+</blockquote>
+<p><span class="annotation" data-annotation-id="anno_038" data-annotation-ids="anno_038"><br />
+There's something delightfully subversive about a prescription purchase that makes you want to collect toppers the way some people collect shoes. (<em>If we may.</em>)<br />
+</span></p>
+<p>As Teresa S. (5★) puts it: "Just got my new Wanda's. First time buyer. Love all the different looks the toppers allow. Will be getting lots more toppers. I may be slightly addicted."</p>
+<blockquote>
+<p>"I have been wearing glasses since I was 2 and it is so nice to be able to switch them out. Looking forward to buying more. Such a nice inventory to choose from." - KATHLEEN T. (5★)</p>
+</blockquote>
+<hr />
+<h2>The Casper: prescription accuracy meets all-day versatility</h2>
+<p><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">A medium, modified rectangle shape</span>, The Casper sits in that sweet spot between statement and subtlety. <span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">Designed for most adult faces</span>, it works just as well at a morning meeting as it does at dinner with friends. Reviewers say it best:</p>
+<blockquote>
+<p>"I get so many compliments on my Casper glasses and people love them more when I show them the versatility. On top of looking good my progressive Rx was done to perfection - I can see again and look good, too." - Liz M. (5★)</p>
+</blockquote>
+<p>The topper system also means your investment keeps paying off:</p>
+<blockquote>
+<p>"This is the second pair of glasses I have ordered from them. I had the other pair for about 3 years. They have held up great. I love the sun tops. I definitely recommend this brand and tell everyone about them." - Regina F. (5★)</p>
+</blockquote>
+<p><span class="annotation" data-annotation-id="anno_039" data-annotation-ids="anno_039"><br />
+For women who previously couldn't justify a second pair of expensive progressive lenses, $25 toppers feel like a revelation:<br />
+</span></p>
+<blockquote>
+<p>"As someone who wears expensive progressive lenses and could never afford to have a second pair of eyeglasses for 'fun,' I'm SO excited that my glasses can now be a fashion accessory for about $25 a pop." - Helen C. (5★)</p>
+<p>"They feel so much more secure and comfortable compared to what I had before, and the style is just everything." - Kimberly P. (5★)</p>
+</blockquote>
+<p><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">The Casper comes in at least 10 color options including Crystal Clear, Black, Blue Tortoise, Tortoise, Blue Clear, Pink Clear, Spruce, Burgundy, Pink Glitter Clear, and Lavender Clear</span>. <span class="annotation" data-annotation-id="anno_021" data-annotation-ids="anno_021">It's also available in mixed material options combining acetate and metal</span> for a more refined aesthetic.</p>
+<hr />
+<h2>Which frame fits your life?</h2>
+<p><span class="annotation" data-annotation-id="anno_040" data-annotation-ids="anno_040"><br />
+Both frames are standouts. So how do you decide?<br />
+</span></p>
+<p><span class="annotation" data-annotation-id="anno_041" data-annotation-ids="anno_041"></p>
+<p>Start with your daily context. The Wanda's cat-eye shape brings feminine character that elevates work and evening looks, while The Casper's versatile silhouette moves easily from casual to professional. If your days are varied and unpredictable, The Casper's adaptability might edge ahead. If you love making a style statement, The Wanda's personality is hard to beat.</p>
+<p>Your face shape narrows the choice quickly: The Wanda has the broader range (adding square and triangle to the mix), while The Casper is ideal for oval, round, heart, or diamond faces.</p>
+<p>Think of your base frame as a neutral canvas and toppers as the accessories that match specific outfits, moods, or occasions. Both frames work with the full magnetic topper system, so the real question is which base shape best suits your face and wardrobe.</p>
+<p></span></p>
+<blockquote>
+<p>"They can be dressed up or dressed down, and the tops are a sprinkle to the already beautiful frames. Thank you Pair for making options to suit every mood, occasion, and style." - Ashley G. (5★)</p>
+</blockquote>
+<p><span class="annotation" data-annotation-id="anno_042" data-annotation-ids="anno_042"><br />
+Your prescription glasses actually keep up with your life - not the other way around. Simple as that.<br />
+</span></p>
+<blockquote>
+<p>"I wear glitter and bright colors on weekends, and then the professional toppers during the week." - Shirley C. (5★)</p>
+</blockquote>
+<hr />
+<p><span class="annotation" data-annotation-id="anno_043" data-annotation-ids="anno_043"></p>
+<h2>Stylish women's prescription eyeglasses FAQs</h2>
+<p><strong>What makes these women's designer eyeglasses frames different from regular prescription glasses?</strong><br />
+</span><span class="annotation" data-annotation-id="anno_043" data-annotation-ids="anno_043,anno_022">Pair Eyewear's magnetic topper system lets you snap on interchangeable Top Frames to change your look</span><span class="annotation" data-annotation-id="anno_043" data-annotation-ids="anno_043">. One prescription purchase gives you the versatility of an entire eyewear collection. </span><span class="annotation" data-annotation-id="anno_043" data-annotation-ids="anno_043,anno_023">Pair Eyewear also has licensed collaborations with major brands including Disney, Pixar, Harry Potter, Star Wars, Marvel, DC, MLB, NBA, NHL, Sesame Street, Van Gogh Museum, The Met, and Frida Kahlo</span><span class="annotation" data-annotation-id="anno_043" data-annotation-ids="anno_043"> - so your topper options go far beyond basic colors.<br />
+</span></p>
+<p><strong>Are these stylish women's eyeglasses comfortable enough for all-day wear?</strong><br />
+Absolutely. <span class="annotation" data-annotation-id="anno_024" data-annotation-ids="anno_024">The Wanda is made from hand-polished, flexible acetate</span>, and both frames are built for comfort through a full day. Reviewers regularly mention wearing them morning to evening without needing a single adjustment.</p>
+<p><strong>How do I decide between The Wanda and The Casper?</strong><br />
+It comes down to shape and priorities. <span class="annotation" data-annotation-id="anno_025" data-annotation-ids="anno_025">The Wanda is a medium cat-eye</span> with feminine flair that <span class="annotation" data-annotation-id="anno_026" data-annotation-ids="anno_026">suits most face shapes including oval, round, square, heart, diamond, and triangle</span>. <span class="annotation" data-annotation-id="anno_027" data-annotation-ids="anno_027">The Casper is a medium modified rectangle</span> praised for its versatile silhouette and exceptional progressive lens accuracy. <span class="annotation" data-annotation-id="anno_028" data-annotation-ids="anno_028">Both start at $70</span> and <span class="annotation" data-annotation-id="anno_029" data-annotation-ids="anno_029">ship free within the US</span>.</p>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_030",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_title",
+    "start_index": 0,
+    "stop_index": 85,
+    "text_snippet": "Best stylish prescription eyeglasses for women: two frames that change everything",
+    "description": "Query Echo Title: Title echoes target query 'stylish women's eyeglasses frames designer'",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_031",
+    "type": "editorial",
+    "editorial_subtype": "answer_first",
+    "start_index": 87,
+    "stop_index": 492,
+    "text_snippet": "In short: Want stylish women's eyeglasses that don't box you into a single look? This guide covers t",
+    "description": "Answer First: Direct answer block provides immediate value for LLM retrieval and scanning readers",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Answer First"
+  },
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 275,
+    "stop_index": 377,
+    "text_snippet": "Pair Eyewear's magnetic topper system, which turns one pair of glasses into an entire eyewear wardro",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_032",
+    "type": "editorial",
+    "editorial_subtype": "tov_rhythm",
+    "start_index": 495,
+    "stop_index": 734,
+    "text_snippet": "Remember when finding stylish prescription glasses meant choosing between looking great and actually",
+    "description": "Tov Rhythm: Opening with relatable pain point hook per voice move guidelines",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Rhythm"
+  },
+  {
+    "annotation_id": "anno_033",
+    "type": "editorial",
+    "editorial_subtype": "tov_perspective",
+    "start_index": 736,
+    "stop_index": 1073,
+    "text_snippet": "Whether you're drawn to bold cat-eye character or you lean toward a silhouette that goes with litera",
+    "description": "Tov Perspective: Second-person address making reader the protagonist",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Perspective"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 1094,
+    "stop_index": 1227,
+    "text_snippet": "Both work with Pair Eyewear's interchangeable Top Frames, which snap magnetically onto your base fra",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_034",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_heading",
+    "start_index": 1293,
+    "stop_index": 1336,
+    "text_snippet": "Stylish women's eyeglasses at a glance",
+    "description": "Query Echo Heading: H2 echoes query fragment 'stylish women's eyeglasses'",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_035",
+    "type": "editorial",
+    "editorial_subtype": "table_format",
+    "start_index": 1400,
+    "stop_index": 2002,
+    "text_snippet": "| Feature | The Wanda | The Casper |\n|---|---|---|\n| Frame shape | Medium cat-eye | Medium, modified",
+    "description": "Table Format: Comparison table for quick scanning and LLM retrieval per Rule 3.1",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Table Format"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 1473,
+    "stop_index": 1487,
+    "text_snippet": "Medium cat-eye",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 1490,
+    "stop_index": 1516,
+    "text_snippet": "Medium, modified rectangle",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 1544,
+    "stop_index": 1589,
+    "text_snippet": "Oval, round, square, heart, diamond, triangle",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 1592,
+    "stop_index": 1619,
+    "text_snippet": "Oval, round, heart, diamond",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 1639,
+    "stop_index": 1683,
+    "text_snippet": "Hand-polished, flexible, and durable acetate",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 1686,
+    "stop_index": 1730,
+    "text_snippet": "Hand-polished, flexible, and durable acetate",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 1752,
+    "stop_index": 1755,
+    "text_snippet": "$70",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "claim",
+    "start_index": 1758,
+    "stop_index": 1761,
+    "text_snippet": "$70",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "claim",
+    "start_index": 2004,
+    "stop_index": 2063,
+    "text_snippet": "Both frames start at $70, or $59.50 with a Pair+ membership",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_006",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_036",
+    "type": "editorial",
+    "editorial_subtype": "tov_emotional_tone",
+    "start_index": 2264,
+    "stop_index": 2340,
+    "text_snippet": "Some frames just sit on your face. The Wanda? It announces you've arrived.",
+    "description": "Tov Emotional Tone: Leading with positive emotional benefit before features, per brand voice",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Emotional Tone"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "claim",
+    "start_index": 2342,
+    "stop_index": 2404,
+    "text_snippet": "This medium cat-eye silhouette is designed with feminine flair",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "claim",
+    "start_index": 2406,
+    "stop_index": 2463,
+    "text_snippet": "crafted from hand-polished, flexible, and durable acetate",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "claim",
+    "start_index": 2499,
+    "stop_index": 2531,
+    "text_snippet": "The Wanda suits most adult faces",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "claim",
+    "start_index": 2536,
+    "stop_index": 2619,
+    "text_snippet": "particularly flatters oval, round, square, heart, diamond, and triangle face shapes",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "claim",
+    "start_index": 2622,
+    "stop_index": 2771,
+    "text_snippet": "The Wanda acetate frame comes in multiple colors including Crystal Clear, Black, Lavender Clear, Hon",
+    "description": "Factual claim from company_information",
+    "source_url": "",
+    "evidence_id": "fact_014",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_016",
+    "type": "claim",
+    "start_index": 2773,
+    "stop_index": 2841,
+    "text_snippet": "It's also available in a mixed material option with black gold metal",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_013",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_037",
+    "type": "editorial",
+    "editorial_subtype": "tov_vocabulary",
+    "start_index": 2948,
+    "stop_index": 3122,
+    "text_snippet": "Pair Eyewear's interchangeable Top Frames snap magnetically onto the base, so you can reinvent your ",
+    "description": "Tov Vocabulary: Using 'self-expression' and 'personalization' per brand vocabulary",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Vocabulary"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "claim",
+    "start_index": 2949,
+    "stop_index": 3022,
+    "text_snippet": "Pair Eyewear's interchangeable Top Frames snap magnetically onto the base",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_038",
+    "type": "editorial",
+    "editorial_subtype": "tov_rhythm",
+    "start_index": 3297,
+    "stop_index": 3459,
+    "text_snippet": "There's something delightfully subversive about a prescription purchase that makes you want to colle",
+    "description": "Tov Rhythm: Playful editorial aside in parenthetical tone per voice moves",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Rhythm"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "claim",
+    "start_index": 3903,
+    "stop_index": 3937,
+    "text_snippet": "A medium, modified rectangle shape",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "claim",
+    "start_index": 4006,
+    "stop_index": 4035,
+    "text_snippet": "Designed for most adult faces",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_039",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 4668,
+    "stop_index": 4794,
+    "text_snippet": "For women who previously couldn't justify a second pair of expensive progressive lenses, $25 toppers",
+    "description": "Audience Specific: Addressing progressive lens wearers who face high costs for multiple pairs",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "claim",
+    "start_index": 5159,
+    "stop_index": 5342,
+    "text_snippet": "The Casper comes in at least 10 color options including Crystal Clear, Black, Blue Tortoise, Tortois",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_012",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_021",
+    "type": "claim",
+    "start_index": 5344,
+    "stop_index": 5417,
+    "text_snippet": "It's also available in mixed material options combining acetate and metal",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_011",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_040",
+    "type": "editorial",
+    "editorial_subtype": "tov_vocabulary",
+    "start_index": 5486,
+    "stop_index": 5536,
+    "text_snippet": "Both frames are standouts. So how do you decide?",
+    "description": "Tov Vocabulary: Using 'versatile' and 'self-expression' per brand vocabulary preferences",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Vocabulary"
+  },
+  {
+    "annotation_id": "anno_041",
+    "type": "editorial",
+    "editorial_subtype": "list_format",
+    "start_index": 5538,
+    "stop_index": 6354,
+    "text_snippet": "Start with your daily context. The Wanda's cat-eye shape brings feminine character that elevates wor",
+    "description": "List Format: Bullet list with bold lead-ins for scannability per voice moves",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "List Format"
+  },
+  {
+    "annotation_id": "anno_042",
+    "type": "editorial",
+    "editorial_subtype": "tov_rhythm",
+    "start_index": 6556,
+    "stop_index": 6659,
+    "text_snippet": "Your prescription glasses actually keep up with your life - not the other way around. Simple as that",
+    "description": "Tov Rhythm: Short punchy fragment for emphasis per voice moves",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Rhythm"
+  },
+  {
+    "annotation_id": "anno_043",
+    "type": "editorial",
+    "editorial_subtype": "faq",
+    "start_index": 6788,
+    "stop_index": 7378,
+    "text_snippet": "Stylish women's prescription eyeglasses FAQs\n\nWhat makes these women's designer eyeglasses frames di",
+    "description": "Faq: FAQ section optimized for generative search retrieval per Rule 4.2",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "FAQ"
+  },
+  {
+    "annotation_id": "anno_022",
+    "type": "claim",
+    "start_index": 6939,
+    "stop_index": 7040,
+    "text_snippet": "Pair Eyewear's magnetic topper system lets you snap on interchangeable Top Frames to change your loo",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_008",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_023",
+    "type": "claim",
+    "start_index": 7127,
+    "stop_index": 7324,
+    "text_snippet": "Pair Eyewear also has licensed collaborations with major brands including Disney, Pixar, Harry Potte",
+    "description": "Factual claim from company_information",
+    "source_url": "",
+    "evidence_id": "fact_010",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_024",
+    "type": "claim",
+    "start_index": 7470,
+    "stop_index": 7524,
+    "text_snippet": "The Wanda is made from hand-polished, flexible acetate",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_007",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_025",
+    "type": "claim",
+    "start_index": 7775,
+    "stop_index": 7804,
+    "text_snippet": "The Wanda is a medium cat-eye",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_026",
+    "type": "claim",
+    "start_index": 7830,
+    "stop_index": 7912,
+    "text_snippet": "suits most face shapes including oval, round, square, heart, diamond, and triangle",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_027",
+    "type": "claim",
+    "start_index": 7914,
+    "stop_index": 7955,
+    "text_snippet": "The Casper is a medium modified rectangle",
+    "description": "Factual claim from specification",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_028",
+    "type": "claim",
+    "start_index": 8036,
+    "stop_index": 8053,
+    "text_snippet": "Both start at $70",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_029",
+    "type": "claim",
+    "start_index": 8058,
+    "stop_index": 8081,
+    "text_snippet": "ship free within the US",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_009",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
