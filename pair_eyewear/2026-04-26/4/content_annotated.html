@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #111827;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Annotation highlighting */
+        .annotation {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        
+        /* Color schemes matching the evaluation UI */
+        .annotation[data-category="facts-reviews"] {
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        .annotation[data-category="facts-reviews"]:hover {
+            background-color: rgba(59, 130, 246, 0.25);
+        }
+        
+        .annotation[data-category="audience"] {
+            background-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .annotation[data-category="audience"]:hover {
+            background-color: rgba(34, 197, 94, 0.25);
+        }
+        
+        .annotation[data-category="llm-ready"] {
+            background-color: rgba(168, 85, 247, 0.15);
+        }
+        
+        .annotation[data-category="llm-ready"]:hover {
+            background-color: rgba(168, 85, 247, 0.25);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            max-width: 400px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.visible {
+            display: block;
+        }
+        
+        .tooltip-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tooltip-badge.facts-reviews {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e40af;
+        }
+        
+        .tooltip-badge.audience {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+        }
+        
+        .tooltip-badge.llm-ready {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #6b21a8;
+        }
+        
+        .tooltip-content {
+            background: #f9fafb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .tooltip-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip-source {
+            font-size: 0.75rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .tooltip-source:hover {
+            text-decoration: underline;
+        }
+        
+        .tooltip-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.5rem;
+        }
+        
+        .multiple-annotations {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .header-info {
+            background: #f3f4f6;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .header-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .header-info p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-info">
+            <p><strong>Annotated Blog Content</strong></p>
+            <p>Hover over or click highlighted text to view annotations and sources.</p>
+        </div>
+        
+        <div id="content">
+<p><span class="annotation" data-annotation-id="anno_016" data-annotation-ids="anno_016"></p>
+<h1>Best progressive eyeglasses for women under $300 you can buy online</h1>
+<p></span><br />
+<em><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017"></em>In Short:** Women shopping for progressive eyeglasses under $300 online have excellent options - you don't need to pay optical-shop prices to get accurate, comfortable progressive lenses. Two of the best-reviewed progressive glasses for women available online right now are The Kirby and The Larkin from Pair Eyewear, both starting at $7</span><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017,anno_000">0 for frames. </span><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">Even after adding progressive lenses, the total stays well under $300. With 23,000+ combined reviews averaging 4.8 stars, these frames deliver comfort, style flexibility through magnetic toppers, and spot-on prescriptions for adults 45+ who want progressives without the markup. Th</span><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017,anno_001">e Larkin particularly suits oval or round face shapes, </span><span class="annotation" data-annotation-id="anno_017" data-annotation-ids="anno_017">and both frames offer the kind of all-day comfort progressive wearers depend on.</p>
+<p></span>---</p>
+<h2><span class="annotation" data-annotation-id="anno_018" data-annotation-ids="anno_018">Best progressive glasses for women online under $300 at a glance</h2>
+<p>Her</span>e'<span class="annotation" data-annotation-id="anno_019" data-annotation-ids="anno_019">s how The Kirby and The Larkin stack up side by side.</p>
+<table>
+<thead>
+<tr>
+<th>F</span>ea<span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">ture</th>
+<th>The Kirby</th>
+<th>The Larkin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Frame shape</strong></td>
+<td>Medium </span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020,anno_002">rectangle</td>
+<td>Narr</span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">ow,</span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020,anno_003"> modified rectangle</td>
+</tr>
+<tr>
+<td><strong></span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">Best for face shapes</strong></td>
+<td>Oval or</span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020,anno_004"> round</td>
+<td>Oval</span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020"> or</span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020,anno_005"> round</td>
+</tr>
+<tr>
+<td><strong></span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">Base price</strong></td>
+<td>$70</td>
+<td>$</span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020,anno_006">70 </span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020"></td>
+</tr>
+<tr>
+<td></span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020,anno_007"> <strong></span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">Reviews</strong></td>
+<td>12,992 reviews, 4.8 avg (96% rated 4–5 stars)</td>
+<td>10,309 reviews, 4.8 avg (97% rated 4–5 stars)</td>
+</tr>
+<tr>
+<td><strong>Standout feature</strong></td>
+<td>Wider fit for most adult faces</td>
+<td>Looks f</span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020,anno_008">antastic on most adult and older kids' faces</td>
+</tr>
+<tr>
+<td><strong></span><span class="annotation" data-annotation-id="anno_020" data-annotation-ids="anno_020">Progressive lenses</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Magnetic sunglass toppers</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p>Both fr</span>am<span class="annotation" data-annotation-id="anno_021" data-annotation-ids="anno_021">es support progressive lenses and magnetic sunglass toppers. That means one purchase covers your everyday glasses <em>and</em> your sun protection. No second prescription pair needed.</p>
+<hr />
+<h2></span> Two frames progressive wearers keep coming back to</h2>
+<p>Ordering <span class="annotation" data-annotation-id="anno_022" data-annotation-ids="anno_022">progressive glasses online can feel like a leap of faith. Will the prescription be right? Will the frames hold up? Will they actually be comfortable at hour ten?</p>
+<p>The good news? Thousands of progressive wearers have already taken that leap with The Kirby and The Larkin - and they keep coming back.</p>
+<h3>The</span> Kirby</h3>
+<p>The Kirby<span class="annotation" data-annotation-id="anno_009" data-annotation-ids="anno_009"> features a medium rectangle frame shape that wor</span>ks beautifully as a progressive lens carrier. Designed <span class="annotation" data-annotation-id="anno_010" data-annotation-ids="anno_010">to fit most adult faces, it offe</span>rs a flattering look right out of the box.</p>
+<p>Here's th<span class="annotation" data-annotation-id="anno_023" data-annotation-ids="anno_023">e thing: longevity is where The Kirby really earns its keep. One customer has worn their Kirby frames for five to six years and counting - remarkable for frames at this price point, and exactly the kind of build quality that matters when you're investing in progressive lenses.</p>
+<p>"I alre</span>ady have the Kirby and love them, and they lasted me 5-6 years! I LOVE that you guys created the mixed material - these ones with the gold are SO sleek!" - Skyla-Mae S.</p>
+<p>Customers<span class="annotation" data-annotation-id="anno_024" data-annotation-ids="anno_024"> back that up across the board:</p>
+<p>"I abso</span>lutely love my Pair Eyewear Kirby glasses! They're comfortable, flattering, and feel very high quality. The toppers are such a fun and unique touch - it's so easy to change the look depending on my mood or outfit," says Aspen E.</p>
+<h3>The Larkin</h3>
+<p>The Larki<span class="annotation" data-annotation-id="anno_011" data-annotation-ids="anno_011">n has a narrow, modified rectangle shape - a slig</span>htly different aesthetic from The Kirby. If you pr<span class="annotation" data-annotation-id="anno_025" data-annotation-ids="anno_025">efer a more refined, streamlined profile, this is your frame.</p>
+<p>A fan-f</span>av<span class="annotation" data-annotation-id="anno_012" data-annotation-ids="anno_012">orite frame, The Lar</span>kin has earned 10,309 reviews at a 4.8-star average, with 97% of reviewers rating it 4 or 5 stars.</p>
+<p>But the d<span class="annotation" data-annotation-id="anno_026" data-annotation-ids="anno_026">etail that matters most for progressive wearers? Prescription accuracy. Here's what customers have to say:</p>
+<p>"My pro</span>gressive prescription was on the spot. The reading height is perfect. And the quality of the glasses is outstanding. I highly recommend Pair Eyewear for your next pair of glasses." - Maria P.</p>
+<p>Anna C. came back for a second round: "The prescription is spot on! I couldn't be more pleased! I previously had the Larkin and stuck with it this time. Love the shape."</p>
+<p>At $70 pe<span class="annotation" data-annotation-id="anno_027" data-annotation-ids="anno_027">r b</span><span class="annotation" data-annotation-id="anno_027" data-annotation-ids="anno_027,anno_013">ase frame, the big</span><span class="annotation" data-annotation-id="anno_027" data-annotation-ids="anno_027">gest risk here might be that you end up buying both just to have options. (<em>Not such a bad thing.</em>)</p>
+<hr />
+<h2></span> How to choose the right progressive eyeglasses for your needs</h2>
+<p>Whether y<span class="annotation" data-annotation-id="anno_028" data-annotation-ids="anno_028">ou're ordering your first pair of progressive glasses online or upgrading from a traditional optical shop, a few key details will help you land on the right frame.</p>
+<h3>One</span> prescription, endless styles</h3>
+<p>This is t<span class="annotation" data-annotation-id="anno_029" data-annotation-ids="anno_029">he feature that makes Pair Eyewear genuinely different. The magnetic topper system lets you snap interchangeable sunglass and style toppers onto your Base Frame - so one progressive prescription purchase gives you an entire eyewear wardrobe. No separate prescription sunglasses. No buying multiple complete pairs.</p>
+<p>"I love</span> being able to change up my look. The best part though - it was cheaper than most of my other glasses! I was very surprised. Online customer service was great as well! Highly, highly recommend." - Judith P.</p>
+<p>The sun protection angle is just as practical. Instead of juggling transition lenses or swapping between two pairs every time you step outside, you snap on a sunglass topper and go.</p>
+<p>As Christopher J. puts it: "I love the sunglass topper. It's much easier than transition lenses or swapping out glasses all the time."</p>
+<h3>Choosing between The Kirby and The Larkin</h3>
+<p>Here's th<span class="annotation" data-annotation-id="anno_030" data-annotation-ids="anno_030">e simplest way to decide. If you prefer a slightly wider frame, <strong>go with The Kirby</strong> - its classic medium rectangle shape gives you a broader look. If you want something narrower and more refined, <strong>The Larkin is your match</strong> with its sleeker profile. Both earn nearly identical 4.8-star ratings across thousands of reviews. You can't go wrong with either one.</p>
+<h3>A no</span>te on hi-index lenses and toppers</h3>
+<p>If you hav<span class="annotation" data-annotation-id="anno_031" data-annotation-ids="anno_031">e a higher prescription requiring hi-index lenses, it's worth knowing that some reviewers reported slight gaps with topper fit on thicker lenses. Not a dealbreaker - but worth verifying with Pair Eyewear's customer service before you order. They're consistently praised for being responsive and genuinely helpful.</p>
+<p>Skyla-Ma</span>e S. found that firsthand: "I had to contact customer service a couple of times, and they were SO fast to get back to me, beyond helpful, and extremely thorough. Can't say enough good about those who helped me out!"</p>
+<h3>The value math</h3>
+<p>A base fra<span class="annotation" data-annotation-id="anno_032" data-annotation-ids="anno_032">me at $70 plus p</span><span class="annotation" data-annotation-id="anno_032" data-annotation-ids="anno_032,anno_014">rog</span><span class="annotation" data-annotation-id="anno_032" data-annotation-ids="anno_032">ressive lenses still lands well under $300. And the best part? Each additional topper costs a fraction of what a second complete pair of prescription glasses would run. That means your eyewear budget stretches further - and you actually get variety instead of being locked into one look for years.</p>
+<h3>All-</span>day comfort, all day long</h3>
+<p>At 45+, co<span class="annotation" data-annotation-id="anno_033" data-annotation-ids="anno_033">mfort isn't a nice-to-have. It's everything. You're wearing these from your first cup of coffee to your last email of the day. Both The Kirby and The Larkin earn consistent praise for lightweight wearability across thousands of reviews - solid choices for the kind of daily progressive wear your routine demands.</p>
+<p>"These a</span>re lightweight and immediately transformed my vision as soon as I took them out of the case. I was quite impressed," says Susan H.</p>
+<p>That instant clarity matters when you depend on progressives all day. And once you start swapping toppers, the fun factor kicks in too.</p>
+<p>Jeanine J. found her match with The Larkin: "I now have 10 top frames that I LOVE and at a fraction of the price. The Larkin's are comfortable and fit my face perfectly. Everyday will be like opening a new present just deciding which look I want that day. This is a GENIUS idea."</p>
+<hr />
+<h2>Progres<span class="annotation" data-annotation-id="anno_034" data-annotation-ids="anno_034">sive eyeglasses under $300 FAQs</h2>
+<p><strong>Can I really get quality progressive glasses for women under $300 online?</strong><br />
+A: Absolutely. Both The Kirby and The Larkin start at $70 for fra</span><span class="annotation" data-annotation-id="anno_034" data-annotation-ids="anno_034,anno_015">mes, and even </span><span class="annotation" data-annotation-id="anno_034" data-annotation-ids="anno_034">with progressive lenses added, the total stays well under $300. Across 23,000+ combined reviews, customers consistently rate prescription accuracy as "perfect" or "great." These aren't budget glasses that cut corners on vision quality - they're well-reviewed frames backed by thousands of progressive wearers who keep reordering.</p>
+<p><strong>How do t</span>he magnetic toppers work with progressive lenses?</strong><br />
+A: Toppers snap magnetically onto your Base Frame, so you can switch between clear glasses and sunglass styles without a second prescription pair. Most progressive wearers find the fit seamless. If you have a very high prescription with hi-index lenses, confirm topper compatibility with customer service before ordering - they're quick to respond.</p>
+<p><strong>Which fram<span class="annotation" data-annotation-id="anno_035" data-annotation-ids="anno_035">e is better for adults 45+ - The Kirby or The Larkin?</strong><br />
+A: Both earn nearly identical 4.8-star ratings and are praised for all-day comfort - essential for progressive wearers. The Kirby offers a wider look, while The Larkin provides a more refined profile. See the comparison table above for a full side-by-side breakdown.</p>
+<hr />
+<p>Ready to</span> find your perfect pair of progressives? Go on, explore the full progressive eyeglasses collection at Pair Eyewear and see which frame fits your style - and your prescription - best.</p>
+        </div>
+    </div>
+    
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script>
+        // Annotations data
+        const annotations = [
+  {
+    "annotation_id": "anno_016",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_title",
+    "start_index": 0,
+    "stop_index": 71,
+    "text_snippet": "Best progressive eyeglasses for women under $300 you can buy online",
+    "description": "Query Echo Title: Title echoes target queries 'progressive eyeglasses women under $300' and 'progressive glasses women online'",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_017",
+    "type": "editorial",
+    "editorial_subtype": "answer_first",
+    "start_index": 73,
+    "stop_index": 843,
+    "text_snippet": "In Short: Women shopping for progressive eyeglasses under $300 online have excellent options - you d",
+    "description": "Answer First: Direct answer block addressing target queries about affordable progressive eyeglasses for women and adults 45+ available online",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Answer First"
+  },
+  {
+    "annotation_id": "anno_000",
+    "type": "claim",
+    "start_index": 411,
+    "stop_index": 425,
+    "text_snippet": "$70 for frames",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_001",
+    "type": "claim",
+    "start_index": 706,
+    "stop_index": 761,
+    "text_snippet": "The Larkin particularly suits oval or round face shapes",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_018",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_heading",
+    "start_index": 851,
+    "stop_index": 920,
+    "text_snippet": "Best progressive glasses for women online under $300 at a glance",
+    "description": "Query Echo Heading: H2 echoes 'progressive glasses for women' and 'online' from target queries",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_019",
+    "type": "editorial",
+    "editorial_subtype": "tov_rhythm",
+    "start_index": 922,
+    "stop_index": 980,
+    "text_snippet": "Here's how The Kirby and The Larkin stack up side by side.",
+    "description": "Tov Rhythm: Short setup sentence before the table, matching brand's direct and scannable style",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Rhythm"
+  },
+  {
+    "annotation_id": "anno_020",
+    "type": "editorial",
+    "editorial_subtype": "table_format",
+    "start_index": 982,
+    "stop_index": 1505,
+    "text_snippet": "| Feature | The Kirby | The Larkin |\n|---|---|---|\n| Frame shape | Medium rectangle | Narrow, modifi",
+    "description": "Table Format: Comparison table for quick-reference scanning per brief instructions",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Table Format"
+  },
+  {
+    "annotation_id": "anno_002",
+    "type": "claim",
+    "start_index": 1055,
+    "stop_index": 1071,
+    "text_snippet": "Medium rectangle",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_003",
+    "type": "claim",
+    "start_index": 1074,
+    "stop_index": 1100,
+    "text_snippet": "Narrow, modified rectangle",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_004",
+    "type": "claim",
+    "start_index": 1132,
+    "stop_index": 1145,
+    "text_snippet": "Oval or round",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_005",
+    "type": "claim",
+    "start_index": 1148,
+    "stop_index": 1161,
+    "text_snippet": "Oval or round",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_006",
+    "type": "claim",
+    "start_index": 1183,
+    "stop_index": 1186,
+    "text_snippet": "$70",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_007",
+    "type": "claim",
+    "start_index": 1189,
+    "stop_index": 1192,
+    "text_snippet": "$70",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_008",
+    "type": "claim",
+    "start_index": 1365,
+    "stop_index": 1416,
+    "text_snippet": "Looks fantastic on most adult and older kids' faces",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_003",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_021",
+    "type": "editorial",
+    "editorial_subtype": "tov_vocabulary",
+    "start_index": 1507,
+    "stop_index": 1692,
+    "text_snippet": "Both frames support progressive lenses and magnetic sunglass toppers. That means one purchase covers",
+    "description": "Tov Vocabulary: Uses brand-specific language 'Base Frame' and 'toppers' and frames the value proposition conversationally",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Vocabulary"
+  },
+  {
+    "annotation_id": "anno_022",
+    "type": "editorial",
+    "editorial_subtype": "tov_emotional_tone",
+    "start_index": 1754,
+    "stop_index": 2061,
+    "text_snippet": "Ordering progressive glasses online can feel like a leap of faith. Will the prescription be right? W",
+    "description": "Tov Emotional Tone: Opens with a relatable pain point for the 45+ audience before pivoting to the positive",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Emotional Tone"
+  },
+  {
+    "annotation_id": "anno_009",
+    "type": "claim",
+    "start_index": 2078,
+    "stop_index": 2127,
+    "text_snippet": "The Kirby features a medium rectangle frame shape",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_010",
+    "type": "claim",
+    "start_index": 2182,
+    "stop_index": 2214,
+    "text_snippet": "Designed to fit most adult faces",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_023",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 2267,
+    "stop_index": 2553,
+    "text_snippet": "Here's the thing: longevity is where The Kirby really earns its keep. One customer has worn their Ki",
+    "description": "Audience Specific: Durability and longevity are key concerns for the 45+ audience investing in progressive lenses",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_024",
+    "type": "editorial",
+    "editorial_subtype": "tov_rhythm",
+    "start_index": 2732,
+    "stop_index": 2772,
+    "text_snippet": "Customers back that up across the board:",
+    "description": "Tov Rhythm: Short punchy sentence followed by customer validation, matching brand cadence",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Rhythm"
+  },
+  {
+    "annotation_id": "anno_011",
+    "type": "claim",
+    "start_index": 3027,
+    "stop_index": 3076,
+    "text_snippet": "The Larkin has a narrow, modified rectangle shape",
+    "description": "Factual claim from feature",
+    "source_url": "",
+    "evidence_id": "fact_001",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_025",
+    "type": "editorial",
+    "editorial_subtype": "tov_perspective",
+    "start_index": 3126,
+    "stop_index": 3196,
+    "text_snippet": "If you prefer a more refined, streamlined profile, this is your frame.",
+    "description": "Tov Perspective: Second-person address making the reader the protagonist",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Perspective"
+  },
+  {
+    "annotation_id": "anno_012",
+    "type": "claim",
+    "start_index": 3198,
+    "stop_index": 3218,
+    "text_snippet": "A fan-favorite frame",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_002",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_026",
+    "type": "editorial",
+    "editorial_subtype": "tov_vocabulary",
+    "start_index": 3327,
+    "stop_index": 3442,
+    "text_snippet": "But the detail that matters most for progressive wearers? Prescription accuracy. Here's what custome",
+    "description": "Tov Vocabulary: Using 'prescription accuracy' language that resonates with the 45+ progressive audience",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Vocabulary"
+  },
+  {
+    "annotation_id": "anno_027",
+    "type": "editorial",
+    "editorial_subtype": "tov_rhythm",
+    "start_index": 3815,
+    "stop_index": 3944,
+    "text_snippet": "At $70 per base frame, the biggest risk here might be that you end up buying both just to have optio",
+    "description": "Tov Rhythm: Wry aside as specified in the brief, matching the brand's understated humor",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Rhythm"
+  },
+  {
+    "annotation_id": "anno_013",
+    "type": "claim",
+    "start_index": 3818,
+    "stop_index": 3836,
+    "text_snippet": "$70 per base frame",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_028",
+    "type": "editorial",
+    "editorial_subtype": "tov_emotional_tone",
+    "start_index": 4017,
+    "stop_index": 4189,
+    "text_snippet": "Whether you're ordering your first pair of progressive glasses online or upgrading from a traditiona",
+    "description": "Tov Emotional Tone: Empowering the reader to make a confident choice, framing them as someone making smart decisions",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Emotional Tone"
+  },
+  {
+    "annotation_id": "anno_029",
+    "type": "editorial",
+    "editorial_subtype": "tov_vocabulary",
+    "start_index": 4229,
+    "stop_index": 4551,
+    "text_snippet": "This is the feature that makes Pair Eyewear genuinely different. The magnetic topper system lets you",
+    "description": "Tov Vocabulary: Using brand-specific language 'Base Frame' and 'Top Frame' and framing the topper system as the key differentiator",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Vocabulary"
+  },
+  {
+    "annotation_id": "anno_030",
+    "type": "editorial",
+    "editorial_subtype": "list_format",
+    "start_index": 5134,
+    "stop_index": 5505,
+    "text_snippet": "Here's the simplest way to decide. If you prefer a slightly wider frame, go with The Kirby - its cla",
+    "description": "List Format: Bullet list with bold lead-ins for scannability, matching brand style",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "List Format"
+  },
+  {
+    "annotation_id": "anno_031",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 5550,
+    "stop_index": 5873,
+    "text_snippet": "If you have a higher prescription requiring hi-index lenses, it's worth knowing that some reviewers ",
+    "description": "Audience Specific: Addressing a real concern for the 45+ audience who may have stronger prescriptions requiring thicker lenses",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_032",
+    "type": "editorial",
+    "editorial_subtype": "tov_rhythm",
+    "start_index": 6120,
+    "stop_index": 6446,
+    "text_snippet": "A base frame at $70 plus progressive lenses still lands well under $300. And the best part? Each add",
+    "description": "Tov Rhythm: Direct, confident value proposition using the 'that means' transition from the ToV signature transitions",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Rhythm"
+  },
+  {
+    "annotation_id": "anno_014",
+    "type": "claim",
+    "start_index": 6136,
+    "stop_index": 6139,
+    "text_snippet": "$70",
+    "description": "Factual claim from pricing",
+    "source_url": "",
+    "evidence_id": "fact_005",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_033",
+    "type": "editorial",
+    "editorial_subtype": "audience_specific",
+    "start_index": 6483,
+    "stop_index": 6805,
+    "text_snippet": "At 45+, comfort isn't a nice-to-have. It's everything. You're wearing these from your first cup of c",
+    "description": "Audience Specific: Comfort is a critical factor for 45+ wearers who need progressives on all day",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "audience",
+    "label": "Audience Specific"
+  },
+  {
+    "annotation_id": "anno_034",
+    "type": "editorial",
+    "editorial_subtype": "faq",
+    "start_index": 7370,
+    "stop_index": 7901,
+    "text_snippet": "Progressive eyeglasses under $300 FAQs\n\nCan I really get quality progressive glasses for women under",
+    "description": "Faq: FAQ section optimized for generative search retrieval and scannable reference",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "FAQ"
+  },
+  {
+    "annotation_id": "anno_015",
+    "type": "claim",
+    "start_index": 7546,
+    "stop_index": 7560,
+    "text_snippet": "$70 for frames",
+    "description": "Factual claim from benefit",
+    "source_url": "",
+    "evidence_id": "fact_004",
+    "stage_added": "content_generation",
+    "priority": "mandatory",
+    "category": "facts-reviews",
+    "label": "Claim"
+  },
+  {
+    "annotation_id": "anno_035",
+    "type": "editorial",
+    "editorial_subtype": "query_echo_faq",
+    "start_index": 8315,
+    "stop_index": 8652,
+    "text_snippet": "Which frame is better for adults 45+ - The Kirby or The Larkin?\nA: Both earn nearly identical 4.8-st",
+    "description": "Query Echo Faq: FAQ question mirrors query intent about choosing progressive frames for adults 45+",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "Editorial"
+  },
+  {
+    "annotation_id": "anno_036",
+    "type": "editorial",
+    "editorial_subtype": "tov_emotional_tone",
+    "start_index": 8660,
+    "stop_index": 8850,
+    "text_snippet": "Ready to find your perfect pair of progressives? Go on, explore the full progressive eyeglasses coll",
+    "description": "Tov Emotional Tone: Closing with an invitational CTA that feels warm and encouraging rather than pushy, matching brand voice",
+    "source_url": null,
+    "evidence_id": null,
+    "stage_added": "content_generation",
+    "priority": "optional",
+    "category": "llm-ready",
+    "label": "ToV: Emotional Tone"
+  }
+];
+        
+        // Create a map for quick lookup
+        const annotationsMap = new Map();
+        annotations.forEach(anno => {
+            annotationsMap.set(anno.annotation_id, anno);
+        });
+        
+        // Tooltip element
+        const tooltip = document.getElementById('tooltip');
+        let pinnedAnnotationId = null;
+        
+        // Add category data attribute to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            const annoId = span.dataset.annotationId;
+            const anno = annotationsMap.get(annoId);
+            if (anno) {
+                span.dataset.category = anno.category;
+            }
+        });
+        
+        // Show tooltip
+        function showTooltip(annotationIds, x, y) {
+            const ids = annotationIds.split(',');
+            const primaryAnno = annotationsMap.get(ids[0]);
+            
+            if (!primaryAnno) return;
+            
+            let tooltipHtml = `
+                <div class="tooltip-badge ${primaryAnno.category}">${primaryAnno.label}</div>
+            `;
+            
+            // Add text snippet or type-specific content
+            let contentText = primaryAnno.text_snippet || 
+                            primaryAnno.claim_text || 
+                            primaryAnno.quote_text || 
+                            primaryAnno.insight_summary || 
+                            '';
+            
+            if (contentText) {
+                tooltipHtml += `<div class="tooltip-content">"${contentText}"</div>`;
+            }
+            
+            // Add description
+            if (primaryAnno.description) {
+                tooltipHtml += `<div class="tooltip-description">${primaryAnno.description}</div>`;
+            }
+            
+            // Add source link
+            if (primaryAnno.source_url) {
+                tooltipHtml += `
+                    <a href="${primaryAnno.source_url}" target="_blank" rel="noopener noreferrer" class="tooltip-source">
+                        ↗ View Source
+                    </a>
+                `;
+            }
+            
+            // Add evidence ID
+            if (primaryAnno.evidence_id) {
+                tooltipHtml += `<div class="tooltip-meta">Evidence: ${primaryAnno.evidence_id}</div>`;
+            }
+            
+            // Show multiple annotations indicator
+            if (ids.length > 1) {
+                tooltipHtml += `
+                    <div class="multiple-annotations">
+                        + ${ids.length - 1} more annotation(s) at this location
+                    </div>
+                `;
+            }
+            
+            tooltip.innerHTML = tooltipHtml;
+            
+            // Make tooltip visible to measure it
+            tooltip.classList.add('visible');
+            const rect = tooltip.getBoundingClientRect();
+            
+            // Smart positioning: prefer above the cursor, but adjust as needed
+            let left = x - rect.width / 2; // Center horizontally on cursor
+            let top = y - rect.height - 15; // Position above cursor with spacing
+            
+            // Adjust horizontal position if off screen
+            if (left < 10) {
+                left = 10;
+            } else if (left + rect.width > window.innerWidth - 10) {
+                left = window.innerWidth - rect.width - 10;
+            }
+            
+            // If tooltip doesn't fit above, place it below
+            if (top < 10) {
+                top = y + 15;
+            }
+            
+            // If it still doesn't fit below, use whatever space is available
+            if (top + rect.height > window.innerHeight - 10) {
+                // Not enough space above or below, position at top with scroll
+                if (y > window.innerHeight / 2) {
+                    // Cursor is in lower half, position above
+                    top = y - rect.height - 15;
+                } else {
+                    // Cursor is in upper half, position below
+                    top = y + 15;
+                }
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+        
+        // Hide tooltip
+        function hideTooltip() {
+            if (!pinnedAnnotationId) {
+                tooltip.classList.remove('visible');
+            }
+        }
+        
+        // Add event listeners to all annotation spans
+        document.querySelectorAll('.annotation').forEach(span => {
+            span.addEventListener('mouseenter', (e) => {
+                if (!pinnedAnnotationId) {
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+            
+            span.addEventListener('mouseleave', () => {
+                hideTooltip();
+            });
+            
+            span.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (pinnedAnnotationId === span.dataset.annotationId) {
+                    // Unpin
+                    pinnedAnnotationId = null;
+                    hideTooltip();
+                } else {
+                    // Pin
+                    pinnedAnnotationId = span.dataset.annotationId;
+                    // Use clientX/clientY for viewport coordinates (position: fixed)
+                    showTooltip(span.dataset.annotationIds, e.clientX, e.clientY);
+                }
+            });
+        });
+        
+        // Click outside to unpin
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation') && !e.target.closest('.tooltip')) {
+                pinnedAnnotationId = null;
+                hideTooltip();
+            }
+        });
+        
+        // Prevent clicks inside tooltip from closing it
+        tooltip.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
