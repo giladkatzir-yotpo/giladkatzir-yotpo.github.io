@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pair Eyewear — 2026-04-26</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: #f9fafb;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #6b7280;
+            margin-bottom: 0.75rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 2.5rem;
+            line-height: 1.3;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        @media (min-width: 480px) {
+            .buttons {
+                flex-direction: row;
+            }
+        }
+
+        .btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: transform 0.15s, box-shadow 0.15s;
+            border: 2px solid transparent;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-icon {
+            font-size: 1.75rem;
+        }
+
+        .btn-brief {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-color: #bfdbfe;
+        }
+
+        .btn-brief:hover {
+            background: #dbeafe;
+        }
+
+        .btn-content {
+            background: #f0fdf4;
+            color: #15803d;
+            border-color: #bbf7d0;
+        }
+
+        .btn-content:hover {
+            background: #dcfce7;
+        }
+
+        .btn-subtitle {
+            font-size: 0.75rem;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p class="label">Annotated Export</p>
+        <h1>Pair Eyewear — 2026-04-26</h1>
+        <div class="buttons">
+            <a href="brief_annotated_20260426_124104_pair_eyewear.html" class="btn btn-brief">
+                <span class="btn-icon">📋</span>
+                View Brief
+                <span class="btn-subtitle">Annotated content brief</span>
+            </a>
+            <a href="content_annotated.html" class="btn btn-content">
+                <span class="btn-icon">📄</span>
+                View Content
+                <span class="btn-subtitle">Annotated blog post</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
